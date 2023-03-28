@@ -65,6 +65,9 @@ test suites for the given project id are analyzed.
 The temporary root directory to be used to check out program versions (optional).
 The default is F</tmp>.
 
+=item -a
+Directory where the CSV is.
+
 =item -D
 
 Debug: Enable verbose logging and do not delete the temporary check-out directory
@@ -122,15 +125,19 @@ use DB;
 # Process arguments and issue usage message if necessary.
 #
 my %cmd_opts;
-getopts('p:d:v:t:o:f:D', \%cmd_opts) or pod2usage(1);
+getopts('p:d:v:t:o:f:a:D', \%cmd_opts) or pod2usage(1);
 
-pod2usage(1) unless defined $cmd_opts{p} and defined $cmd_opts{d} and defined $cmd_opts{o};
+pod2usage(1) unless defined $cmd_opts{p} and defined $cmd_opts{d} and defined $cmd_opts{a};
 
 # Ensure that directory of test suites exists
 -d $cmd_opts{d} or die "Test suite directory $cmd_opts{d} does not exist!";
 
 my $PID = $cmd_opts{p};
+#print("\n$PID\n");
+my $resultsData = $cmd_opts{a};
+#print("\n$resultsData\n");
 my $SUITE_DIR = abs_path($cmd_opts{d});
+#print("\n$SUITE_DIR\n");
 my $VID = $cmd_opts{v} if defined $cmd_opts{v};
 my $INCL = $cmd_opts{f} // "*.java";
 # Enable debugging if flag is set
@@ -225,17 +232,20 @@ foreach my $vid (keys %{$test_suites}) {
     foreach my $suite_src (keys %{$test_suites->{$vid}}) {
         `mkdir -p $LOG_DIR/$suite_src`;
 
+        #system("echo 'aaa'")==0 or die "died";
         # Iterate over all test suites for this source
         foreach my $test_id (keys %{$test_suites->{$vid}->{$suite_src}}) {
+
             my $archive = $test_suites->{$vid}->{$suite_src}->{$test_id};
             my $test_dir = "$TMP_DIR/$suite_src";
 
             # Skip existing entries
-            $sth->execute($PID, $suite_src, $vid, $test_id);
-            if ($sth->rows !=0) {
-                $LOG->log_msg(" - Skipping $archive since results already exist in database!");
-                next;
-            }
+            #$sth->execute($PID, $suite_src, $vid, $test_id);
+            #if ($sth->rows !=0) {
+            #    $LOG->log_msg(" - Skipping $archive since results already exist in database!");
+            #    next;
+            #}
+
 
             $LOG->log_msg(" - Executing test suite: $archive");
             printf ("Executing test suite: $archive\n");
@@ -293,7 +303,7 @@ sub _run_tests {
     my %failing_tests = (f=>0, b=>0);
 
 #
-# Run on fixed version
+    print "\nRunning tests on fixed version... (They should all PASS)...\n";
 # TODO: Refactor common code for running the fixed and buggy version
 #
     # Check out fixed version, and compile classes and tests
@@ -304,12 +314,14 @@ sub _run_tests {
     # Compile generated tests
     if (! $project->compile_ext_tests($test_dir)) {
         $LOG->log_msg(" - Tests do not compile on fixed version: $archive");
+        print "\n - Tests do not compile on fixed version: $archive\n";
         return undef;
     }
     # Run generated tests and log results
     my $log = "$TMP_DIR/run_V_fixed.log"; `>$log`;
     if (! $project->run_ext_tests($test_dir, "$INCL", $log)) {
         $LOG->log_msg(" - Tests not executable on fixed version: $archive");
+        print "\n - Tests not executable on fixed version: $archive\n";
         return undef;
     }
     # Determine whether test suite passes or fails on fixed version and store
@@ -318,13 +330,14 @@ sub _run_tests {
     my $count = scalar(@{$list->{methods}}) + scalar(@{$list->{classes}});
     $failing_tests{f} = $count;
     # Log number of all failing test methods and classes
+    print "\n - Found $count failing tests on fixed version: $archive\n";
     $LOG->log_msg(" - Found $count failing tests on fixed version: $archive") if $count > 0;
     # Copy stack traces of triggering tests
     system("cp $log $LOG_DIR/$suite_src/${bid}f.$test_id.trigger.log") == 0
         or die "Cannot copy stack traces from triggering tests";
 
 #
-# Run on buggy version
+    print "\nRunning tests on buggy version...\n";
 #
     # Lookup src directory and patch
     my $patch_dir = "$SCRIPT_DIR/projects/$PID/patches";
@@ -339,12 +352,14 @@ sub _run_tests {
     # Compile generated tests
     if (! $project->compile_ext_tests($test_dir)) {
         $LOG->log_msg(" - Tests do not compile on buggy version: $archive");
+        print "\n - Tests do not compile on buggy version: $archive\n";
         return undef;
     }
     # Run generated tests and log results
     $log = "$TMP_DIR/run_V_buggy.log"; `>$log`;
     if (! $project->run_ext_tests($test_dir, "$INCL", $log)) {
         $LOG->log_msg(" - Tests not executable on buggy version: $archive");
+        print "\n - Tests not executable on buggy version: $archive\n";
         return undef;
     }
     # Determine whether test suite passes or fails on buggy version and store
@@ -353,8 +368,10 @@ sub _run_tests {
     $count = scalar(@{$list->{methods}}) + scalar(@{$list->{classes}});
     $failing_tests{b} = $count;
     # Log number of all failing test methods and classes
+    print "\n - Found $count failing tests on buggy version: $archive\n";
     $LOG->log_msg(" - Found $count failing tests on buggy version: $archive") if $count > 0;
     # Copy stack traces of triggering tests
+    print "\nsaving log to $log $LOG_DIR/$suite_src/${bid}b.$test_id.trigger.log\n";
     system("cp $log $LOG_DIR/$suite_src/${bid}b.$test_id.trigger.log") == 0
         or die "Cannot copy stack traces from triggering tests";
 
@@ -365,6 +382,16 @@ sub _run_tests {
     $failing_tests{$type} == 0 or return undef;
 
     # Return number of failing tests on opposite version
+    print "\nTotal number of failing tests: $failing_tests{$target}\n";
+    #$filePath
+    my $Bug_Detection = "Bug_Detection";
+    my $criterion = "BRANCH";
+    #system("echo -f $resultsData -c $criterion -r $Bug_Detection -v $failing_tests{$target}")==0 or die "echo falhou";
+    system("python3 csvInit.py -f $resultsData -c $criterion -r $Bug_Detection -v $failing_tests{$target}")==0 or die "bugged";
+
+
+    #$failing_tests{$target}
+    #f $resultsData
     return $failing_tests{$target};
 }
 

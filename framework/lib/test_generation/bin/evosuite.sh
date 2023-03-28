@@ -43,15 +43,24 @@ fi
 num_classes=$(cat $D4J_FILE_TARGET_CLASSES | wc -l)
 budget=$(echo "$D4J_TOTAL_BUDGET/2/$num_classes" | bc)
 
+#java -cp evosuite-master-1.2.1-SNAPSHOT.jar org.evosuite.EvoSuite -generateSuite -class tutorial.Stack -projectCP target/classes -Dalgorithm=MONOTONIC_GA
+# -Doutput_variables=configuration_id,TARGET_CLASS,criterion,Total_Branches,Covered_Branches,Total_Methods,Covered_Methods,BranchCoverageTimeline,CoverageBitString,BranchCoverageBitString,ExceptionCoverageTimeline,ExceptionCoverage
+# -criterion=BRANCH:EXCEPTION:PRIVATEMETHOD CoverageTimeline
 for class in $(cat $D4J_FILE_TARGET_CLASSES); do
-    cmd="java -cp $D4J_DIR_TESTGEN_LIB/evosuite-current.jar org.evosuite.EvoSuite \
+
+    cmd="java -cp $D4J_DIR_TESTGEN_LIB/evosuite-master-1.2.1-SNAPSHOT.jar org.evosuite.EvoSuite \
+    -generateSuite \
     -class $class \
     -projectCP $project_cp \
     -seed $D4J_SEED \
     -Dsearch_budget=$budget \
     -Dassertion_timeout=$budget \
     -Dtest_dir=$D4J_DIR_OUTPUT \
-    $add_config"
+    -Dalgorithm=MONOTONIC_GA \
+    -criterion=$D4J_CRITERION \
+    -Doutput_variables=$D4J_OUTPUT_DATA \
+    -Dtimeline_interval=500 \
+     $add_config"
 
     # Run the test-generation command
     if ! exec_cmd "$cmd"; then

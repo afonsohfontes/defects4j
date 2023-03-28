@@ -313,7 +313,7 @@ sub _run_mutation {
       }
       close(EXCL_FILE);
     }
-
+    print("\nGenerating mutants... \n");
     my $gen_mutants = 0;
     if (defined $MUTATE_CLASSES) {
         $gen_mutants = $project->mutate("$MUTATE_CLASSES", \@MUT_OPS);
@@ -321,21 +321,26 @@ sub _run_mutation {
         $gen_mutants = $project->mutate("$TARGET_CLASSES_DIR/$bid.src", \@MUT_OPS);
     }
     $gen_mutants > 0 or die "No mutants generated for $vid!";
-
+    print("$gen_mutants mutants generated.\n");
     # Compile generated tests
     $project->compile_ext_tests($test_dir) or die "Tests do not compile!";
-
+    print("Mutated SUT compiled successfully..");
     # No need to run the test suite first. Major's preprocessing verifies that
     # all tests in the test suite pass before performing the mutation analysis.
+    print("Mutation log will be saved on $TMP_DIR/.mutation.log\n");
     my $mut_log = "$TMP_DIR/.mutation.log"; `>$mut_log`;
     my $mut_map = Mutation::mutation_analysis_ext($project, $test_dir, "$INCL", $mut_log, $EXCL);
     if (defined $mut_map) {
         # Add results to database table
         Mutation::insert_row($OUT_DIR, $PID, $vid, $suite_src, $test_id, $gen_mutants, $num_excluded_mutants, $mut_map);
+        print("From a total of $gen_mutants, $num_excluded_mutants were detected.\n");
+        my $mutationCov = $gen_mutants/$num_excluded_mutants;
+        print($mutationCov*100, "%\n");
     } else {
         # Add incomplete results to database table to indicate a broken test suite
         Mutation::insert_row($OUT_DIR, $PID, $vid, $suite_src, $test_id, "-");
         $LOG->log_file(" - Mutation analysis failed: $archive", $mut_log);
+        print("Mutation analysis failed (check logs): $archive\n");
     }
     Mutation::copy_mutation_logs($project, $vid, $suite_src, $test_id, $mut_log, $LOG_DIR);
 }

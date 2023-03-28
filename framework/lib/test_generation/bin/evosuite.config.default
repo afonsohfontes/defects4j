@@ -3,10 +3,9 @@
 #
 # All commented lines are ignored.
 #
--criterion branch
 -Dstopping_condition=MaxTime
--Dshow_progress=false
+-Dshow_progress=true
 -Djunit_check=false
 -Dfilter_assertions=false
 -Dtest_comments=false
--mem 1500
+-mem 6000

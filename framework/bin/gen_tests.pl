@@ -151,8 +151,21 @@ use Log;
 # Process arguments and issue usage message if necessary.
 #
 my %cmd_opts;
-getopts('g:p:v:o:n:b:c:s:t:ED', \%cmd_opts) or pod2usage(1);
+getopts('g:p:v:o:n:b:c:s:t:C:O:ED', \%cmd_opts) or pod2usage(1);
 my $TOOL = $cmd_opts{g};
+my $CRITERION = $cmd_opts{C};
+my $EVO_OUTPUT = "TARGET_CLASS,BranchCoverageTimeline,BranchBitstringTimeline,PrivateMethodFitnessTimeline,criterion,Total_Branches,Covered_Branches,Total_Methods,Covered_Methods,BranchCoverageTimeline,ExceptionCoverageTimeline,MethodCoverageTimeline,CoverageBitString,CoverageTimeline";
+
+if ((index($CRITERION, "PRIVATEMETHOD") != -1) or (index($CRITERION, "privatemethod") != -1) or (index($CRITERION, "PrivateMethod") != -1)) {
+$EVO_OUTPUT = $EVO_OUTPUT.",PrivateMethodCoverageBitString";
+}
+if ((index($CRITERION, "BRANCH") != -1) or (index($CRITERION, "branch") != -1) or (index($CRITERION, "Branch") != -1)) {
+$EVO_OUTPUT = $EVO_OUTPUT.",BranchCoverageBitString";
+}
+if ((index($CRITERION, "EXCEPTION") != -1) or (index($CRITERION, "exception") != -1) or (index($CRITERION, "Exception") != -1)) {
+$EVO_OUTPUT = $EVO_OUTPUT.",ExceptionCoverage";
+}
+
 # Print all supported generators, regardless of the other arguments, if -g help
 # is set
 defined $TOOL and $TOOL =~ /^help$/ and is_generator_valid($TOOL) || exit 1;
@@ -255,6 +268,9 @@ $ENV{D4J_TOTAL_BUDGET}        = "$TIME";
 $ENV{D4J_SEED}                = "$SEED";
 $ENV{D4J_TEST_MODE}           = "$MODE";
 $ENV{D4J_DEBUG}               = "$DEBUG";
+$ENV{D4J_CRITERION}           = "$CRITERION";
+$ENV{D4J_OUTPUT_DATA}         = "$EVO_OUTPUT";
+
 
 # Create temporary output directory
 Utils::exec_cmd("mkdir -p $TMP_DIR/$TOOL", "Creating temporary output directory")
@@ -263,6 +279,8 @@ Utils::exec_cmd("mkdir -p $TMP_DIR/$TOOL", "Creating temporary output directory"
 # Invoke the test generator
 Utils::exec_cmd("$TESTGEN_BIN_DIR/$TOOL.sh", "Generating ($MODE) tests with: $TOOL")
         or die("Failed to generate tests!");
+
+
 
 my $ret_code = 0;
 # Did the tool generate any tests?
@@ -284,6 +302,7 @@ if(system("find $TMP_DIR/$TOOL -name \"*.java\" | grep -q '.'") == 0) {
             or die("Cannot move test suite archive to output directory!");
 
     $LOG->log_msg("Moved test suite archive to output directory: $dir");
+    print "\nTest suite archived in $dir\n";
 } else {
     $LOG->log_msg("Test generator ($TOOL) did not generate any tests!");
     printf(STDERR "Test generator ($TOOL) did not generate any tests!\n");

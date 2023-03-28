@@ -223,7 +223,7 @@ my $dbh_out = DB::get_db_handle($TAB_COVERAGE, $OUT_DIR);
 my $sth = $dbh_out->prepare("SELECT * FROM $TAB_COVERAGE WHERE $PROJECT=? AND $TEST_SUITE=? AND $ID=? AND $TEST_ID=?")
     or die $dbh_out->errstr;
 
-# Iterate over all version ids
+print("\nIterate over all: version ids > test suites for this source\n");
 foreach my $vid (keys %{$test_suites}) {
 
     # Iterate over all test suite sources (test data generation tools)
@@ -256,7 +256,13 @@ foreach my $vid (keys %{$test_suites}) {
             # version id. Only checkout and instrument every version once --
             # reset coverage results prior to each run, though!
             #
-            _run_coverage($vid, $suite_src, $test_id, $test_dir);
+            my @Cov = (0,0);
+            @Cov  = _run_coverage($vid, $suite_src, $test_id, $test_dir);
+            print $Cov[0];
+            print("\n");
+            print $Cov[1];
+            print("\n");
+
         }
     }
 }
@@ -267,6 +273,8 @@ $LOG->close();
 # Copy log file and clean up temporary directory
 system("cat $LOG->{file_name} >> $LOG_FILE") == 0 or die "Cannot copy log file";
 system("rm -rf $TMP_DIR") unless $DEBUG;
+
+
 
 #
 # Run code coverage analysis on the program version for which the tests were created.
@@ -311,6 +319,13 @@ sub _run_coverage {
             or die "Cannot copy stack traces from failing tests";
     }
 
+    print("\nBranches covered: ", $cov_info->{'branches_covered'});
+    print(" from a total of ", $cov_info->{'branches_total'}, " branches.  --> ", $cov_info->{'branches_covered'}/$cov_info->{'branches_total'}*100,"% \n");
+    print("Lines covered: ", $cov_info->{'lines_covered'});
+    print(" from a total of ", $cov_info->{'lines_total'}, " lines.  --> ", $cov_info->{'lines_covered'}/$cov_info->{'lines_total'}*100,"% \n");
+
+
+
     # Add information about test suite to hash that holds the coverage information
     $cov_info->{$PROJECT} = $PID;
     $cov_info->{$ID} = $vid;
@@ -319,4 +334,7 @@ sub _run_coverage {
     # Insert results into database and copy log files
     Coverage::insert_row($cov_info, $OUT_DIR);
     Coverage::copy_coverage_logs($project, $vid, $suite_src, $test_id, $LOG_DIR);
+
+    return($cov_info->{'branches_covered'}/$cov_info->{'branches_total'}, $cov_info->{'lines_covered'}/$cov_info->{'lines_total'});
+
 }

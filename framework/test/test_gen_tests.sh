@@ -14,7 +14,6 @@
 # Import helper subroutines and variables, and init Defects4J
 source test.include
 init
-
 # Print usage message and exit
 usage() {
     local known_pids=$(defects4j pids)
@@ -90,43 +89,78 @@ for bid in $(echo $BUGS); do
 
     # Use the modified classes as target classes for efficiency
     target_classes="$BASE_DIR/framework/projects/$PID/modified_classes/$bid.src"
+    name="$BASE_DIR/framework/test/Experiments/data/results"
+
+    if [[ -e $name.csv || -L $name.csv ]] ; then
+        i=0
+        while [[ -e $name-$i.csv || -L $name-$i.csv ]] ; do
+            let i++
+        done
+        dest=$name-$i
+    fi
+    cp "$name".csv "$dest".csv
+    resultsData="$dest".csv
+    #echo $resultsData
+    python3 csvInit.py -f $resultsData -b $bid -p $PID
+    #"-f <path to file> -c <column name> -v <value> -r <row (criterion)> -p <project name> -b <bug name>"
+    #python3 csvInit.py -f $resultsData -c "Bug_Detection" -v 1 -r "BRANCH"
 
     # Iterate over all supported generators and generate regression tests
-    for tool in $($BASE_DIR/framework/bin/gen_tests.pl -g help | grep \- | tr -d '-'); do
+    #for tool in $($BASE_DIR/framework/bin/gen_tests.pl -g help | grep \- | tr -d '-'); do
         # Directory for generated test suites
+        tool="evosuite"
         suite_src="$tool"
+        #suite_src=$evosuite
+        #echo $suite_src
         suite_num=1
         suite_dir="$work_dir/$tool/$suite_num"
-
+	      #echo $suite_dir
         # Generate (regression) tests for the fixed version
         vid=${bid}f
 
-        # Run generator and the fix script on the generated test suite
-        if ! gen_tests.pl -g "$tool" -p $PID -v $vid -n 1 -o "$TMP_DIR" -b 30 -c "$target_classes"; then
+        rm -rf evosuite-report/statistics.csv
+	      echo ""
+
+        echo "Run evosuite test generator for $PID with a TOTAL budget of 15 secs"
+	      echo ""
+        if ! gen_tests.pl -g "$tool" -p $PID -v $vid -n 1 -o "$TMP_DIR" -b 60 -c "$target_classes" -C "METHOD"; then
             die "run $tool (regression) on $PID-$vid"
             # Skip any remaining analyses (cannot be run), even if halt-on-error is false
             continue
         fi
-        fix_test_suite.pl -p $PID -d "$suite_dir" || die "fix test suite"
 
-        # Run test suite and determine bug detection
-        test_bug_detection $PID "$suite_dir"
+        #parsing the SEARCH RESULTS
+        echo "--- START PARSING ---"
+        resultsEvo="$BASE_DIR/framework/test/evosuite-report/statistics.csv"
+        python3 CSVParser.py -f $resultsEvo -o $resultsData -c "BRANCH"
 
-        # Run test suite and determine mutation score
-        test_mutation $PID "$suite_dir"
+        echo ""
+        echo "If any tests are broken, they need to be removed until all tests PASS."
+        echo "This removal is done running them against the fully functional version of the SUT"
+        #fix_test_suite.pl -p $PID -d "$suite_dir" || die "fix test suite"
+	
+	      echo ""
+	      echo "Now its time to insert the bugs and run test suite and determine bug detection"
+        #run_bug_detection.pl -a "$resultsData" -p $PID -d "$suite_dir" -o "$name/logs"
 
-        # Run test suite and determine code coverage
-        test_coverage $PID "$suite_dir" 0
+	      #echo ""
+        #echo "After running the tests, its time to analyse them and determine mutation score"
+        #test_mutation $PID "$suite_dir"
 
+	      echo ""
+        echo "Run test suite again and determine code coverage"
+        #test_coverage $PID "$suite_dir" 0
+
+	      echo "Removing the folders created"
         rm -rf $work_dir/$tool
-    done
+    #done
 
-    vid=${bid}b
+    #vid=${bid}b
     # Run Randoop to generate error-revealing tests (other tools cannot do so)
-    gen_tests.pl -g randoop -p $PID -v $vid -n 1 -o "$TMP_DIR" -b 30 -c "$target_classes" -E
+    #gen_tests.pl -g randoop -p $PID -v $vid -n 1 -o "$TMP_DIR" -b 30 -c "$target_classes" -E
     # We expect Randoop to not crash; it may or may not create an error-revealing test for this version
-    ret=$?
-    [ $ret -eq 0 ] || [ $ret -eq 127 ] || die "run $tool (error-revealing) on $PID-$vid"
+    #ret=$?
+    #[ $ret -eq 0 ] || [ $ret -eq 127 ] || die "run $tool (error-revealing) on $PID-$vid"
 
 done
 HALT_ON_ERROR=1
