@@ -123,7 +123,7 @@ for bid in $(echo $BUGS); do
 
         echo "Run evosuite test generator for $PID with a TOTAL budget of 15 secs"
 	      echo ""
-        if ! gen_tests.pl -g "$tool" -p $PID -v $vid -n 1 -o "$TMP_DIR" -b 60 -c "$target_classes" -C "METHOD"; then
+        if ! gen_tests.pl -g "$tool" -p $PID -v $vid -n 1 -o "$TMP_DIR" -b 15 -c "$target_classes" -C "BRANCH"; then
             die "run $tool (regression) on $PID-$vid"
             # Skip any remaining analyses (cannot be run), even if halt-on-error is false
             continue

@@ -154,17 +154,21 @@ my %cmd_opts;
 getopts('g:p:v:o:n:b:c:s:t:C:O:ED', \%cmd_opts) or pod2usage(1);
 my $TOOL = $cmd_opts{g};
 my $CRITERION = $cmd_opts{C};
-my $EVO_OUTPUT = "TARGET_CLASS,BranchCoverageTimeline,BranchBitstringTimeline,PrivateMethodFitnessTimeline,criterion,Total_Branches,Covered_Branches,Total_Methods,Covered_Methods,BranchCoverageTimeline,ExceptionCoverageTimeline,MethodCoverageTimeline,CoverageBitString,CoverageTimeline";
+my $EVO_OUTPUT = "Coverage,Total_Goals,Covered_Goals,CoverageTimeline,BranchCoverage,Total_Branches,Covered_Branches,BranchCoverageBitString,BranchCoverageTimeline,BranchBitstringTimeline,PrivateMethodCoverage,PrivateMethodCoverageBitString,PrivateMethodBitstringTimeline,PrivateMethodCoverageTimeline,ExceptionCoverage,ExceptionCoverageBitString,ExceptionCoverageTimeline";
 
-if ((index($CRITERION, "PRIVATEMETHOD") != -1) or (index($CRITERION, "privatemethod") != -1) or (index($CRITERION, "PrivateMethod") != -1)) {
-$EVO_OUTPUT = $EVO_OUTPUT.",PrivateMethodCoverageBitString";
-}
-if ((index($CRITERION, "BRANCH") != -1) or (index($CRITERION, "branch") != -1) or (index($CRITERION, "Branch") != -1)) {
-$EVO_OUTPUT = $EVO_OUTPUT.",BranchCoverageBitString";
-}
-if ((index($CRITERION, "EXCEPTION") != -1) or (index($CRITERION, "exception") != -1) or (index($CRITERION, "Exception") != -1)) {
-$EVO_OUTPUT = $EVO_OUTPUT.",ExceptionCoverage";
-}
+
+
+
+
+#if ((index($CRITERION, "PRIVATEMETHOD") != -1) or (index($CRITERION, "privatemethod") != -1) or (index($CRITERION, "PrivateMethod") != -1)) {
+#$EVO_OUTPUT = $EVO_OUTPUT.",PrivateMethodCoverageBitString";
+#}
+#if ((index($CRITERION, "BRANCH") != -1) or (index($CRITERION, "branch") != -1) or (index($CRITERION, "Branch") != -1)) {
+#$EVO_OUTPUT = $EVO_OUTPUT.",BranchCoverageBitString";
+#}
+#if ((index($CRITERION, "EXCEPTION") != -1) or (index($CRITERION, "exception") != -1) or (index($CRITERION, "Exception") != -1)) {
+#$EVO_OUTPUT = $EVO_OUTPUT.",ExceptionCoverage";
+#}
 
 # Print all supported generators, regardless of the other arguments, if -g help
 # is set
