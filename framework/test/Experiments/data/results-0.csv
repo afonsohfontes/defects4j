@@ -1,6 +1,0 @@
-,Project,Bug,criterion,Bug_Detection,Coverage,Total_Goals,Covered_Goals,CoverageTimeline,BranchCoverage,Total_Branches,Covered_Branches,BranchCoverageBitString,BranchCoverageTimeline,BranchBitstringTimeline,PrivateMethodCoverage,PrivateMethodCoverageBitString,PrivateMethodBitstringTimeline,PrivateMethodCoverageTimeline,ExceptionCoverage,ExceptionCoverageBitString,ExceptionCoverageTimeline
-0,Lang,5,BRANCH,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-1,Lang,5,PRIVATEMETHOD,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-2,Lang,5,EXCEPTION,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-3,Lang,5,BRANCH:PRIVATEMETHOD,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-4,Lang,5,BRANCH:EXCEPTION,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0

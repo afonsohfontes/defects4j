@@ -68,6 +68,9 @@ The default is F</tmp>.
 =item -a
 Directory where the CSV is.
 
+=item -i
+number of classes analyzed.
+
 =item -D
 
 Debug: Enable verbose logging and do not delete the temporary check-out directory
@@ -125,7 +128,7 @@ use DB;
 # Process arguments and issue usage message if necessary.
 #
 my %cmd_opts;
-getopts('p:d:v:t:o:f:a:D', \%cmd_opts) or pod2usage(1);
+getopts('p:d:v:t:o:f:a:i:c:D', \%cmd_opts) or pod2usage(1);
 
 pod2usage(1) unless defined $cmd_opts{p} and defined $cmd_opts{d} and defined $cmd_opts{a};
 
@@ -135,7 +138,8 @@ pod2usage(1) unless defined $cmd_opts{p} and defined $cmd_opts{d} and defined $c
 my $PID = $cmd_opts{p};
 #print("\n$PID\n");
 my $resultsData = $cmd_opts{a};
-#print("\n$resultsData\n");
+my $criterion = $cmd_opts{c};
+my $i_value = $cmd_opts{i};
 my $SUITE_DIR = abs_path($cmd_opts{d});
 #print("\n$SUITE_DIR\n");
 my $VID = $cmd_opts{v} if defined $cmd_opts{v};
@@ -225,17 +229,16 @@ my $dbh_out = DB::get_db_handle($TAB_BUG_DETECTION, $OUT_DIR);
 my $sth = $dbh_out->prepare("SELECT * FROM $TAB_BUG_DETECTION WHERE $PROJECT=? AND $TEST_SUITE=? AND $ID=? AND $TEST_ID=?")
     or die $dbh_out->errstr;
 
+
 # Iterate over all version ids
 foreach my $vid (keys %{$test_suites}) {
 
     # Iterate over all test suite sources (test data generation tools)
     foreach my $suite_src (keys %{$test_suites->{$vid}}) {
         `mkdir -p $LOG_DIR/$suite_src`;
-
         #system("echo 'aaa'")==0 or die "died";
         # Iterate over all test suites for this source
         foreach my $test_id (keys %{$test_suites->{$vid}->{$suite_src}}) {
-
             my $archive = $test_suites->{$vid}->{$suite_src}->{$test_id};
             my $test_dir = "$TMP_DIR/$suite_src";
 
@@ -383,15 +386,8 @@ sub _run_tests {
 
     # Return number of failing tests on opposite version
     print "\nTotal number of failing tests: $failing_tests{$target}\n";
-    #$filePath
-    my $Bug_Detection = "Bug_Detection";
-    my $criterion = "BRANCH";
-    #system("echo -f $resultsData -c $criterion -r $Bug_Detection -v $failing_tests{$target}")==0 or die "echo falhou";
-    system("python3 csvInit.py -f $resultsData -c $criterion -r $Bug_Detection -v $failing_tests{$target}")==0 or die "bugged";
+    system("python3 CSVParser.py -o $resultsData -c $criterion -b $failing_tests{$target} -i $i_value")==0 or die "bugged";
 
-
-    #$failing_tests{$target}
-    #f $resultsData
     return $failing_tests{$target};
 }
 

@@ -1,6 +1,6 @@
 Project,Bug,criterion,Bug_Detection,Coverage,Total_Goals,Covered_Goals,CoverageTimeline,BranchCoverage,Total_Branches,Covered_Branches,BranchCoverageBitString,BranchCoverageTimeline,BranchBitstringTimeline,PrivateMethodCoverage,PrivateMethodCoverageBitString,PrivateMethodBitstringTimeline,PrivateMethodCoverageTimeline,ExceptionCoverage,ExceptionCoverageBitString,ExceptionCoverageTimeline
-0,0,BRANCH,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,PRIVATEMETHOD,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,EXCEPTION,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,BRANCH:PRIVATEMETHOD,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,BRANCH:EXCEPTION,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+no data,no data,BRANCH,0,no data,no data,no data,no data,no data,no data,no data,no data,no data,no data,no data,no data,no data,no data,no data,no data,no data
+no data,no data,PRIVATEMETHOD,0,no data,no data,no data,no data,no data,no data,no data,no data,no data,no data,no data,no data,no data,no data,no data,no data,no data
+no data,no data,EXCEPTION,0,no data,no data,no data,no data,no data,no data,no data,no data,no data,no data,no data,no data,no data,no data,no data,no data,no data
+no data,no data,BRANCH:PRIVATEMETHOD,0,no data,no data,no data,no data,no data,no data,no data,no data,no data,no data,no data,no data,no data,no data,no data,no data,no data
+no data,no data,BRANCH:EXCEPTION,0,no data,no data,no data,no data,no data,no data,no data,no data,no data,no data,no data,no data,no data,no data,no data,no data,no data

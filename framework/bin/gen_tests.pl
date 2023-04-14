@@ -154,7 +154,9 @@ my %cmd_opts;
 getopts('g:p:v:o:n:b:c:s:t:C:O:ED', \%cmd_opts) or pod2usage(1);
 my $TOOL = $cmd_opts{g};
 my $CRITERION = $cmd_opts{C};
-my $EVO_OUTPUT = "Coverage,Total_Goals,Covered_Goals,CoverageTimeline,BranchCoverage,Total_Branches,Covered_Branches,BranchCoverageBitString,BranchCoverageTimeline,BranchBitstringTimeline,PrivateMethodCoverage,PrivateMethodCoverageBitString,PrivateMethodBitstringTimeline,PrivateMethodCoverageTimeline,ExceptionCoverage,ExceptionCoverageBitString,ExceptionCoverageTimeline";
+my $EVO_OUTPUT = "Coverage,Total_Goals,Covered_Goals,BranchCoverage,Total_Branches,Covered_Branches,Total_Branches_Real,Covered_Branches_Real,Total_Branches_Instrumented,Covered_Branches_Instrumented,BranchCoverageBitString,CoverageTimeline,BranchCoverageTimeline,BranchBitstringTimeline,PrivateMethodCoverage,PrivateMethodCoverageBitString,PrivateMethodBitstringTimeline,PrivateMethodCoverageTimeline,ExceptionCoverage,ExceptionCoverageBitString,ExceptionCoverageTimeline";
+
+
 
 
 
@@ -209,15 +211,13 @@ my $SEED = $cmd_opts{s} // $TID*1000 + $BID;
 # List of target classes (list of modified classes is the default)
 my $TARGET_CLASSES = $cmd_opts{c} // "$SCRIPT_DIR/projects/$PID/modified_classes/$BID.src";
 
+
 # Generate regression tests by default
 my $MODE = (defined $cmd_opts{E}) ? "error-revealing" : "regression";
 
 # Enable debugging if flag is set
-$DEBUG = 1 if defined $cmd_opts{D};
+ #if defined $cmd_opts{D};
 
-if ($DEBUG) {
-  Utils::print_env();
-}
 
 # Temporary directory for project checkout
 my $TMP_DIR = Utils::get_tmp_dir($cmd_opts{t});
@@ -247,6 +247,7 @@ $project->checkout_vid($VID) or die "Cannot checkout!";
 $project->compile() or die "Cannot compile!";
 
 # Open temporary log file
+$DEBUG=0;
 my $LOG = Log::create_log("$TMP_DIR/$PID.$VID.$TID.log");
 $LOG->log_time("Start test generation");
 $LOG->log_msg("Mode: $MODE");
@@ -261,6 +262,10 @@ $LOG->log_msg(" -s $SEED");
 
 # Export all environment variables that are expected by the wrapper script of
 # the test generator.
+
+use POSIX;
+my $interval = floor($TIME/4 * 100);
+my $init = 0;
 $ENV{D4J_HOME}                = "$BASE_DIR";
 $ENV{D4J_FILE_TARGET_CLASSES} = "$TARGET_CLASSES";
 $ENV{D4J_DIR_WORKDIR}         = "$TMP_DIR";
@@ -274,17 +279,25 @@ $ENV{D4J_TEST_MODE}           = "$MODE";
 $ENV{D4J_DEBUG}               = "$DEBUG";
 $ENV{D4J_CRITERION}           = "$CRITERION";
 $ENV{D4J_OUTPUT_DATA}         = "$EVO_OUTPUT";
+$ENV{D4J_INTERVAL}            = "$interval";
+$ENV{D4J_BUGS}                = "$init";
 
 
 # Create temporary output directory
 Utils::exec_cmd("mkdir -p $TMP_DIR/$TOOL", "Creating temporary output directory")
         or die("Failed to create temporary output directory!");
 
+$DEBUG=1;
+$ENV{D4J_DEBUG}               = "$DEBUG";
+if ($DEBUG) {
+  #Utils::print_env();
+}
 # Invoke the test generator
 Utils::exec_cmd("$TESTGEN_BIN_DIR/$TOOL.sh", "Generating ($MODE) tests with: $TOOL")
         or die("Failed to generate tests!");
 
-
+$DEBUG=0;
+$ENV{D4J_DEBUG}               = "$DEBUG";
 
 my $ret_code = 0;
 # Did the tool generate any tests?
@@ -320,7 +333,7 @@ $LOG->close();
 system("cat $LOG->{file_name} >> $LOG_FILE");
 
 # Remove temporary directory
-system("rm -rf $TMP_DIR") unless $DEBUG;
+system("rm -rf $TMP_DIR"); #unless $DEBUG;
 
 # Signal success or failure reason
 exit($ret_code);
