@@ -154,8 +154,7 @@ my %cmd_opts;
 getopts('g:p:v:o:n:b:c:s:t:C:O:ED', \%cmd_opts) or pod2usage(1);
 my $TOOL = $cmd_opts{g};
 my $CRITERION = $cmd_opts{C};
-my $EVO_OUTPUT = "Coverage,Total_Goals,Covered_Goals,BranchCoverage,Total_Branches,Covered_Branches,Total_Branches_Real,Covered_Branches_Real,Total_Branches_Instrumented,Covered_Branches_Instrumented,BranchCoverageBitString,CoverageTimeline,BranchCoverageTimeline,BranchBitstringTimeline,PrivateMethodCoverage,PrivateMethodCoverageBitString,PrivateMethodBitstringTimeline,PrivateMethodCoverageTimeline,ExceptionCoverage,ExceptionCoverageBitString,ExceptionCoverageTimeline";
-
+my $EVO_OUTPUT = "ExecutionTimeCoverage,ExecutionTimeTimeline,BranchCoverageBitString,BranchBitstringTimeline,OnlyBranchCoverageBitString,OnlyBranchBitstringTimeline,PrivateMethodCoverageTimeline,PrivateMethodCoverageBitString,PrivateMethodBitstringTimeline,ExceptionCoverage,ExceptionCoverageBitString,ExceptionBitstringTimeline";
 
 
 
@@ -264,7 +263,18 @@ $LOG->log_msg(" -s $SEED");
 # the test generator.
 
 use POSIX;
-my $interval = floor($TIME/4 * 100);
+#my $interval = floor(($TIME/3) * 100);
+#if ($TIME>=120){
+#    $interval = floor(($TIME/6) * 100);
+#}
+#if ($TIME>=260){
+#    $interval = floor(($TIME/8) * 100);
+#}
+#if ($TIME>=540){
+#    $interval = floor(($TIME/16) * 100);
+#}
+my $interval = 1000;
+
 my $init = 0;
 $ENV{D4J_HOME}                = "$BASE_DIR";
 $ENV{D4J_FILE_TARGET_CLASSES} = "$TARGET_CLASSES";

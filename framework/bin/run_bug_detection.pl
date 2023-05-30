@@ -229,10 +229,12 @@ my $dbh_out = DB::get_db_handle($TAB_BUG_DETECTION, $OUT_DIR);
 my $sth = $dbh_out->prepare("SELECT * FROM $TAB_BUG_DETECTION WHERE $PROJECT=? AND $TEST_SUITE=? AND $ID=? AND $TEST_ID=?")
     or die $dbh_out->errstr;
 
+#printf ("STRATING.. $PID .. $vid ..\n");
 
 # Iterate over all version ids
 foreach my $vid (keys %{$test_suites}) {
 
+    printf ("STRATING.. $PID .. ..\n");
     # Iterate over all test suite sources (test data generation tools)
     foreach my $suite_src (keys %{$test_suites->{$vid}}) {
         `mkdir -p $LOG_DIR/$suite_src`;

@@ -54,12 +54,16 @@ def myfunc(argv):
         df.Project[2] = arg_p
         df.Project[3] = arg_p
         df.Project[4] = arg_p
+        df.Project[5] = arg_p
+        df.Project[6] = arg_p
     if str(arg_b)!="":
         df.Bug[0] = arg_b
         df.Bug[1] = arg_b
         df.Bug[2] = arg_b
         df.Bug[3] = arg_b
         df.Bug[4] = arg_b
+        df.Bug[5] = arg_b
+        df.Bug[6] = arg_b
 
     row = 99
     if arg_c=="BRANCH":
@@ -72,10 +76,11 @@ def myfunc(argv):
         row=3
     elif arg_c=="BRANCH:EXCEPTION":
         row=4
-    #if row>4:
-        #print("Unspecified Criterion, -r .")
-        #sys.exit(2)
-    if row<5:
+    elif arg_c=="BRANCH:EXECUTIONTIME":
+        row=5
+    elif arg_c=="EXECUTIONTIME":
+        row=6
+    if row<7:
         if arg_r=="Bug_Detection":
             df.Bug_Detection[row] = arg_value
         if arg_r=="Total_Banches":

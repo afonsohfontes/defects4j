@@ -41,7 +41,8 @@ fi
 
 # Compute the budget per target class; evenly split the time for search and assertions
 num_classes=$(cat $D4J_FILE_TARGET_CLASSES | wc -l)
-budget=$(echo "$D4J_TOTAL_BUDGET/2/$num_classes" | bc)
+budget=$(echo "$D4J_TOTAL_BUDGET" | bc)
+#budget=$(echo "$D4J_TOTAL_BUDGET/2/$num_classes" | bc)
 
 #java -cp evosuite-master-1.2.1-SNAPSHOT.jar org.evosuite.EvoSuite -generateSuite -class tutorial.Stack -projectCP target/classes -Dalgorithm=MONOTONIC_GA
 # -Doutput_variables=configuration_id,TARGET_CLASS,criterion,Total_Branches,Covered_Branches,Total_Methods,Covered_Methods,BranchCoverageTimeline,CoverageBitString,BranchCoverageBitString,ExceptionCoverageTimeline,ExceptionCoverage

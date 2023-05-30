@@ -80,20 +80,30 @@ mkdir -p $work_dir
 # Clean working directory
 rm -rf "$work_dir/*"
 
+#run_bug_detection.pl -a "$BASE_DIR/framework/test/Experiments/data/$PID/14/budget_300/trial_1/results-Class_" -p $PID -d "$BASE_DIR/framework/test/Experiments/data/$PID/14/budget_300/trial_1/generationData/BRANCH/tests" -o "$BASE_DIR/framework/test/Experiments/data/logs" -i "0" -c "BRANCH"
+#read -p "Press any key to resume ..."
+#Clusure 1, 4
 
 
+#criteria=("BRANCH:EXECUTIONTIME" "BRANCH" "BRANCH:EXCEPTION" "BRANCH:PRIVATEMETHOD" "EXCEPTION"  "PRIVATEMETHOD")
+criteria=("BRANCH" "BRANCH:EXCEPTION" "BRANCH:PRIVATEMETHOD" "BRANCH:EXECUTIONTIME")
+budgets=(10 180 300 600)
+#trials=2
+#budgets=(300)
+trials=3
 
+DIR="$BASE_DIR/framework/test/Experiments/data/$PID"
+if [ -d "$DIR" ];
+then
+  rm -rf "$DIR"_old
+  mkdir "$DIR"_old
+  mv "$DIR" "$DIR"_old
+  rm -rf "$DIR"
+  mkdir $DIR
+else
+  mkdir $DIR
+fi
 
-
-
- #I suggest Closure 1, 4 and Math 14, 33 as a starting point, with:
- #Fitness functions configurations: private method, branch coverage, exception coverage, branch + private method, branch + exception coverage
- #Search budgets: 60 seconds and 300 seconds
-
-
-criteria=("BRANCH:EXCEPTION" "PRIVATEMETHOD" "BRANCH" "EXCEPTION" "BRANCH:PRIVATEMETHOD")
-budgets=(60 300)
-trials=2
 for (( trial=1; trial<=$trials; trial++ )) do
   for budget in ${budgets[@]}; do
     for bid in $(echo $BUGS); do
@@ -107,19 +117,64 @@ for (( trial=1; trial<=$trials; trial++ )) do
         target_classes="$BASE_DIR/framework/projects/$PID/modified_classes/$bid.src"
 
         name="$BASE_DIR/framework/test/Experiments/data/"
-        rm -rf "$name$PID-bug_$bid-budget_$budget-trial_$trial"
-        mkdir $name$PID-bug_$bid-budget_$budget-trial_$trial
-        mkdir $name$PID-bug_$bid-budget_$budget-trial_$trial/images
-        mkdir $name$PID-bug_$bid-budget_$budget-trial_$trial/summaries
+        #rm -rf "$name$PID-bug_$bid-budget_$budget-trial_$trial"
+
+
+        DIR=$name/$PID/$bid/
+        if [ -d "$DIR" ];
+        then
+          echo ""
+        else
+        	mkdir $DIR
+        fi
+        DIR=$name/$PID/$bid/budget_$budget
+        if [ -d "$DIR" ];
+        then
+          echo ""
+        else
+        	mkdir $DIR
+        fi
+
+        DIR=$name/$PID/$bid/budget_$budget/trial_$trial/
+        if [ -d "$DIR" ];
+        then
+          echo ""
+        else
+        	mkdir $DIR
+        	mkdir $DIR/images
+        	mkdir $DIR/images/branch
+        	mkdir $DIR/summaries
+        	mkdir $DIR/generationData
+        	mkdir $DIR/generationData/BRANCH
+        	mkdir $DIR/generationData/BRANCH_EXCEPTION
+        	mkdir $DIR/generationData/BRANCH_EXECUTIONTIME
+        	mkdir $DIR/generationData/BRANCH_PRIVATEMETHOD
+        	mkdir $DIR/generationData/EXCEPTION
+        	mkdir $DIR/generationData/PRIVATEMETHOD
+        	mkdir $DIR/generationData/EXECUTIONTIME
+        	mkdir $DIR/generationData/BRANCH/tests
+        	mkdir $DIR/generationData/BRANCH_EXCEPTION/tests
+        	mkdir $DIR/generationData/EXECUTIONTIME/tests
+        	mkdir $DIR/generationData/BRANCH_PRIVATEMETHOD/tests
+        	mkdir $DIR/generationData/EXCEPTION/tests
+        	mkdir $DIR/generationData/PRIVATEMETHOD/tests
+        	mkdir $DIR/generationData/EXECUTIONTIME/tests
+        fi
+
+        #mkdir $name$PID-bug_$bid-budget_$budget-trial_$trial
+        #mkdir $name$PID-bug_$bid-budget_$budget-trial_$trial/images
+        #mkdir $name$PID-bug_$bid-budget_$budget-trial_$trial/summaries
+
+
         i=0
         for class in $(cat $target_classes); do
-          dest=$name$PID-bug_$bid-budget_$budget-trial_$trial/results-Class_$i
+          dest=$name$PID/$bid/budget_$budget/trial_$trial/results-Class_$i
           i=$(($i+1))
           cp "$name"results.csv "$dest".csv
           resultsData="$dest".csv
           python3 csvInit.py -f $resultsData -b $bid -p $PID
         done
-        abstractPath="$BASE_DIR/framework/test/Experiments/data/$PID-bug_$bid-budget_$budget-trial_$trial/results-Class_"
+        abstractPath="$BASE_DIR/framework/test/Experiments/data/$PID/$bid/budget_$budget/trial_$trial/results-Class_"
         #"-f <path to file> -c <column name> -v <value> -r <row (criterion)> -p <project name> -b <bug name>"
         #python3 csvInit.py -f $resultsData -c "Bug_Detection" -v 1 -r "BRANCH"
 
@@ -131,25 +186,26 @@ for (( trial=1; trial<=$trials; trial++ )) do
             #suite_src=$evosuite
             #echo $suite_src
             suite_num=1
-            suite_dir="$work_dir/$tool/$suite_num"
+            #suite_dir="$work_dir/$tool/$suite_num"
             #echo $suite_dir
             # Generate (regression) tests for the fixed version
             vid=${bid}f
             for criterion in ${criteria[@]}; do
-              rm -rf evosuite-report/statistics.csv
               echo ""
-
-              echo "Run evosuite test generator for $PID with a TOTAL budget of $budget secs"
+              echo "------ Run evosuite test generator for $PID-$vid with a TOTAL budget of $budget secs - trial $trial of $trials - using $criterion -------"
               echo ""
-              if ! gen_tests.pl -g "$tool" -p $PID -v $vid -n 1 -o "$TMP_DIR" -b $budget -c "$target_classes" -C "$criterion"; then
+              testsD="$BASE_DIR/framework/test/Experiments/data/$PID/$bid/budget_$budget/trial_$trial/generationData/${criterion/:/_}/tests/suite_num"
+              OUTd="$BASE_DIR/framework/test/Experiments/data/$PID/$bid/budget_$budget/trial_$trial/generationData/${criterion/:/_}"
+              suite_dir=$testsD
+              if ! gen_tests.pl -g "$tool" -p "$PID" -v "$vid" -n 1 -o "$testsD" -b "$budget" -c "$target_classes" -C "$criterion" 2>&1 | tee -a "$OUTd/1-EvoTranscription.log"; then
                   die "run $tool (regression) on $PID-$vid"
                   # Skip any remaining analyses (cannot be run), even if halt-on-error is false
                   continue
               fi
-              #parsing the SEARCH RESULTS
+              mv evosuite-report/statistics.csv "$OUTd"
               echo "--- PARSING RESULTS ---"
-              resultsEvo="$BASE_DIR/framework/test/evosuite-report/statistics.csv"
-              python3 CSVParser.py -f "$resultsEvo" -o "$abstractPath" -c "$criterion" -i "$i"
+              resultsEvo="$OUTd/statistics.csv"
+              python3 CSVParser.py -f "$resultsEvo" -o "$abstractPath" -c "$criterion" -i "$i" 2>&1 | tee -a "$OUTd/2-ParserTranscription.log"
 
               echo ""
               echo "If any tests are broken, they need to be removed until all tests PASS."
