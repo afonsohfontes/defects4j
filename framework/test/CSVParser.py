@@ -232,8 +232,6 @@ def myfunc(argv):
 
             str1 = arg_o
             str2 = "{}.csv".format(class_i)
-            print(str1)
-            print(str2)
             df2 = pd.read_csv(str1 + str2)
             row = 99
             if arg_c=="BRANCH":
@@ -461,7 +459,6 @@ def myfunc(argv):
                 d.append([])
                 z.append([])
                 x.append(len(x))
-                #print(BranchCoverageBitString)
 
                 for j in range(0, len(str(BranchCoverageBitString))):
                     try:

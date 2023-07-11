@@ -86,11 +86,11 @@ rm -rf "$work_dir/*"
 
 
 #criteria=("BRANCH:EXECUTIONTIME" "BRANCH" "BRANCH:EXCEPTION" "BRANCH:PRIVATEMETHOD" "EXCEPTION"  "PRIVATEMETHOD")
-criteria=("BRANCH" "BRANCH:EXCEPTION" "BRANCH:PRIVATEMETHOD" "BRANCH:EXECUTIONTIME")
-budgets=(10 180 300 600)
-#trials=2
-#budgets=(300)
+criteria=("BRANCH" "BRANCH:EXCEPTION" "BRANCH:PRIVATEMETHOD" "BRANCH:EXECUTIONTIME" "BRANCH:EXECUTIONTIME")
+budgets=(300)
+# 180 300 600)
 trials=3
+maxTrials=2
 
 DIR="$BASE_DIR/framework/test/Experiments/data/$PID"
 if [ -d "$DIR" ];
@@ -182,34 +182,37 @@ for (( trial=1; trial<=$trials; trial++ )) do
         #for tool in $($BASE_DIR/framework/bin/gen_tests.pl -g help | grep \- | tr -d '-'); do
             # Directory for generated test suites
             tool="evosuite"
-            suite_src="$tool"
-            #suite_src=$evosuite
-            #echo $suite_src
-            suite_num=1
-            #suite_dir="$work_dir/$tool/$suite_num"
-            #echo $suite_dir
-            # Generate (regression) tests for the fixed version
             vid=${bid}f
             for criterion in ${criteria[@]}; do
               echo ""
               echo "------ Run evosuite test generator for $PID-$vid with a TOTAL budget of $budget secs - trial $trial of $trials - using $criterion -------"
               echo ""
-              testsD="$BASE_DIR/framework/test/Experiments/data/$PID/$bid/budget_$budget/trial_$trial/generationData/${criterion/:/_}/tests/suite_num"
-              OUTd="$BASE_DIR/framework/test/Experiments/data/$PID/$bid/budget_$budget/trial_$trial/generationData/${criterion/:/_}"
-              suite_dir=$testsD
-              if ! gen_tests.pl -g "$tool" -p "$PID" -v "$vid" -n 1 -o "$testsD" -b "$budget" -c "$target_classes" -C "$criterion" 2>&1 | tee -a "$OUTd/1-EvoTranscription.log"; then
-                  die "run $tool (regression) on $PID-$vid"
-                  # Skip any remaining analyses (cannot be run), even if halt-on-error is false
-                  continue
-              fi
-              mv evosuite-report/statistics.csv "$OUTd"
+              testsD="$BASE_DIR/framework/test/Experiments/data/$PID/$bid/budget_$budget/trial_$trial/generationData/${criterion/:/_}/"
+              OUTd="$BASE_DIR/framework/test/Experiments/data/$PID/$bid/budget_$budget/trial_$trial/generationData/${criterion/:/_}/$PID/evosuite/1/"
+              suite_dir=$OUTd
+              gen_tests.pl -g "$tool" -p "$PID" -v "$vid" -n 1 -o "$testsD" -b "$budget" -c "$target_classes" -C "$criterion" 2>&1 | tee -a "$testsD/1-EvoTranscription.log"
+
+              mv evosuite-report/statistics.csv "$testsD"
               echo "--- PARSING RESULTS ---"
-              resultsEvo="$OUTd/statistics.csv"
-              python3 CSVParser.py -f "$resultsEvo" -o "$abstractPath" -c "$criterion" -i "$i" 2>&1 | tee -a "$OUTd/2-ParserTranscription.log"
+              resultsEvo="$testsD/statistics.csv"
+              python3 CSVParser.py -f "$resultsEvo" -o "$abstractPath" -c "$criterion" -i "$i" 2>&1 | tee -a "$testsD/2-ParserTranscription.log"
+              if [ $? -eq 0 ]; then
+                  echo "Generation succeeded"
+              else
+                  echo "Generation failed.. trying again."
+                  rm -rf $OUTd
+                  gen_tests.pl -g "$tool" -p "$PID" -v "$vid" -n 1 -o "$testsD" -b "$budget" -c "$target_classes" -C "$criterion" 2>&1 | tee -a "$testsD/1-EvoTranscription_ERROR.log"
+                  rm -rf $testsD/statistics.csv
+                  mv evosuite-report/statistics.csv "$testsD"
+                  echo "--- PARSING RESULTS ---"
+                  resultsEvo="$testsD/statistics.csv"
+                  python3 CSVParser.py -f "$resultsEvo" -o "$abstractPath" -c "$criterion" -i "$i" 2>&1 | tee -a "$testsD/2-ParserTranscription_ERROR.log"
+              fi
 
               echo ""
               echo "If any tests are broken, they need to be removed until all tests PASS."
               echo "This removal is done running them against the fully functional version of the SUT"
+              # "/home/afonso/IdeaProjects/defects4j/framework/test/Experiments/data/Math/14/budget_180/trial_1/generationData/BRANCH/tests/suite_num
               fix_test_suite.pl -p $PID -d "$suite_dir" || die "fix test suite"
 
               echo ""

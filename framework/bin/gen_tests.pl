@@ -202,8 +202,6 @@ $TID =~ /^\d+$/ or die "Wrong test_id format (\\d+): $TID!";
 my $TIME = $cmd_opts{b};
 $TIME =~ /^\d+$/ or die "Wrong budget format (\\d+): $TIME!";
 
-my $OUT_DIR = $cmd_opts{o};
-
 # Set or compute the random seed
 my $SEED = $cmd_opts{s} // $TID*1000 + $BID;
 
@@ -218,6 +216,7 @@ my $MODE = (defined $cmd_opts{E}) ? "error-revealing" : "regression";
  #if defined $cmd_opts{D};
 
 
+my $OUT_DIR = $cmd_opts{o};
 # Temporary directory for project checkout
 my $TMP_DIR = Utils::get_tmp_dir($cmd_opts{t});
 system("mkdir -p $TMP_DIR");
