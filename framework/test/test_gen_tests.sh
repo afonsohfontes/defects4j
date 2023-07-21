@@ -173,7 +173,7 @@ for (( trial=1; trial<=$trials; trial++ )) do
           i=$(($i+1))
           cp "$name"results.csv "$dest".csv
           resultsData="$dest".csv
-          sudo python3 csvInit.py -f $resultsData -b $bid -p $PID
+          python3 csvInit.py -f $resultsData -b $bid -p $PID
         done
         abstractPath="$BASE_DIR/framework/test/Experiments/data/$PID/$bid/budget_$budget/trial_$trial/results-Class_"
         #"-f <path to file> -c <column name> -v <value> -r <row (criterion)> -p <project name> -b <bug name>"
@@ -191,12 +191,12 @@ for (( trial=1; trial<=$trials; trial++ )) do
               testsD="$BASE_DIR/framework/test/Experiments/data/$PID/$bid/budget_$budget/trial_$trial/generationData/${criterion/:/_}/"
               OUTd="$BASE_DIR/framework/test/Experiments/data/$PID/$bid/budget_$budget/trial_$trial/generationData/${criterion/:/_}/$PID/evosuite/1/"
               suite_dir=$OUTd
-              sudo gen_tests.pl -g "$tool" -p "$PID" -v "$vid" -n 1 -o "$testsD" -b "$budget" -c "$target_classes" -C "$criterion" 2>&1 | tee -a "$testsD/1-EvoTranscription.log"
+              gen_tests.pl -g "$tool" -p "$PID" -v "$vid" -n 1 -o "$testsD" -b "$budget" -c "$target_classes" -C "$criterion" 2>&1 | tee -a "$testsD/1-EvoTranscription.log"
 
               mv evosuite-report/statistics.csv "$testsD"
               #echo "--- PARSING RESULTS ---"
               #resultsEvo="$testsD/statistics.csv"
-              #sudo python3 CSVParser.py -f "$resultsEvo" -o "$abstractPath" -c "$criterion" -i "$i" 2>&1 | tee -a "$testsD/2-ParserTranscription.log"
+              #python3 CSVParser.py -f "$resultsEvo" -o "$abstractPath" -c "$criterion" -i "$i" 2>&1 | tee -a "$testsD/2-ParserTranscription.log"
               #if [ $? -eq 0 ]; then
               #    echo "Generation succeeded"
               #else
