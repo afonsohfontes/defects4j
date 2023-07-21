@@ -196,7 +196,7 @@ for (( trial=1; trial<=$trials; trial++ )) do
               mv evosuite-report/statistics.csv "$testsD"
               #echo "--- PARSING RESULTS ---"
               #resultsEvo="$testsD/statistics.csv"
-              sudo python3 CSVParser.py -f "$resultsEvo" -o "$abstractPath" -c "$criterion" -i "$i" 2>&1 | tee -a "$testsD/2-ParserTranscription.log"
+              #sudo python3 CSVParser.py -f "$resultsEvo" -o "$abstractPath" -c "$criterion" -i "$i" 2>&1 | tee -a "$testsD/2-ParserTranscription.log"
               #if [ $? -eq 0 ]; then
               #    echo "Generation succeeded"
               #else
