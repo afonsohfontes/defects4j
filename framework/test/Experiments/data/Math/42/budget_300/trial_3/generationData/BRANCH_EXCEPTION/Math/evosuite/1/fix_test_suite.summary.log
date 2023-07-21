@@ -1,9 +1,0 @@
-######  Start fixing tests  /home/ubuntu/afonso/defects4j/framework/util/fix_test_suite.pl: 2023-07-18 12:47:49  ######
-- Found 1 test archive(s)
- - Removing uncompilable test method(s): Math-42f-evosuite.1.tar.bz2
-  - Removing 1 uncompilable test method(s):
---- org.apache.commons.math.optimization.linear.SimplexTableau_ESTest::test28
-Number of uncompilable test classes: 0
-Number of uncompilable tests: 1 (see /home/ubuntu/afonso/defects4j/framework/test/Experiments/data/Math/42/budget_300/trial_3/generationData/BRANCH_EXCEPTION/Math/evosuite/1/fix_test_suite.compile.log file for more information)
-Number of failing tests: 0
-######  End fixing tests  /home/ubuntu/afonso/defects4j/framework/util/fix_test_suite.pl: 2023-07-18 12:48:16  ######
