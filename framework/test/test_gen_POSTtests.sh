@@ -94,16 +94,17 @@ trials=10
 maxTrials=1
 
 DIR="$BASE_DIR/framework/test/Experiments/data/$PID"
-if [ -d "$DIR" ];
-then
+
+#if [ -d "$DIR" ];
+#then
   #rm -rf "$DIR"_old
   #mkdir "$DIR"_old
   #mv "$DIR" "$DIR"_old
   #rm -rf "$DIR"
   #mkdir $DIR
-else
+#else
   #mkdir $DIR
-fi
+#fi
 
 for (( trial=1; trial<=$trials; trial++ )) do
   for budget in ${budgets[@]}; do
@@ -122,25 +123,25 @@ for (( trial=1; trial<=$trials; trial++ )) do
 
 
         DIR=$name/$PID/$bid/
-        if [ -d "$DIR" ];
-        then
-          echo ""
-        else
+        #if [ -d "$DIR" ];
+        #then
+        #  echo ""
+        #else
         	#mkdir $DIR
-        fi
+        #fi
         DIR=$name/$PID/$bid/budget_$budget
-        if [ -d "$DIR" ];
-        then
-          echo ""
-        else
+        #if [ -d "$DIR" ];
+        #then
+        #  echo ""
+        #else
         	#mkdir $DIR
-        fi
+        #fi
 
         DIR=$name/$PID/$bid/budget_$budget/trial_$trial/
-        if [ -d "$DIR" ];
-        then
-          echo ""
-        else
+        #if [ -d "$DIR" ];
+        #then
+        #  echo ""
+        #else
         	#mkdir $DIR
         	#mkdir $DIR/images
         	#mkdir $DIR/images/branch
@@ -160,7 +161,7 @@ for (( trial=1; trial<=$trials; trial++ )) do
         	#mkdir $DIR/generationData/EXCEPTION/tests
         	#mkdir $DIR/generationData/PRIVATEMETHOD/tests
         	#mkdir $DIR/generationData/EXECUTIONTIME/tests
-        fi
+        #fi
 
         ##mkdir $name$PID-bug_$bid-budget_$budget-trial_$trial
         ##mkdir $name$PID-bug_$bid-budget_$budget-trial_$trial/images
