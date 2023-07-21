@@ -173,7 +173,7 @@ for (( trial=1; trial<=$trials; trial++ )) do
           i=$(($i+1))
           cp "$name"results.csv "$dest".csv
           resultsData="$dest".csv
-          python3 csvInit.py -f $resultsData -b $bid -p $PID
+          sudo python3 csvInit.py -f $resultsData -b $bid -p $PID
         done
         abstractPath="$BASE_DIR/framework/test/Experiments/data/$PID/$bid/budget_$budget/trial_$trial/results-Class_"
         #"-f <path to file> -c <column name> -v <value> -r <row (criterion)> -p <project name> -b <bug name>"
