@@ -106,7 +106,7 @@ else
 fi
 
 for (( trial=1; trial<=$trials; trial++ )) do
-  for budget in $"{budgets[@]}"; do
+  for budget in ${budgets[@]}; do
     for bid in $(echo $BUGS); do
         # Skip all bug ids that do not exist in the active-bugs csv
         if ! grep -q "^$bid," "$BASE_DIR/framework/projects/$PID/$BUGS_CSV_ACTIVE"; then
@@ -184,7 +184,7 @@ for (( trial=1; trial<=$trials; trial++ )) do
             # Directory for generated test suites
             tool="evosuite"
             vid=${bid}f
-            for criterion in $"{criteria[@]}"; do
+            for criterion in ${criteria[@]}; do
               echo ""
               echo "------ Run evosuite test generator for $PID-$vid with a TOTAL budget of $budget secs - trial $trial of $trials - using $criterion -------"
               echo ""
