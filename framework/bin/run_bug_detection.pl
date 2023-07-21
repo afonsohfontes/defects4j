@@ -388,7 +388,7 @@ sub _run_tests {
 
     # Return number of failing tests on opposite version
     print "\nTotal number of failing tests: $failing_tests{$target}\n";
-    system("python3 CSVParser.py -o $resultsData -c $criterion -b $failing_tests{$target} -i $i_value")==0 or die "bugged";
+    system("sudo python3 CSVParser.py -o $resultsData -c $criterion -b $failing_tests{$target} -i $i_value")==0 or die "bugged";
 
     return $failing_tests{$target};
 }

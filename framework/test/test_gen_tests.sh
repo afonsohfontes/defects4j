@@ -16,7 +16,8 @@ source test.include
 init
 # Print usage message and exit
 usage() {
-    local known_pids=$(defects4j pids)
+    local known_pids=0
+    known_pids=$(defects4j pids)
     echo "usage: $0 -p <project id> [-b <bug id> ... | -b <bug id range> ... ]"
     echo "Project ids:"
     for pid in $known_pids; do
@@ -86,11 +87,11 @@ rm -rf "$work_dir/*"
 
 
 #criteria=("BRANCH:EXECUTIONTIME" "BRANCH" "BRANCH:EXCEPTION" "BRANCH:PRIVATEMETHOD" "EXCEPTION"  "PRIVATEMETHOD")
-criteria=("BRANCH" "BRANCH:EXCEPTION" "BRANCH:PRIVATEMETHOD" "BRANCH:EXECUTIONTIME" "BRANCH:EXECUTIONTIME")
-budgets=(300)
+criteria=("BRANCH" "BRANCH:EXCEPTION" "BRANCH:PRIVATEMETHOD" "BRANCH:EXECUTIONTIME") # "BRANCH:EXECUTIONTIME")
+budgets=(15 180 300)
 # 180 300 600)
-trials=3
-maxTrials=2
+trials=10
+maxTrials=1
 
 DIR="$BASE_DIR/framework/test/Experiments/data/$PID"
 if [ -d "$DIR" ];
@@ -105,7 +106,7 @@ else
 fi
 
 for (( trial=1; trial<=$trials; trial++ )) do
-  for budget in ${budgets[@]}; do
+  for budget in $"{budgets[@]}"; do
     for bid in $(echo $BUGS); do
         # Skip all bug ids that do not exist in the active-bugs csv
         if ! grep -q "^$bid," "$BASE_DIR/framework/projects/$PID/$BUGS_CSV_ACTIVE"; then
@@ -183,31 +184,31 @@ for (( trial=1; trial<=$trials; trial++ )) do
             # Directory for generated test suites
             tool="evosuite"
             vid=${bid}f
-            for criterion in ${criteria[@]}; do
+            for criterion in $"{criteria[@]}"; do
               echo ""
               echo "------ Run evosuite test generator for $PID-$vid with a TOTAL budget of $budget secs - trial $trial of $trials - using $criterion -------"
               echo ""
               testsD="$BASE_DIR/framework/test/Experiments/data/$PID/$bid/budget_$budget/trial_$trial/generationData/${criterion/:/_}/"
               OUTd="$BASE_DIR/framework/test/Experiments/data/$PID/$bid/budget_$budget/trial_$trial/generationData/${criterion/:/_}/$PID/evosuite/1/"
               suite_dir=$OUTd
-              gen_tests.pl -g "$tool" -p "$PID" -v "$vid" -n 1 -o "$testsD" -b "$budget" -c "$target_classes" -C "$criterion" 2>&1 | tee -a "$testsD/1-EvoTranscription.log"
+              sudo gen_tests.pl -g "$tool" -p "$PID" -v "$vid" -n 1 -o "$testsD" -b "$budget" -c "$target_classes" -C "$criterion" 2>&1 | tee -a "$testsD/1-EvoTranscription.log"
 
               mv evosuite-report/statistics.csv "$testsD"
-              echo "--- PARSING RESULTS ---"
-              resultsEvo="$testsD/statistics.csv"
-              python3 CSVParser.py -f "$resultsEvo" -o "$abstractPath" -c "$criterion" -i "$i" 2>&1 | tee -a "$testsD/2-ParserTranscription.log"
-              if [ $? -eq 0 ]; then
-                  echo "Generation succeeded"
-              else
-                  echo "Generation failed.. trying again."
-                  rm -rf $OUTd
-                  gen_tests.pl -g "$tool" -p "$PID" -v "$vid" -n 1 -o "$testsD" -b "$budget" -c "$target_classes" -C "$criterion" 2>&1 | tee -a "$testsD/1-EvoTranscription_ERROR.log"
-                  rm -rf $testsD/statistics.csv
-                  mv evosuite-report/statistics.csv "$testsD"
-                  echo "--- PARSING RESULTS ---"
-                  resultsEvo="$testsD/statistics.csv"
-                  python3 CSVParser.py -f "$resultsEvo" -o "$abstractPath" -c "$criterion" -i "$i" 2>&1 | tee -a "$testsD/2-ParserTranscription_ERROR.log"
-              fi
+              #echo "--- PARSING RESULTS ---"
+              #resultsEvo="$testsD/statistics.csv"
+              sudo python3 CSVParser.py -f "$resultsEvo" -o "$abstractPath" -c "$criterion" -i "$i" 2>&1 | tee -a "$testsD/2-ParserTranscription.log"
+              #if [ $? -eq 0 ]; then
+              #    echo "Generation succeeded"
+              #else
+              #    echo "Generation failed.. trying again."
+              #    rm -rf $OUTd
+              #    gen_tests.pl -g "$tool" -p "$PID" -v "$vid" -n 1 -o "$testsD" -b "$budget" -c "$target_classes" -C "$criterion" 2>&1 | tee -a "$testsD/1-EvoTranscription_ERROR.log"
+              #    rm -rf $testsD/statistics.csv
+              #    mv evosuite-report/statistics.csv "$testsD"
+              #    echo "--- PARSING RESULTS ---"
+              #    resultsEvo="$testsD/statistics.csv"
+              #    python3 CSVParser.py -f "$resultsEvo" -o "$abstractPath" -c "$criterion" -i "$i" 2>&1 | tee -a "$testsD/2-ParserTranscription_ERROR.log"
+              #fi
 
               echo ""
               echo "If any tests are broken, they need to be removed until all tests PASS."
@@ -226,7 +227,7 @@ for (( trial=1; trial<=$trials; trial++ )) do
               #test_mutation $PID "$suite_dir"
 
               #echo ""
-             # echo "Run test suite again and determine code coverage"
+              #echo "Run test suite again and determine code coverage"
               #test_coverage $PID "$suite_dir" 0
 
               #echo "Removing the folders created"
