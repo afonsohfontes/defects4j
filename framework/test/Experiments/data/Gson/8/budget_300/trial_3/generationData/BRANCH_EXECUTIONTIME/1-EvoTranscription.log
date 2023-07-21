@@ -1,0 +1,144 @@
+Checking out 0f66f4fa to /tmp/gen_tests.pl_5403_1689734248................. OK
+Init local repository...................................................... OK
+Tag post-fix revision...................................................... OK
+Copy generated Ant build file.............................................. OK
+Run post-checkout hook..................................................... OK
+Excluding broken/flaky tests............................................... OK
+Initialize fixed program version........................................... OK
+Apply patch................................................................ OK
+Initialize buggy program version........................................... OK
+Diff 0f66f4fa:6f6af805..................................................... OK
+Apply patch................................................................ OK
+Tag pre-fix revision....................................................... OK
+Check out program version: Gson-8f......................................... OK
+Running ant (compile)...................................................... OK
+Creating temporary output directory........................................ OK
+Generating (regression) tests with: evosuite............................... OK
+Executed command: /home/ubuntu/afonso/defects4j/framework/lib/test_generation/bin/evosuite.sh
+
+Executing command:
+java -cp /home/ubuntu/afonso/defects4j/framework/lib/test_generation/generation/evosuite-master-1.2.1-SNAPSHOT.jar org.evosuite.EvoSuite     -generateSuite     -class com.google.gson.internal.UnsafeAllocator     -projectCP /tmp/gen_tests.pl_5403_1689734248/target/classes     -seed 1008     -Dsearch_budget=300     -Dassertion_timeout=300     -Dtest_dir=/tmp/gen_tests.pl_5403_1689734248/evosuite     -Dalgorithm=MONOTONIC_GA     -criterion=BRANCH:EXECUTIONTIME     -Doutput_variables=ExecutionTimeCoverage,ExecutionTimeTimeline,BranchCoverageBitString,BranchBitstringTimeline,OnlyBranchCoverageBitString,OnlyBranchBitstringTimeline,PrivateMethodCoverageTimeline,PrivateMethodCoverageBitString,PrivateMethodBitstringTimeline,ExceptionCoverage,ExceptionCoverageBitString,ExceptionBitstringTimeline     -Dtimeline_interval=1000      -Dstopping_condition=MaxTime -Dshow_progress=false -Djunit_check=false -Dfilter_assertions=false -Dtest_comments=false -mem 4000 
+* EvoSuite 1.2.1-SNAPSHOT
+* Going to generate test cases for class: com.google.gson.internal.UnsafeAllocator
+* Starting Client-0
+* Connecting to master process on port 2396
+* Analyzing classpath: 
+  - /tmp/gen_tests.pl_5403_1689734248/target/classes
+* Finished analyzing classpath
+* Generating tests for class com.google.gson.internal.UnsafeAllocator
+* Test criteria:
+  - Branch Coverage
+  - Execution Time Coverage
+* Setting up search algorithm for whole suite generation
+* Total number of test goals: 
+  - Branch 14
+  - ExecutionTimeFactory 0
+* Using seed 1008
+* Starting evolution
+* Search finished after 305s and 58 generations, 39448 statements, best individual has fitness: 6.5
+* Minimizing test suite
+* Going to analyze the coverage criteria
+* Coverage analysis for criterion BRANCH
+* Coverage of criterion BRANCH: 50%
+* Total number of goals: 14
+* Number of covered goals: 7
+* Coverage analysis for criterion EXECUTIONTIME
+* Coverage of criterion EXCEPTION: 100%
+* Total number of goals: 1
+* Number of covered goals: 1
+* Coverage of criterion PRIVATEMETHOD: 0%
+* Total number of goals: 2
+* Number of covered goals: 0
+* Coverage of criterion ONLYBRANCH: 75%
+* Total number of goals: 4
+* Number of covered goals: 3
+* Generated 2 tests with total length 6
+* Resulting test suite's coverage: 25% (average coverage for all fitness functions)
+* Generating assertions
+* Resulting test suite's mutation score: 21%
+* Permissions denied during test execution: 
+  - java.lang.RuntimePermission: 
+         writeFileDescriptor: 2
+* Writing tests to file
+* Writing JUnit test case 'UnsafeAllocator_ESTest' to /tmp/gen_tests.pl_5403_1689734248/evosuite
+* Done!
+
+* Computation finished
+OK
+Creating test suite archive................................................ OK
+Creating output directory.................................................. OK
+Moving test suite archive to /home/ubuntu/afonso/defects4j/framework/test/E OK
+
+Test suite archived in /home/ubuntu/afonso/defects4j/framework/test/Experiments/data/Gson/8/budget_300/trial_3/generationData/BRANCH_EXECUTIONTIME//Gson/evosuite/1
+Checking out 0f66f4fa to /tmp/gen_tests.pl_6342_1689734616................. OK
+Init local repository...................................................... OK
+Tag post-fix revision...................................................... OK
+Copy generated Ant build file.............................................. OK
+Run post-checkout hook..................................................... OK
+Excluding broken/flaky tests............................................... OK
+Initialize fixed program version........................................... OK
+Apply patch................................................................ OK
+Initialize buggy program version........................................... OK
+Diff 0f66f4fa:6f6af805..................................................... OK
+Apply patch................................................................ OK
+Tag pre-fix revision....................................................... OK
+Check out program version: Gson-8f......................................... OK
+Running ant (compile)...................................................... OK
+Creating temporary output directory........................................ OK
+Generating (regression) tests with: evosuite............................... OK
+Executed command: /home/ubuntu/afonso/defects4j/framework/lib/test_generation/bin/evosuite.sh
+
+Executing command:
+java -cp /home/ubuntu/afonso/defects4j/framework/lib/test_generation/generation/evosuite-master-1.2.1-SNAPSHOT.jar org.evosuite.EvoSuite     -generateSuite     -class com.google.gson.internal.UnsafeAllocator     -projectCP /tmp/gen_tests.pl_6342_1689734616/target/classes     -seed 1008     -Dsearch_budget=300     -Dassertion_timeout=300     -Dtest_dir=/tmp/gen_tests.pl_6342_1689734616/evosuite     -Dalgorithm=MONOTONIC_GA     -criterion=BRANCH:EXECUTIONTIME     -Doutput_variables=ExecutionTimeCoverage,ExecutionTimeTimeline,BranchCoverageBitString,BranchBitstringTimeline,OnlyBranchCoverageBitString,OnlyBranchBitstringTimeline,PrivateMethodCoverageTimeline,PrivateMethodCoverageBitString,PrivateMethodBitstringTimeline,ExceptionCoverage,ExceptionCoverageBitString,ExceptionBitstringTimeline     -Dtimeline_interval=1000      -Dstopping_condition=MaxTime -Dshow_progress=false -Djunit_check=false -Dfilter_assertions=false -Dtest_comments=false -mem 4000 
+* EvoSuite 1.2.1-SNAPSHOT
+* Going to generate test cases for class: com.google.gson.internal.UnsafeAllocator
+* Starting Client-0
+* Connecting to master process on port 2396
+* Analyzing classpath: 
+  - /tmp/gen_tests.pl_6342_1689734616/target/classes
+* Finished analyzing classpath
+* Generating tests for class com.google.gson.internal.UnsafeAllocator
+* Test criteria:
+  - Branch Coverage
+  - Execution Time Coverage
+* Setting up search algorithm for whole suite generation
+* Total number of test goals: 
+  - Branch 14
+  - ExecutionTimeFactory 0
+* Using seed 1008
+* Starting evolution
+* Search finished after 305s and 56 generations, 43266 statements, best individual has fitness: 6.5
+* Minimizing test suite
+* Going to analyze the coverage criteria
+* Coverage analysis for criterion BRANCH
+* Coverage of criterion BRANCH: 50%
+* Total number of goals: 14
+* Number of covered goals: 7
+* Coverage analysis for criterion EXECUTIONTIME
+* Coverage of criterion EXCEPTION: 100%
+* Total number of goals: 1
+* Number of covered goals: 1
+* Coverage of criterion PRIVATEMETHOD: 0%
+* Total number of goals: 2
+* Number of covered goals: 0
+* Coverage of criterion ONLYBRANCH: 75%
+* Total number of goals: 4
+* Number of covered goals: 3
+* Generated 2 tests with total length 6
+* Resulting test suite's coverage: 25% (average coverage for all fitness functions)
+* Generating assertions
+* Resulting test suite's mutation score: 21%
+* Permissions denied during test execution: 
+  - java.lang.RuntimePermission: 
+         writeFileDescriptor: 1
+* Writing tests to file
+* Writing JUnit test case 'UnsafeAllocator_ESTest' to /tmp/gen_tests.pl_6342_1689734616/evosuite
+* Done!
+
+* Computation finished
+OK
+Creating test suite archive................................................ OK
+Creating output directory.................................................. OK
+Moving test suite archive to /home/ubuntu/afonso/defects4j/framework/test/E OK
+
+Test suite archived in /home/ubuntu/afonso/defects4j/framework/test/Experiments/data/Gson/8/budget_300/trial_3/generationData/BRANCH_EXECUTIONTIME//Gson/evosuite/1

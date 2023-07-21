@@ -1,0 +1,99 @@
+Checking out 8383f5c7 to /tmp/gen_tests.pl_6015_1689713737................. OK
+Init local repository...................................................... OK
+Tag post-fix revision...................................................... OK
+Copy generated Ant build file.............................................. OK
+Run post-checkout hook..................................................... OK
+Excluding broken/flaky tests............................................... OK
+Initialize fixed program version........................................... OK
+Apply patch................................................................ OK
+Initialize buggy program version........................................... OK
+Diff 8383f5c7:af68d70c..................................................... OK
+Apply patch................................................................ OK
+Tag pre-fix revision....................................................... OK
+Check out program version: Gson-5f......................................... OK
+Running ant (compile)...................................................... OK
+Creating temporary output directory........................................ OK
+Generating (regression) tests with: evosuite............................... [MASTER] 14:00:52.342 [logback-2] ERROR ClientNodeImpl - Error when generating tests for: com.google.gson.internal.bind.util.ISO8601Utils with seed 1005. Configuration id : null
+java.util.ConcurrentModificationException: null
+	at java.util.HashMap$HashIterator.nextNode(HashMap.java:1469)
+	at java.util.HashMap$EntryIterator.next(HashMap.java:1503)
+	at java.util.HashMap$EntryIterator.next(HashMap.java:1501)
+	at org.evosuite.testcase.execution.ExecutionTraceImpl.getCoveredTrueBranches(ExecutionTraceImpl.java:956)
+	at org.evosuite.testcase.execution.ExecutionTraceProxy.getCoveredTrueBranches(ExecutionTraceProxy.java:269)
+	at org.evosuite.coverage.branch.ControlFlowDistanceCalculator.getDistance(ControlFlowDistanceCalculator.java:118)
+	at org.evosuite.coverage.branch.BranchCoverageGoal.getDistance(BranchCoverageGoal.java:238)
+	at org.evosuite.coverage.branch.BranchCoverageTestFitness.getFitness(BranchCoverageTestFitness.java:160)
+	at org.evosuite.testcase.TestFitnessFunction.isCovered(TestFitnessFunction.java:175)
+	at org.evosuite.testcase.TestFitnessFunction.isCovered(TestFitnessFunction.java:162)
+	at org.evosuite.testcase.TestFitnessFunction.isCoveredBy(TestFitnessFunction.java:122)
+	at org.evosuite.statistics.SearchStatistics$BitstringBranchCoverageSequenceOutputVariableFactory.getValue(SearchStatistics.java:861)
+	at org.evosuite.statistics.SearchStatistics$BitstringBranchCoverageSequenceOutputVariableFactory.getValue(SearchStatistics.java:831)
+	at org.evosuite.statistics.SequenceOutputVariableFactory.update(SequenceOutputVariableFactory.java:59)
+	at org.evosuite.statistics.SearchStatistics.currentIndividual(SearchStatistics.java:243)
+	at org.evosuite.rmi.service.MasterNodeImpl.evosuite_collectStatistics(MasterNodeImpl.java:163)
+	at sun.reflect.GeneratedMethodAccessor32.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at sun.rmi.server.UnicastServerRef.dispatch(UnicastServerRef.java:357)
+	at sun.rmi.transport.Transport$1.run(Transport.java:200)
+	at sun.rmi.transport.Transport$1.run(Transport.java:197)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at sun.rmi.transport.Transport.serviceCall(Transport.java:196)
+	at sun.rmi.transport.tcp.TCPTransport.handleMessages(TCPTransport.java:573)
+	at sun.rmi.transport.tcp.TCPTransport$ConnectionHandler.run0(TCPTransport.java:834)
+	at sun.rmi.transport.tcp.TCPTransport$ConnectionHandler.lambda$run$0(TCPTransport.java:688)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at sun.rmi.transport.tcp.TCPTransport$ConnectionHandler.run(TCPTransport.java:687)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:750)
+	at sun.rmi.transport.StreamRemoteCall.exceptionReceivedFromServer(StreamRemoteCall.java:303)
+	at sun.rmi.transport.StreamRemoteCall.executeCall(StreamRemoteCall.java:279)
+	at sun.rmi.server.UnicastRef.invoke(UnicastRef.java:164)
+	at java.rmi.server.RemoteObjectInvocationHandler.invokeRemoteMethod(RemoteObjectInvocationHandler.java:235)
+	at java.rmi.server.RemoteObjectInvocationHandler.invoke(RemoteObjectInvocationHandler.java:180)
+	at com.sun.proxy.$Proxy7.evosuite_collectStatistics(Unknown Source)
+	at org.evosuite.rmi.service.ClientNodeImpl.updateStatistics(ClientNodeImpl.java:251)
+	at org.evosuite.statistics.StatisticsSender.sendIndividualToMaster(StatisticsSender.java:62)
+	at org.evosuite.statistics.StatisticsSender.executedAndThenSendIndividualToMaster(StatisticsSender.java:91)
+	at org.evosuite.TestSuiteGenerator.generateTests(TestSuiteGenerator.java:636)
+	at org.evosuite.TestSuiteGenerator.generateTestSuite(TestSuiteGenerator.java:208)
+	at org.evosuite.rmi.service.ClientNodeImpl.lambda$startNewSearch$0(ClientNodeImpl.java:140)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:750)
+[MASTER] 14:00:54.671 [main] ERROR SearchStatistics - No obtained value for output variable: ExecutionTimeCoverage
+[MASTER] 14:00:55.671 [main] ERROR SearchStatistics - No obtained value for output variable: ExecutionTimeCoverage
+[MASTER] 14:00:56.672 [main] ERROR SearchStatistics - No obtained value for output variable: ExecutionTimeCoverage
+[MASTER] 14:00:57.673 [main] ERROR SearchStatistics - No obtained value for output variable: ExecutionTimeCoverage
+[MASTER] 14:00:58.673 [main] ERROR SearchStatistics - No obtained value for output variable: ExecutionTimeCoverage
+[MASTER] 14:00:58.674 [main] ERROR SearchStatistics - Not going to write down statistics data, as some are missing
+[MASTER] 14:00:58.775 [main] ERROR TestGeneration - failed to write statistics data
+OK
+Executed command: /home/ubuntu/afonso/defects4j/framework/lib/test_generation/bin/evosuite.sh
+
+Executing command:
+java -cp /home/ubuntu/afonso/defects4j/framework/lib/test_generation/generation/evosuite-master-1.2.1-SNAPSHOT.jar org.evosuite.EvoSuite     -generateSuite     -class com.google.gson.internal.bind.util.ISO8601Utils     -projectCP /tmp/gen_tests.pl_6015_1689713737/target/classes     -seed 1005     -Dsearch_budget=300     -Dassertion_timeout=300     -Dtest_dir=/tmp/gen_tests.pl_6015_1689713737/evosuite     -Dalgorithm=MONOTONIC_GA     -criterion=BRANCH:EXCEPTION     -Doutput_variables=ExecutionTimeCoverage,ExecutionTimeTimeline,BranchCoverageBitString,BranchBitstringTimeline,OnlyBranchCoverageBitString,OnlyBranchBitstringTimeline,PrivateMethodCoverageTimeline,PrivateMethodCoverageBitString,PrivateMethodBitstringTimeline,ExceptionCoverage,ExceptionCoverageBitString,ExceptionBitstringTimeline     -Dtimeline_interval=1000      -Dstopping_condition=MaxTime -Dshow_progress=false -Djunit_check=false -Dfilter_assertions=false -Dtest_comments=false -mem 4000 
+* EvoSuite 1.2.1-SNAPSHOT
+* Going to generate test cases for class: com.google.gson.internal.bind.util.ISO8601Utils
+* Starting Client-0
+* Connecting to master process on port 14209
+* Analyzing classpath: 
+  - /tmp/gen_tests.pl_6015_1689713737/target/classes
+* Finished analyzing classpath
+* Generating tests for class com.google.gson.internal.bind.util.ISO8601Utils
+* Test criteria:
+  - Branch Coverage
+  - Exception
+* Setting up search algorithm for whole suite generation
+* Total number of test goals: 
+  - Branch 97
+  - Exception 0
+* Using seed 1005
+* Starting evolution
+* Search finished after 304s and 53 generations, 17391 statements, best individual has fitness: 24.607017542467123
+* Computation finished
+OK
+Test generator (evosuite) did not generate any tests!

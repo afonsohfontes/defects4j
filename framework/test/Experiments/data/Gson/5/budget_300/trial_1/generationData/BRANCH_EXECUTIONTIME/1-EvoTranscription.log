@@ -1,0 +1,120 @@
+Checking out 8383f5c7 to /tmp/gen_tests.pl_14747_1689697748................ OK
+Init local repository...................................................... OK
+Tag post-fix revision...................................................... OK
+Copy generated Ant build file.............................................. OK
+Run post-checkout hook..................................................... OK
+Excluding broken/flaky tests............................................... OK
+Initialize fixed program version........................................... OK
+Apply patch................................................................ OK
+Initialize buggy program version........................................... OK
+Diff 8383f5c7:af68d70c..................................................... OK
+Apply patch................................................................ OK
+Tag pre-fix revision....................................................... OK
+Check out program version: Gson-5f......................................... OK
+Running ant (compile)...................................................... OK
+Creating temporary output directory........................................ OK
+Generating (regression) tests with: evosuite............................... OK
+Executed command: /home/ubuntu/afonso/defects4j/framework/lib/test_generation/bin/evosuite.sh
+
+Executing command:
+java -cp /home/ubuntu/afonso/defects4j/framework/lib/test_generation/generation/evosuite-master-1.2.1-SNAPSHOT.jar org.evosuite.EvoSuite     -generateSuite     -class com.google.gson.internal.bind.util.ISO8601Utils     -projectCP /tmp/gen_tests.pl_14747_1689697748/target/classes     -seed 1005     -Dsearch_budget=300     -Dassertion_timeout=300     -Dtest_dir=/tmp/gen_tests.pl_14747_1689697748/evosuite     -Dalgorithm=MONOTONIC_GA     -criterion=BRANCH:EXECUTIONTIME     -Doutput_variables=ExecutionTimeCoverage,ExecutionTimeTimeline,BranchCoverageBitString,BranchBitstringTimeline,OnlyBranchCoverageBitString,OnlyBranchBitstringTimeline,PrivateMethodCoverageTimeline,PrivateMethodCoverageBitString,PrivateMethodBitstringTimeline,ExceptionCoverage,ExceptionCoverageBitString,ExceptionBitstringTimeline     -Dtimeline_interval=1000      -Dstopping_condition=MaxTime -Dshow_progress=false -Djunit_check=false -Dfilter_assertions=false -Dtest_comments=false -mem 4000 
+* EvoSuite 1.2.1-SNAPSHOT
+* Going to generate test cases for class: com.google.gson.internal.bind.util.ISO8601Utils
+* Starting Client-0
+* Connecting to master process on port 14209
+* Analyzing classpath: 
+  - /tmp/gen_tests.pl_14747_1689697748/target/classes
+* Finished analyzing classpath
+* Generating tests for class com.google.gson.internal.bind.util.ISO8601Utils
+* Test criteria:
+  - Branch Coverage
+  - Execution Time Coverage
+* Setting up search algorithm for whole suite generation
+* Total number of test goals: 
+  - Branch 97
+  - ExecutionTimeFactory 0
+* Using seed 1005
+* Starting evolution
+* Search finished after 304s and 45 generations, 16783 statements, best individual has fitness: 30.273684210526312
+* Minimizing test suite
+* Going to analyze the coverage criteria
+* Coverage analysis for criterion BRANCH
+* Coverage of criterion BRANCH: 61%
+* Total number of goals: 97
+* Number of covered goals: 59
+* Coverage analysis for criterion EXECUTIONTIME
+* Coverage of criterion EXCEPTION: 50%
+* Total number of goals: 2
+* Number of covered goals: 1
+* Coverage of criterion PRIVATEMETHOD: 75%
+* Total number of goals: 4
+* Number of covered goals: 3
+* Coverage of criterion ONLYBRANCH: 60%
+* Total number of goals: 94
+* Number of covered goals: 56
+* Generated 12 tests with total length 27
+* Resulting test suite's coverage: 30% (average coverage for all fitness functions)
+* Generating assertions
+* Resulting test suite's mutation score: 32%
+* Permissions denied during test execution: 
+  - java.lang.RuntimePermission: 
+         writeFileDescriptor: 4
+* Writing tests to file
+* Writing JUnit test case 'ISO8601Utils_ESTest' to /tmp/gen_tests.pl_14747_1689697748/evosuite
+* Done!
+
+* Computation finished
+OK
+Creating test suite archive................................................ OK
+Creating output directory.................................................. OK
+Moving test suite archive to /home/ubuntu/afonso/defects4j/framework/test/E OK
+
+Test suite archived in /home/ubuntu/afonso/defects4j/framework/test/Experiments/data/Gson/5/budget_300/trial_1/generationData/BRANCH_EXECUTIONTIME//Gson/evosuite/1
+Checking out 8383f5c7 to /tmp/gen_tests.pl_15768_1689698245................ OK
+Init local repository...................................................... OK
+Tag post-fix revision...................................................... OK
+Copy generated Ant build file.............................................. OK
+Run post-checkout hook..................................................... OK
+Excluding broken/flaky tests............................................... OK
+Initialize fixed program version........................................... OK
+Apply patch................................................................ OK
+Initialize buggy program version........................................... OK
+Diff 8383f5c7:af68d70c..................................................... OK
+Apply patch................................................................ OK
+Tag pre-fix revision....................................................... OK
+Check out program version: Gson-5f......................................... OK
+Running ant (compile)...................................................... OK
+Creating temporary output directory........................................ OK
+Generating (regression) tests with: evosuite............................... [MASTER] 09:42:45.317 [main] ERROR SearchStatistics - No obtained value for output variable: ExecutionTimeCoverage
+[MASTER] 09:42:47.372 [main] ERROR SearchStatistics - No obtained value for output variable: ExecutionTimeCoverage
+[MASTER] 09:42:48.373 [main] ERROR SearchStatistics - No obtained value for output variable: ExecutionTimeCoverage
+[MASTER] 09:42:49.373 [main] ERROR SearchStatistics - No obtained value for output variable: ExecutionTimeCoverage
+[MASTER] 09:42:50.374 [main] ERROR SearchStatistics - No obtained value for output variable: ExecutionTimeCoverage
+[MASTER] 09:42:51.374 [main] ERROR SearchStatistics - No obtained value for output variable: ExecutionTimeCoverage
+[MASTER] 09:42:51.375 [main] ERROR SearchStatistics - Not going to write down statistics data, as some are missing
+[MASTER] 09:42:51.476 [main] ERROR TestGeneration - failed to write statistics data
+OK
+Executed command: /home/ubuntu/afonso/defects4j/framework/lib/test_generation/bin/evosuite.sh
+
+Executing command:
+java -cp /home/ubuntu/afonso/defects4j/framework/lib/test_generation/generation/evosuite-master-1.2.1-SNAPSHOT.jar org.evosuite.EvoSuite     -generateSuite     -class com.google.gson.internal.bind.util.ISO8601Utils     -projectCP /tmp/gen_tests.pl_15768_1689698245/target/classes     -seed 1005     -Dsearch_budget=300     -Dassertion_timeout=300     -Dtest_dir=/tmp/gen_tests.pl_15768_1689698245/evosuite     -Dalgorithm=MONOTONIC_GA     -criterion=BRANCH:EXECUTIONTIME     -Doutput_variables=ExecutionTimeCoverage,ExecutionTimeTimeline,BranchCoverageBitString,BranchBitstringTimeline,OnlyBranchCoverageBitString,OnlyBranchBitstringTimeline,PrivateMethodCoverageTimeline,PrivateMethodCoverageBitString,PrivateMethodBitstringTimeline,ExceptionCoverage,ExceptionCoverageBitString,ExceptionBitstringTimeline     -Dtimeline_interval=1000      -Dstopping_condition=MaxTime -Dshow_progress=false -Djunit_check=false -Dfilter_assertions=false -Dtest_comments=false -mem 4000 
+* EvoSuite 1.2.1-SNAPSHOT
+* Going to generate test cases for class: com.google.gson.internal.bind.util.ISO8601Utils
+* Starting Client-0
+* Connecting to master process on port 14209
+* Analyzing classpath: 
+  - /tmp/gen_tests.pl_15768_1689698245/target/classes
+* Finished analyzing classpath
+* Generating tests for class com.google.gson.internal.bind.util.ISO8601Utils
+* Test criteria:
+  - Branch Coverage
+  - Execution Time Coverage
+* Setting up search algorithm for whole suite generation
+* Total number of test goals: 
+  - Branch 97
+  - ExecutionTimeFactory 0
+* Using seed 1005
+* Starting evolution
+* Search finished after 304s and 47 generations, 18505 statements, best individual has fitness: 24.02368420913379
+OK
+Test generator (evosuite) did not generate any tests!

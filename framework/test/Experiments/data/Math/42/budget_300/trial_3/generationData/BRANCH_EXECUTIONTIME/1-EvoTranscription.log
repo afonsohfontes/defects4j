@@ -1,0 +1,146 @@
+Checking out e98a5000 to /tmp/gen_tests.pl_5276_1689710380................. OK
+Init local repository...................................................... OK
+Tag post-fix revision...................................................... OK
+Excluding broken/flaky tests............................................... OK
+Excluding broken/flaky tests............................................... OK
+Excluding broken/flaky tests............................................... OK
+Initialize fixed program version........................................... OK
+Apply patch................................................................ OK
+Initialize buggy program version........................................... OK
+Diff e98a5000:800943ec..................................................... OK
+Apply patch................................................................ OK
+Tag pre-fix revision....................................................... OK
+Check out program version: Math-42f........................................ OK
+Running ant (compile)...................................................... OK
+Creating temporary output directory........................................ OK
+Generating (regression) tests with: evosuite............................... OK
+Executed command: /home/ubuntu/afonso/defects4j/framework/lib/test_generation/bin/evosuite.sh
+
+Executing command:
+java -cp /home/ubuntu/afonso/defects4j/framework/lib/test_generation/generation/evosuite-master-1.2.1-SNAPSHOT.jar org.evosuite.EvoSuite     -generateSuite     -class org.apache.commons.math.optimization.linear.SimplexTableau     -projectCP /tmp/gen_tests.pl_5276_1689710380/target/classes     -seed 1042     -Dsearch_budget=300     -Dassertion_timeout=300     -Dtest_dir=/tmp/gen_tests.pl_5276_1689710380/evosuite     -Dalgorithm=MONOTONIC_GA     -criterion=BRANCH:EXECUTIONTIME     -Doutput_variables=ExecutionTimeCoverage,ExecutionTimeTimeline,BranchCoverageBitString,BranchBitstringTimeline,OnlyBranchCoverageBitString,OnlyBranchBitstringTimeline,PrivateMethodCoverageTimeline,PrivateMethodCoverageBitString,PrivateMethodBitstringTimeline,ExceptionCoverage,ExceptionCoverageBitString,ExceptionBitstringTimeline     -Dtimeline_interval=1000      -Dstopping_condition=MaxTime -Dshow_progress=false -Djunit_check=false -Dfilter_assertions=false -Dtest_comments=false -mem 4000 
+* EvoSuite 1.2.1-SNAPSHOT
+* Going to generate test cases for class: org.apache.commons.math.optimization.linear.SimplexTableau
+* Starting Client-0
+* Connecting to master process on port 9734
+* Analyzing classpath: 
+  - /tmp/gen_tests.pl_5276_1689710380/target/classes
+* Finished analyzing classpath
+* Generating tests for class org.apache.commons.math.optimization.linear.SimplexTableau
+* Test criteria:
+  - Branch Coverage
+  - Execution Time Coverage
+* Setting up search algorithm for whole suite generation
+* Total number of test goals: 
+  - Branch 146
+  - ExecutionTimeFactory 0
+* Using seed 1042
+* Starting evolution
+* Search finished after 305s and 44 generations, 37066 statements, best individual has fitness: 13.710865536846436
+* Minimizing test suite
+[MASTER] 13:06:14.360 [logback-1] WARN  TestSuiteMinimizer - Minimization timeout. Roll back to original test suite
+* Going to analyze the coverage criteria
+* Coverage analysis for criterion BRANCH
+* Coverage of criterion BRANCH: 89%
+* Total number of goals: 146
+* Number of covered goals: 130
+* Coverage analysis for criterion EXECUTIONTIME
+* Coverage of criterion EXCEPTION: 40%
+* Total number of goals: 5
+* Number of covered goals: 2
+* Coverage of criterion PRIVATEMETHOD: 52%
+* Total number of goals: 27
+* Number of covered goals: 14
+* Coverage of criterion ONLYBRANCH: 89%
+* Total number of goals: 128
+* Number of covered goals: 114
+* Generated 29 tests with total length 572
+* Resulting test suite's coverage: 45% (average coverage for all fitness functions)
+* Generating assertions
+* Resulting test suite's mutation score: 36%
+* Permissions denied during test execution: 
+  - java.lang.RuntimePermission: 
+         writeFileDescriptor: 5
+* Writing tests to file
+* Writing JUnit test case 'SimplexTableau_ESTest' to /tmp/gen_tests.pl_5276_1689710380/evosuite
+* Done!
+
+* Computation finished
+OK
+Creating test suite archive................................................ OK
+Creating output directory.................................................. OK
+Moving test suite archive to /home/ubuntu/afonso/defects4j/framework/test/E OK
+
+Test suite archived in /home/ubuntu/afonso/defects4j/framework/test/Experiments/data/Math/42/budget_300/trial_3/generationData/BRANCH_EXECUTIONTIME//Math/evosuite/1
+Checking out e98a5000 to /tmp/gen_tests.pl_6490_1689711113................. OK
+Init local repository...................................................... OK
+Tag post-fix revision...................................................... OK
+Excluding broken/flaky tests............................................... OK
+Excluding broken/flaky tests............................................... OK
+Excluding broken/flaky tests............................................... OK
+Initialize fixed program version........................................... OK
+Apply patch................................................................ OK
+Initialize buggy program version........................................... OK
+Diff e98a5000:800943ec..................................................... OK
+Apply patch................................................................ OK
+Tag pre-fix revision....................................................... OK
+Check out program version: Math-42f........................................ OK
+Running ant (compile)...................................................... OK
+Creating temporary output directory........................................ OK
+Generating (regression) tests with: evosuite............................... OK
+Executed command: /home/ubuntu/afonso/defects4j/framework/lib/test_generation/bin/evosuite.sh
+
+Executing command:
+java -cp /home/ubuntu/afonso/defects4j/framework/lib/test_generation/generation/evosuite-master-1.2.1-SNAPSHOT.jar org.evosuite.EvoSuite     -generateSuite     -class org.apache.commons.math.optimization.linear.SimplexTableau     -projectCP /tmp/gen_tests.pl_6490_1689711113/target/classes     -seed 1042     -Dsearch_budget=300     -Dassertion_timeout=300     -Dtest_dir=/tmp/gen_tests.pl_6490_1689711113/evosuite     -Dalgorithm=MONOTONIC_GA     -criterion=BRANCH:EXECUTIONTIME     -Doutput_variables=ExecutionTimeCoverage,ExecutionTimeTimeline,BranchCoverageBitString,BranchBitstringTimeline,OnlyBranchCoverageBitString,OnlyBranchBitstringTimeline,PrivateMethodCoverageTimeline,PrivateMethodCoverageBitString,PrivateMethodBitstringTimeline,ExceptionCoverage,ExceptionCoverageBitString,ExceptionBitstringTimeline     -Dtimeline_interval=1000      -Dstopping_condition=MaxTime -Dshow_progress=false -Djunit_check=false -Dfilter_assertions=false -Dtest_comments=false -mem 4000 
+* EvoSuite 1.2.1-SNAPSHOT
+* Going to generate test cases for class: org.apache.commons.math.optimization.linear.SimplexTableau
+* Starting Client-0
+* Connecting to master process on port 9734
+* Analyzing classpath: 
+  - /tmp/gen_tests.pl_6490_1689711113/target/classes
+* Finished analyzing classpath
+* Generating tests for class org.apache.commons.math.optimization.linear.SimplexTableau
+* Test criteria:
+  - Branch Coverage
+  - Execution Time Coverage
+* Setting up search algorithm for whole suite generation
+* Total number of test goals: 
+  - Branch 146
+  - ExecutionTimeFactory 0
+* Using seed 1042
+* Starting evolution
+* Search finished after 304s and 43 generations, 35349 statements, best individual has fitness: 14.969026565085283
+* Minimizing test suite
+* Going to analyze the coverage criteria
+* Coverage analysis for criterion BRANCH
+* Coverage of criterion BRANCH: 88%
+* Total number of goals: 146
+* Number of covered goals: 128
+* Coverage analysis for criterion EXECUTIONTIME
+[MASTER] 13:18:26.667 [logback-1] WARN  TestSuiteMinimizer - Minimization timeout. Roll back to original test suite
+* Coverage of criterion EXCEPTION: 33%
+* Total number of goals: 6
+* Number of covered goals: 2
+* Coverage of criterion PRIVATEMETHOD: 48%
+* Total number of goals: 27
+* Number of covered goals: 13
+* Coverage of criterion ONLYBRANCH: 88%
+* Total number of goals: 128
+* Number of covered goals: 112
+* Generated 31 tests with total length 632
+* Resulting test suite's coverage: 44% (average coverage for all fitness functions)
+* Generating assertions
+* Resulting test suite's mutation score: 33%
+* Permissions denied during test execution: 
+  - java.lang.RuntimePermission: 
+         writeFileDescriptor: 4
+* Writing tests to file
+* Writing JUnit test case 'SimplexTableau_ESTest' to /tmp/gen_tests.pl_6490_1689711113/evosuite
+* Done!
+
+* Computation finished
+OK
+Creating test suite archive................................................ OK
+Creating output directory.................................................. OK
+Moving test suite archive to /home/ubuntu/afonso/defects4j/framework/test/E OK
+
+Test suite archived in /home/ubuntu/afonso/defects4j/framework/test/Experiments/data/Math/42/budget_300/trial_3/generationData/BRANCH_EXECUTIONTIME//Math/evosuite/1

@@ -1,0 +1,127 @@
+Checking out af68d70c to /tmp/gen_tests.pl_24226_1689724807................ OK
+Init local repository...................................................... OK
+Tag post-fix revision...................................................... OK
+Copy generated Ant build file.............................................. OK
+Run post-checkout hook..................................................... OK
+Excluding broken/flaky tests............................................... OK
+Initialize fixed program version........................................... OK
+Apply patch................................................................ OK
+Initialize buggy program version........................................... OK
+Diff af68d70c:2ab776b5..................................................... OK
+Apply patch................................................................ OK
+Tag pre-fix revision....................................................... OK
+Check out program version: Gson-4f......................................... OK
+Running ant (compile)...................................................... OK
+Creating temporary output directory........................................ OK
+Generating (regression) tests with: evosuite............................... OK
+Executed command: /home/ubuntu/afonso/defects4j/framework/lib/test_generation/bin/evosuite.sh
+
+Executing command:
+java -cp /home/ubuntu/afonso/defects4j/framework/lib/test_generation/generation/evosuite-master-1.2.1-SNAPSHOT.jar org.evosuite.EvoSuite     -generateSuite     -class com.google.gson.stream.JsonReader     -projectCP /tmp/gen_tests.pl_24226_1689724807/target/classes     -seed 1004     -Dsearch_budget=300     -Dassertion_timeout=300     -Dtest_dir=/tmp/gen_tests.pl_24226_1689724807/evosuite     -Dalgorithm=MONOTONIC_GA     -criterion=BRANCH:EXCEPTION     -Doutput_variables=ExecutionTimeCoverage,ExecutionTimeTimeline,BranchCoverageBitString,BranchBitstringTimeline,OnlyBranchCoverageBitString,OnlyBranchBitstringTimeline,PrivateMethodCoverageTimeline,PrivateMethodCoverageBitString,PrivateMethodBitstringTimeline,ExceptionCoverage,ExceptionCoverageBitString,ExceptionBitstringTimeline     -Dtimeline_interval=1000      -Dstopping_condition=MaxTime -Dshow_progress=false -Djunit_check=false -Dfilter_assertions=false -Dtest_comments=false -mem 4000 
+* EvoSuite 1.2.1-SNAPSHOT
+* Going to generate test cases for class: com.google.gson.stream.JsonReader
+* Starting Client-0
+* Connecting to master process on port 10001
+* Analyzing classpath: 
+  - /tmp/gen_tests.pl_24226_1689724807/target/classes
+* Finished analyzing classpath
+* Generating tests for class com.google.gson.stream.JsonReader
+* Test criteria:
+  - Branch Coverage
+  - Exception
+* Setting up search algorithm for whole suite generation
+* Total number of test goals: 
+  - Branch 658
+  - Exception 0
+* Using seed 1004
+* Starting evolution
+* Search finished after 304s and 37 generations, 10641 statements, best individual has fitness: 333.7114371142968
+[MASTER] 17:06:34.396 [logback-1] WARN  TimeController - Phase SEARCH lasted too long, 78 seconds more than allowed.
+* Minimizing test suite
+[MASTER] 17:07:48.695 [logback-1] WARN  TestSuiteMinimizer - Minimization timeout. Roll back to original test suite
+* Going to analyze the coverage criteria
+* Coverage analysis for criterion BRANCH
+* Coverage of criterion BRANCH: 45%
+* Total number of goals: 658
+* Number of covered goals: 297
+* Coverage analysis for criterion EXCEPTION
+* Coverage of criterion EXCEPTION: 100%
+* Total number of goals: 65
+* Number of covered goals: 65
+* Coverage of criterion PRIVATEMETHOD: 0%
+* Total number of goals: 19
+* Number of covered goals: 0
+* Coverage of criterion ONLYBRANCH: 45%
+* Total number of goals: 640
+* Number of covered goals: 289
+* Generated 114 tests with total length 1946
+* Resulting test suite's coverage: 73% (average coverage for all fitness functions)
+* Generating assertions
+[MASTER] 17:12:46.809 [logback-1] WARN  SimpleMutationAssertionGenerator - Assertion minimization is taking too long (0.6688466666666667% of time used, but only 14/114 tests minimized), falling back to using all assertions
+* Resulting test suite's mutation score: 0%
+* Permissions denied during test execution: 
+  - java.lang.RuntimePermission: 
+         writeFileDescriptor: 1
+* Writing tests to file
+* Writing JUnit test case 'JsonReader_ESTest' to /tmp/gen_tests.pl_24226_1689724807/evosuite
+* Done!
+
+* Computation finished
+OK
+
+Executing command:
+java -cp /home/ubuntu/afonso/defects4j/framework/lib/test_generation/generation/evosuite-master-1.2.1-SNAPSHOT.jar org.evosuite.EvoSuite     -generateSuite     -class com.google.gson.stream.JsonWriter     -projectCP /tmp/gen_tests.pl_24226_1689724807/target/classes     -seed 1004     -Dsearch_budget=300     -Dassertion_timeout=300     -Dtest_dir=/tmp/gen_tests.pl_24226_1689724807/evosuite     -Dalgorithm=MONOTONIC_GA     -criterion=BRANCH:EXCEPTION     -Doutput_variables=ExecutionTimeCoverage,ExecutionTimeTimeline,BranchCoverageBitString,BranchBitstringTimeline,OnlyBranchCoverageBitString,OnlyBranchBitstringTimeline,PrivateMethodCoverageTimeline,PrivateMethodCoverageBitString,PrivateMethodBitstringTimeline,ExceptionCoverage,ExceptionCoverageBitString,ExceptionBitstringTimeline     -Dtimeline_interval=1000      -Dstopping_condition=MaxTime -Dshow_progress=false -Djunit_check=false -Dfilter_assertions=false -Dtest_comments=false -mem 4000 
+* EvoSuite 1.2.1-SNAPSHOT
+* Going to generate test cases for class: com.google.gson.stream.JsonWriter
+* Starting Client-0
+* Connecting to master process on port 10001
+* Analyzing classpath: 
+  - /tmp/gen_tests.pl_24226_1689724807/target/classes
+* Finished analyzing classpath
+* Generating tests for class com.google.gson.stream.JsonWriter
+* Test criteria:
+  - Branch Coverage
+  - Exception
+* Setting up search algorithm for whole suite generation
+* Total number of test goals: 
+  - Branch 111
+  - Exception 0
+* Using seed 1004
+* Starting evolution
+* Search finished after 304s and 48 generations, 14236 statements, best individual has fitness: 11.192156861271087
+[MASTER] 17:20:00.190 [logback-1] WARN  TimeController - Phase SEARCH lasted too long, 30 seconds more than allowed.
+* Minimizing test suite
+* Going to analyze the coverage criteria
+* Coverage analysis for criterion BRANCH
+[MASTER] 17:21:05.029 [logback-1] WARN  TestSuiteMinimizer - Minimization timeout. Roll back to original test suite
+* Coverage of criterion BRANCH: 87%
+* Total number of goals: 111
+* Number of covered goals: 97
+* Coverage analysis for criterion EXCEPTION
+* Coverage of criterion EXCEPTION: 100%
+* Total number of goals: 16
+* Number of covered goals: 16
+* Coverage of criterion PRIVATEMETHOD: 60%
+* Total number of goals: 10
+* Number of covered goals: 6
+* Coverage of criterion ONLYBRANCH: 86%
+* Total number of goals: 98
+* Number of covered goals: 84
+* Generated 44 tests with total length 698
+* Resulting test suite's coverage: 94% (average coverage for all fitness functions)
+* Generating assertions
+* Resulting test suite's mutation score: 34%
+* Permissions denied during test execution: 
+  - java.lang.RuntimePermission: 
+         writeFileDescriptor: 2
+* Writing tests to file
+* Writing JUnit test case 'JsonWriter_ESTest' to /tmp/gen_tests.pl_24226_1689724807/evosuite
+* Done!
+
+* Computation finished
+OK
+Creating test suite archive................................................ OK
+Creating output directory.................................................. OK
+Moving test suite archive to /home/ubuntu/afonso/defects4j/framework/test/E OK
+
+Test suite archived in /home/ubuntu/afonso/defects4j/framework/test/Experiments/data/Gson/4/budget_300/trial_3/generationData/BRANCH_EXCEPTION//Gson/evosuite/1

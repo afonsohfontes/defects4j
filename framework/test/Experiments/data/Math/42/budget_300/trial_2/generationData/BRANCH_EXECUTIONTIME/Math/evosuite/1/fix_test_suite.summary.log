@@ -1,0 +1,19 @@
+######  Start fixing tests  /home/ubuntu/afonso/defects4j/framework/util/fix_test_suite.pl: 2023-07-18 11:08:50  ######
+- Found 1 test archive(s)
+ - Removing uncompilable test method(s): Math-42f-evosuite.1.tar.bz2
+  - Removing 3 uncompilable test method(s):
+--- org.apache.commons.math.optimization.linear.SimplexTableau_ESTest::test00
+--- org.apache.commons.math.optimization.linear.SimplexTableau_ESTest::test08
+--- org.apache.commons.math.optimization.linear.SimplexTableau_ESTest::test09
+Number of uncompilable test classes: 0
+Number of uncompilable tests: 3 (see /home/ubuntu/afonso/defects4j/framework/test/Experiments/data/Math/42/budget_300/trial_2/generationData/BRANCH_EXECUTIONTIME/Math/evosuite/1/fix_test_suite.compile.log file for more information)
+Number of failing tests: 0
+######  End fixing tests  /home/ubuntu/afonso/defects4j/framework/util/fix_test_suite.pl: 2023-07-18 11:09:18  ######
+######  Start fixing tests  /home/ubuntu/afonso/defects4j/framework/util/fix_test_suite.pl: 2023-07-18 11:20:08  ######
+- Found 1 test archive(s)
+ - Removing 1 broken test method(s): Math-42f-evosuite.1.tar.bz2
+org.apache.commons.math.optimization.linear.SimplexTableau_ESTest::test09
+Number of uncompilable test classes: 0
+Number of uncompilable tests: 0
+Number of failing tests: 1 (see /home/ubuntu/afonso/defects4j/framework/test/Experiments/data/Math/42/budget_300/trial_2/generationData/BRANCH_EXECUTIONTIME/Math/evosuite/1/fix_test_suite.run.log file for more information)
+######  End fixing tests  /home/ubuntu/afonso/defects4j/framework/util/fix_test_suite.pl: 2023-07-18 11:20:38  ######

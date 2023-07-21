@@ -1,0 +1,25 @@
+######  Start test generation  /home/ubuntu/afonso/defects4j/framework/bin/gen_tests.pl: 2023-07-18 07:51:54  ######
+Mode: regression
+Parameters:
+ -g evosuite
+ -p Math
+ -v 33f
+ -n 1
+ -b 300
+ -c /home/ubuntu/afonso/defects4j/framework/projects/Math/modified_classes/33.src
+ -s 1033
+Test generator (evosuite) did not generate any tests!
+######  End test generation  /home/ubuntu/afonso/defects4j/framework/bin/gen_tests.pl: 2023-07-18 07:58:53  ######
+######  Start test generation  /home/ubuntu/afonso/defects4j/framework/bin/gen_tests.pl: 2023-07-18 07:59:03  ######
+Mode: regression
+Parameters:
+ -g evosuite
+ -p Math
+ -v 33f
+ -n 1
+ -b 300
+ -c /home/ubuntu/afonso/defects4j/framework/projects/Math/modified_classes/33.src
+ -s 1033
+Created test suite archive: Math-33f-evosuite.1.tar.bz2
+Moved test suite archive to output directory: /home/ubuntu/afonso/defects4j/framework/test/Experiments/data/Math/33/budget_300/trial_1/generationData/BRANCH_EXECUTIONTIME//Math/evosuite/1
+######  End test generation  /home/ubuntu/afonso/defects4j/framework/bin/gen_tests.pl: 2023-07-18 08:11:29  ######

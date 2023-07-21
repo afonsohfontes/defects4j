@@ -1,0 +1,26 @@
+######  Start test generation  /home/ubuntu/afonso/defects4j/framework/bin/gen_tests.pl: 2023-07-18 14:09:27  ######
+Mode: regression
+Parameters:
+ -g evosuite
+ -p Gson
+ -v 5f
+ -n 1
+ -b 300
+ -c /home/ubuntu/afonso/defects4j/framework/projects/Gson/modified_classes/5.src
+ -s 1005
+Created test suite archive: Gson-5f-evosuite.1.tar.bz2
+Moved test suite archive to output directory: /home/ubuntu/afonso/defects4j/framework/test/Experiments/data/Gson/5/budget_300/trial_2/generationData/BRANCH_EXECUTIONTIME//Gson/evosuite/1
+######  End test generation  /home/ubuntu/afonso/defects4j/framework/bin/gen_tests.pl: 2023-07-18 14:17:11  ######
+######  Start test generation  /home/ubuntu/afonso/defects4j/framework/bin/gen_tests.pl: 2023-07-18 14:17:59  ######
+Mode: regression
+Parameters:
+ -g evosuite
+ -p Gson
+ -v 5f
+ -n 1
+ -b 300
+ -c /home/ubuntu/afonso/defects4j/framework/projects/Gson/modified_classes/5.src
+ -s 1005
+Created test suite archive: Gson-5f-evosuite.1.tar.bz2
+Moved test suite archive to output directory: /home/ubuntu/afonso/defects4j/framework/test/Experiments/data/Gson/5/budget_300/trial_2/generationData/BRANCH_EXECUTIONTIME//Gson/evosuite/1
+######  End test generation  /home/ubuntu/afonso/defects4j/framework/bin/gen_tests.pl: 2023-07-18 14:25:44  ######

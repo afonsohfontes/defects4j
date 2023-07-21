@@ -1,0 +1,19 @@
+
+-- TEST SUITE STATISTICS --
+BRANCH Coverage: 0.5
+Total BRANCHES: 14
+Covered BRANCHES: 7
+
+ONLYBRANCH Coverage: 0.75
+Total ONLYBRANCHES: 4
+Covered ONLYBRANCHES: 3
+
+PRIVATE METHOD Coverage: no data
+Total PRIVATE METHODS: 0
+Covered PRIVATE METHODS: 0
+
+EXCEPTION Coverage: 1.0
+EXCEPTION found: 1
+EXCEPTION covered: 1.0
+
+Test EXECUTION TIME final coverage: 1.0

@@ -1,0 +1,93 @@
+Checking out dea30550 to /tmp/gen_tests.pl_15960_1689739494................ OK
+Init local repository...................................................... OK
+Tag post-fix revision...................................................... OK
+Copy generated Ant build file.............................................. OK
+Run post-checkout hook..................................................... OK
+Excluding broken/flaky tests............................................... OK
+Initialize fixed program version........................................... OK
+Apply patch................................................................ OK
+Initialize buggy program version........................................... OK
+Diff dea30550:67bd3a2c..................................................... OK
+Apply patch................................................................ OK
+Tag pre-fix revision....................................................... OK
+Check out program version: Gson-6f......................................... OK
+Running ant (compile)...................................................... OK
+Creating temporary output directory........................................ OK
+Generating (regression) tests with: evosuite............................... [MASTER] 21:10:30.109 [logback-2] ERROR ClientNodeImpl - Error when generating tests for: com.google.gson.internal.bind.JsonAdapterAnnotationTypeAdapterFactory with seed 1006. Configuration id : null
+java.lang.IllegalArgumentException: Mismatch between raw type interface com.google.gson.annotations.JsonAdapter and target class interface com.google.gson.annotations.JsonAdapter
+	at org.evosuite.testcase.statements.FunctionalMockStatement.<init>(FunctionalMockStatement.java:144)
+	at org.evosuite.testcase.statements.FunctionalMockStatement.copy(FunctionalMockStatement.java:550)
+	at org.evosuite.testcase.statements.AbstractStatement.clone(AbstractStatement.java:527)
+	at org.evosuite.testcase.DefaultTestCase.clone(DefaultTestCase.java:381)
+	at org.evosuite.testcase.DefaultTestCase.clone(DefaultTestCase.java:60)
+	at org.evosuite.testcase.TestChromosome.clone(TestChromosome.java:118)
+	at org.evosuite.testcase.TestChromosome.clone(TestChromosome.java:64)
+	at org.evosuite.testsuite.AbstractTestSuiteChromosome.lambda$new$0(AbstractTestSuiteChromosome.java:89)
+	at java.util.ArrayList.forEach(ArrayList.java:1259)
+	at org.evosuite.testsuite.AbstractTestSuiteChromosome.<init>(AbstractTestSuiteChromosome.java:89)
+	at org.evosuite.testsuite.TestSuiteChromosome.<init>(TestSuiteChromosome.java:134)
+	at org.evosuite.testsuite.TestSuiteChromosome.clone(TestSuiteChromosome.java:170)
+	at org.evosuite.coverage.CoverageCriteriaAnalyzer.analyzeCoverage(CoverageCriteriaAnalyzer.java:287)
+	at org.evosuite.coverage.CoverageCriteriaAnalyzer.analyzeCoverage(CoverageCriteriaAnalyzer.java:260)
+	at org.evosuite.TestSuiteGenerator.postProcessTests(TestSuiteGenerator.java:435)
+	at org.evosuite.TestSuiteGenerator.generateTestSuite(TestSuiteGenerator.java:218)
+	at org.evosuite.rmi.service.ClientNodeImpl.lambda$startNewSearch$0(ClientNodeImpl.java:140)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:750)
+[MASTER] 21:10:30.235 [main] ERROR EvoSuite - Fatal crash on main EvoSuite process. Class com.google.gson.internal.bind.JsonAdapterAnnotationTypeAdapterFactory using seed 1006. Configuration id : null
+java.lang.IndexOutOfBoundsException: Index: 14, Size: 14
+	at java.util.ArrayList.rangeCheck(ArrayList.java:659)
+	at java.util.ArrayList.get(ArrayList.java:435)
+	at org.evosuite.statistics.SequenceOutputVariableFactory.getTimeLineValue(SequenceOutputVariableFactory.java:132)
+	at org.evosuite.statistics.SequenceOutputVariableFactory.getOutputVariables(SequenceOutputVariableFactory.java:77)
+	at org.evosuite.statistics.SearchStatistics.getOutputVariables(SearchStatistics.java:365)
+	at org.evosuite.statistics.SearchStatistics.getOutputVariables(SearchStatistics.java:336)
+	at org.evosuite.statistics.SearchStatistics.writeStatistics(SearchStatistics.java:399)
+	at org.evosuite.executionmode.TestGeneration.writeStatistics(TestGeneration.java:588)
+	at org.evosuite.executionmode.TestGeneration.generateTests(TestGeneration.java:540)
+	at org.evosuite.executionmode.TestGeneration.executeTestGeneration(TestGeneration.java:83)
+	at org.evosuite.EvoSuite.parseCommandLine(EvoSuite.java:335)
+	at org.evosuite.EvoSuite.main(EvoSuite.java:103)
+FAIL
+Executed command: /home/ubuntu/afonso/defects4j/framework/lib/test_generation/bin/evosuite.sh
+
+Executing command:
+java -cp /home/ubuntu/afonso/defects4j/framework/lib/test_generation/generation/evosuite-master-1.2.1-SNAPSHOT.jar org.evosuite.EvoSuite     -generateSuite     -class com.google.gson.internal.bind.JsonAdapterAnnotationTypeAdapterFactory     -projectCP /tmp/gen_tests.pl_15960_1689739494/target/classes     -seed 1006     -Dsearch_budget=300     -Dassertion_timeout=300     -Dtest_dir=/tmp/gen_tests.pl_15960_1689739494/evosuite     -Dalgorithm=MONOTONIC_GA     -criterion=BRANCH:PRIVATEMETHOD     -Doutput_variables=ExecutionTimeCoverage,ExecutionTimeTimeline,BranchCoverageBitString,BranchBitstringTimeline,OnlyBranchCoverageBitString,OnlyBranchBitstringTimeline,PrivateMethodCoverageTimeline,PrivateMethodCoverageBitString,PrivateMethodBitstringTimeline,ExceptionCoverage,ExceptionCoverageBitString,ExceptionBitstringTimeline     -Dtimeline_interval=1000      -Dstopping_condition=MaxTime -Dshow_progress=false -Djunit_check=false -Dfilter_assertions=false -Dtest_comments=false -mem 4000 
+* EvoSuite 1.2.1-SNAPSHOT
+* Going to generate test cases for class: com.google.gson.internal.bind.JsonAdapterAnnotationTypeAdapterFactory
+* Starting Client-0
+* Connecting to master process on port 15870
+* Analyzing classpath: 
+  - /tmp/gen_tests.pl_15960_1689739494/target/classes
+* Finished analyzing classpath
+* Generating tests for class com.google.gson.internal.bind.JsonAdapterAnnotationTypeAdapterFactory
+* Test criteria:
+  - Branch Coverage
+  - Private Method Coverage
+* Setting up search algorithm for whole suite generation
+* Total number of test goals: 
+  - Branch 9
+  - PrivateMethod 1
+* Using seed 1006
+* Starting evolution
+[MASTER] 21:05:03.534 [logback-1] WARN  TestCluster - Failed to check cache for com.google.gson.internal.bind.ArrayTypeAdapter<E> : Type points to itself
+* Search finished after 301s and 38 generations, 18729 statements, best individual has fitness: 4.0
+* Minimizing test suite
+* Going to analyze the coverage criteria
+* Coverage analysis for criterion BRANCH
+* Coverage of criterion BRANCH: 56%
+* Total number of goals: 9
+* Number of covered goals: 5
+* Coverage analysis for criterion PRIVATEMETHOD
+* Coverage of criterion PRIVATEMETHOD: 0%
+* Total number of goals: 1
+* Number of covered goals: 0
+* Coverage of criterion EXCEPTION: 100%
+* Total number of goals: 2
+* Number of covered goals: 2
+* Computation finished
+FAILED
+Failed to generate tests! at /home/ubuntu/afonso/defects4j/framework/bin/gen_tests.pl line 305.

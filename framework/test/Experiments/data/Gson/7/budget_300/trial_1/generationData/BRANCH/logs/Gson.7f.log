@@ -1,0 +1,13 @@
+######  Start test generation  /home/ubuntu/afonso/defects4j/framework/bin/gen_tests.pl: 2023-07-18 10:14:32  ######
+Mode: regression
+Parameters:
+ -g evosuite
+ -p Gson
+ -v 7f
+ -n 1
+ -b 300
+ -c /home/ubuntu/afonso/defects4j/framework/projects/Gson/modified_classes/7.src
+ -s 1007
+Created test suite archive: Gson-7f-evosuite.1.tar.bz2
+Moved test suite archive to output directory: /home/ubuntu/afonso/defects4j/framework/test/Experiments/data/Gson/7/budget_300/trial_1/generationData/BRANCH//Gson/evosuite/1
+######  End test generation  /home/ubuntu/afonso/defects4j/framework/bin/gen_tests.pl: 2023-07-18 10:27:13  ######

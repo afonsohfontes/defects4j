@@ -1,0 +1,4 @@
+######  Start executing test suites  /home/ubuntu/afonso/defects4j/framework/bin/run_bug_detection.pl: 2023-07-17 10:17:20  ######
+ - Executing test suite: Gson-4f-evosuite.1.tar.bz2
+ - Found 46 failing tests on buggy version: Gson-4f-evosuite.1.tar.bz2
+######  End executing test suites  /home/ubuntu/afonso/defects4j/framework/bin/run_bug_detection.pl: 2023-07-17 10:17:33  ######

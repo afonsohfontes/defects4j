@@ -1,0 +1,12 @@
+######  Start test generation  /home/ubuntu/afonso/defects4j/framework/bin/gen_tests.pl: 2023-07-18 19:25:56  ######
+Mode: regression
+Parameters:
+ -g evosuite
+ -p Gson
+ -v 8f
+ -n 1
+ -b 300
+ -c /home/ubuntu/afonso/defects4j/framework/projects/Gson/modified_classes/8.src
+ -s 1008
+Test generator (evosuite) did not generate any tests!
+######  End test generation  /home/ubuntu/afonso/defects4j/framework/bin/gen_tests.pl: 2023-07-18 19:31:12  ######
