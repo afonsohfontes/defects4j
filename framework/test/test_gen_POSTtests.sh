@@ -76,7 +76,7 @@ LOG="$TEST_DIR/${script_name}$(printf '_%s_%s' $PID $$).log"
 HALT_ON_ERROR=0
 
 work_dir="$TMP_DIR/$PID"
-mkdir -p $work_dir
+##mkdir -p $work_dir
 
 # Clean working directory
 rm -rf "$work_dir/*"
@@ -96,13 +96,13 @@ maxTrials=1
 DIR="$BASE_DIR/framework/test/Experiments/data/$PID"
 if [ -d "$DIR" ];
 then
-  rm -rf "$DIR"_old
-  mkdir "$DIR"_old
-  mv "$DIR" "$DIR"_old
-  rm -rf "$DIR"
-  mkdir $DIR
+  #rm -rf "$DIR"_old
+  #mkdir "$DIR"_old
+  #mv "$DIR" "$DIR"_old
+  #rm -rf "$DIR"
+  #mkdir $DIR
 else
-  mkdir $DIR
+  #mkdir $DIR
 fi
 
 for (( trial=1; trial<=$trials; trial++ )) do
@@ -126,14 +126,14 @@ for (( trial=1; trial<=$trials; trial++ )) do
         then
           echo ""
         else
-        	mkdir $DIR
+        	#mkdir $DIR
         fi
         DIR=$name/$PID/$bid/budget_$budget
         if [ -d "$DIR" ];
         then
           echo ""
         else
-        	mkdir $DIR
+        	#mkdir $DIR
         fi
 
         DIR=$name/$PID/$bid/budget_$budget/trial_$trial/
@@ -141,30 +141,30 @@ for (( trial=1; trial<=$trials; trial++ )) do
         then
           echo ""
         else
-        	mkdir $DIR
-        	mkdir $DIR/images
-        	mkdir $DIR/images/branch
-        	mkdir $DIR/summaries
-        	mkdir $DIR/generationData
-        	mkdir $DIR/generationData/BRANCH
-        	mkdir $DIR/generationData/BRANCH_EXCEPTION
-        	mkdir $DIR/generationData/BRANCH_EXECUTIONTIME
-        	mkdir $DIR/generationData/BRANCH_PRIVATEMETHOD
-        	mkdir $DIR/generationData/EXCEPTION
-        	mkdir $DIR/generationData/PRIVATEMETHOD
-        	mkdir $DIR/generationData/EXECUTIONTIME
-        	mkdir $DIR/generationData/BRANCH/tests
-        	mkdir $DIR/generationData/BRANCH_EXCEPTION/tests
-        	mkdir $DIR/generationData/EXECUTIONTIME/tests
-        	mkdir $DIR/generationData/BRANCH_PRIVATEMETHOD/tests
-        	mkdir $DIR/generationData/EXCEPTION/tests
-        	mkdir $DIR/generationData/PRIVATEMETHOD/tests
-        	mkdir $DIR/generationData/EXECUTIONTIME/tests
+        	#mkdir $DIR
+        	#mkdir $DIR/images
+        	#mkdir $DIR/images/branch
+        	#mkdir $DIR/summaries
+        	#mkdir $DIR/generationData
+        	#mkdir $DIR/generationData/BRANCH
+        	#mkdir $DIR/generationData/BRANCH_EXCEPTION
+        	#mkdir $DIR/generationData/BRANCH_EXECUTIONTIME
+        	#mkdir $DIR/generationData/BRANCH_PRIVATEMETHOD
+        	#mkdir $DIR/generationData/EXCEPTION
+        	#mkdir $DIR/generationData/PRIVATEMETHOD
+        	#mkdir $DIR/generationData/EXECUTIONTIME
+        	#mkdir $DIR/generationData/BRANCH/tests
+        	#mkdir $DIR/generationData/BRANCH_EXCEPTION/tests
+        	#mkdir $DIR/generationData/EXECUTIONTIME/tests
+        	#mkdir $DIR/generationData/BRANCH_PRIVATEMETHOD/tests
+        	#mkdir $DIR/generationData/EXCEPTION/tests
+        	#mkdir $DIR/generationData/PRIVATEMETHOD/tests
+        	#mkdir $DIR/generationData/EXECUTIONTIME/tests
         fi
 
-        #mkdir $name$PID-bug_$bid-budget_$budget-trial_$trial
-        #mkdir $name$PID-bug_$bid-budget_$budget-trial_$trial/images
-        #mkdir $name$PID-bug_$bid-budget_$budget-trial_$trial/summaries
+        ##mkdir $name$PID-bug_$bid-budget_$budget-trial_$trial
+        ##mkdir $name$PID-bug_$bid-budget_$budget-trial_$trial/images
+        #mkdir# $name$PID-bug_$bid-budget_$budget-trial_$trial/summaries
 
 
         i=0
@@ -173,7 +173,7 @@ for (( trial=1; trial<=$trials; trial++ )) do
           i=$(($i+1))
           cp "$name"results.csv "$dest".csv
           resultsData="$dest".csv
-          python3 csvInit.py -f $resultsData -b $bid -p $PID
+          #python3 csvInit.py -f $resultsData -b $bid -p $PID
         done
         abstractPath="$BASE_DIR/framework/test/Experiments/data/$PID/$bid/budget_$budget/trial_$trial/results-Class_"
         #"-f <path to file> -c <column name> -v <value> -r <row (criterion)> -p <project name> -b <bug name>"
@@ -191,12 +191,12 @@ for (( trial=1; trial<=$trials; trial++ )) do
               testsD="$BASE_DIR/framework/test/Experiments/data/$PID/$bid/budget_$budget/trial_$trial/generationData/${criterion/:/_}/"
               OUTd="$BASE_DIR/framework/test/Experiments/data/$PID/$bid/budget_$budget/trial_$trial/generationData/${criterion/:/_}/$PID/evosuite/1/"
               suite_dir=$OUTd
-              gen_tests.pl -g "$tool" -p "$PID" -v "$vid" -n 1 -o "$testsD" -b "$budget" -c "$target_classes" -C "$criterion" 2>&1 | tee -a "$testsD/1-EvoTranscription.log"
+              #gen_tests.pl -g "$tool" -p "$PID" -v "$vid" -n 1 -o "$testsD" -b "$budget" -c "$target_classes" -C "$criterion" 2>&1 | tee -a "$testsD/1-EvoTranscription.log"
 
-              mv evosuite-report/statistics.csv "$testsD"
-              #echo "--- PARSING RESULTS ---"
-              #resultsEvo="$testsD/statistics.csv"
-              #python3 CSVParser.py -f "$resultsEvo" -o "$abstractPath" -c "$criterion" -i "$i" 2>&1 | tee -a "$testsD/2-ParserTranscription.log"
+              #mv evosuite-report/statistics.csv "$testsD"
+              echo "--- PARSING RESULTS ---"
+              resultsEvo="$testsD/statistics.csv"
+              python3 CSVParser.py -f "$resultsEvo" -o "$abstractPath" -c "$criterion" -i "$i" 2>&1 | tee -a "$testsD/2-ParserTranscription.log"
               #if [ $? -eq 0 ]; then
               #    echo "Generation succeeded"
               #else
@@ -211,15 +211,15 @@ for (( trial=1; trial<=$trials; trial++ )) do
               #fi
 
               echo ""
-              echo "If any tests are broken, they need to be removed until all tests PASS."
-              echo "This removal is done running them against the fully functional version of the SUT"
+              #echo "If any tests are broken, they need to be removed until all tests PASS."
+              #echo "This removal is done running them against the fully functional version of the SUT"
               # "/home/afonso/IdeaProjects/defects4j/framework/test/Experiments/data/Math/14/budget_180/trial_1/generationData/BRANCH/tests/suite_num
-              fix_test_suite.pl -p $PID -d "$suite_dir" || die "fix test suite"
+              #fix_test_suite.pl -p $PID -d "$suite_dir" || die "fix test suite"
 
-              echo ""
-              echo "Inserting the bugs and running the test suite and determine bug detection"
+              #echo ""
+              #echo "Inserting the bugs and running the test suite and determine bug detection"
 
-              run_bug_detection.pl -a "$abstractPath" -p $PID -d "$suite_dir" -o "$name/logs" -i "$i" -c "$criterion"
+              #run_bug_detection.pl -a "$abstractPath" -p $PID -d "$suite_dir" -o "$name/logs" -i "$i" -c "$criterion"
 
 
               #echo ""
@@ -231,7 +231,7 @@ for (( trial=1; trial<=$trials; trial++ )) do
               #test_coverage $PID "$suite_dir" 0
 
               #echo "Removing the folders created"
-              rm -rf $work_dir/$tool
+              #rm -rf $work_dir/$tool
             done
         #done
 
