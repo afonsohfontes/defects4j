@@ -181,7 +181,7 @@ def myfunc(argv):
                     s = str(OnlyBranchBitstringTimeline[j])
                     coveredOnlyBranches = sum(float(ii) for ii in s)
                     OnlyBranchCoverageTimeline = np.append(OnlyBranchCoverageTimeline, float(coveredOnlyBranches)
-                                                       / float(totalOnlyBranches))
+                                                           / float(totalOnlyBranches))
                 except:
                     OnlyBranchCoverageTimeline = np.append(OnlyBranchCoverageTimeline, 0)
                 OnlyBranchCoverageTimeline_x = np.append(OnlyBranchCoverageTimeline_x, OnlyBranchCoverageTimeline_i)
@@ -449,12 +449,12 @@ def myfunc(argv):
                             if int(str(BranchBitstringTimeline[1][i][j])) > 0:
                                 d[i - 1].append(((j + 1) * int(str(BranchBitstringTimeline[1][i][j]))))
                             #else:
-                                #z[i - 1].append((j + 1))
+                            #z[i - 1].append((j + 1))
                         except:
                             if int(str(BranchBitstringTimeline[1][i])) > 0:
                                 d[i - 1].append(((j + 1) * int(str(BranchBitstringTimeline[1][i]))))
                             #else:
-                                #z[i - 1].append((j + 1))
+                            #z[i - 1].append((j + 1))
 
                 d.append([])
                 z.append([])
