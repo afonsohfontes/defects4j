@@ -8,3 +8,7 @@ project_repos/*
 !project_repos/get_repos.sh
 major/
 work/
+/framework/test/Experiments/data/Chart/
+/framework/test/Experiments/data/Compress/
+/framework/test/Experiments/data/Gson/
+/framework/test/Experiments/data/logs/

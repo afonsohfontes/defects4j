@@ -236,17 +236,17 @@ def myfunc(argv):
             row = 99
             if arg_c=="BRANCH":
                 row=0
-            elif arg_c=="PRIVATEMETHOD":
-                row=1
-            elif arg_c=="EXCEPTION":
-                row=2
             elif arg_c=="BRANCH:PRIVATEMETHOD":
-                row=3
+                row=1
             elif arg_c=="BRANCH:EXCEPTION":
-                row=4
+                row=2
             elif arg_c=="BRANCH:EXECUTIONTIME":
-                row=5
+                row=3
             elif arg_c=="EXECUTIONTIME":
+                row=4
+            elif arg_c=="PRIVATEMETHOD":
+                row=5
+            elif arg_c=="EXCEPTION":
                 row=6
             if row<7:
 

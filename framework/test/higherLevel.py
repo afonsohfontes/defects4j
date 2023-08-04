@@ -1,0 +1,169 @@
+import os
+import pandas as pd
+import datetime
+import re
+
+def extract_test_info(file_path):
+    # Define the regex pattern to find the desired text
+    pattern = r"Generated (\d+) tests with total length (\d+)"
+    pattern2 = r'-criterion=([^ \n]+)'
+    # Initialize variables to store the results
+    tests_generated_list = []
+    total_length_list = []
+    criterion = ""
+    # Read the log file
+    with open(file_path, 'r') as file:
+        for line in file:
+            # Search for the pattern in each line
+            matches = re.findall(pattern, line)
+            for match in matches:
+                tests_generated_list.append(int(match[0]))
+                total_length_list.append(int(match[1]))
+            matches = re.findall(pattern2, line)
+            for match in matches:
+                if match == "BRANCH:EXCEPTION":
+                    criterion = "BRANCH:EXCEPTION"
+                if match == "BRANCH":
+                    criterion = "BRANCH"
+                if match == "BRANCH:EXECUTIONTIME":
+                    criterion = "BRANCH:EXECUTIONTIME"
+                if match == "BRANCH:PRIVATEMETHOD":
+                    criterion = "BRANCH:PRIVATEMETHOD"
+
+
+    tests_average = "no data"
+    length_average = "no data"
+    if len(tests_generated_list) > 0:
+        tests_average = sum(tests_generated_list) / len(tests_generated_list)
+    if len(total_length_list) > 0 and tests_average > 0:
+        length_average = sum(total_length_list) / len(total_length_list)
+
+    return tests_average, length_average, criterion
+
+def process_folders(root_dir, output_file):
+    output = pd.read_csv(output_file)
+
+    newRow = pd.DataFrame({
+        "Project": ["no data"],
+        "Bug": ["no data"],
+        "Class_nr": ["no data"],
+        "Budget": ["no data"],
+        "Trial": ["no data"],
+        "Criterion": ["no data"],
+        "Failing_tests": ["no data"],
+        "Branch_Cov": ["no data"],
+        "Nr_test_cases": ["no data"],
+        "Test_suite_length": ["no data"],
+        "Private_Methods": ["no data"],
+        "Private_Method_Covered": ["no data"],
+        "Exception_thrown": ["no data"],
+        "Execution_Time": ["no data"],
+    })
+    for foldername, subfolders, filenames in os.walk(root_dir):
+        for filename in filenames:
+            if foldername != "logs" and ".csv" in filename and "statistics" not in filename and "Class" in filename:
+                # print("folder name:", foldername.replace(root_dir,'').split("/"))
+                # project = foldername.replace(root_dir,'').split("/")[0]
+                # bug = foldername.replace(root_dir,'').split("/")[1]
+                budget = foldername.replace(root_dir, '').split("/")[2].replace("budget_", "")
+                trial = foldername.replace(root_dir, '').split("/")[3].replace("trial_", "")
+                classNr = int(filename.replace("results-Class_", "").replace(".csv", "")) + 1
+                file_path = os.path.join(foldername, filename)
+                input = pd.read_csv(file_path)
+                for i in range(3):
+                    newRow.Project = input.Project[i]
+                    newRow.Bug = input.Bug[i]
+                    newRow.Criterion = input.criterion[i]
+                    newRow.Branch_Cov = input.BranchCoverage[i]
+                    if input.BranchCoverage[i] != "no data":
+                        log_path = str(foldername+"/generationData/"+str(input.criterion[i])+"/1-EvoTranscription.log")
+                        log_path = log_path.replace(":", "_")
+                        testsTemp, lengthTemp, _ = extract_test_info(log_path)
+                        newRow.Nr_test_cases = testsTemp
+                        newRow.Test_suite_length = lengthTemp
+                        if testsTemp == "no data":
+                            input.BranchCoverage[i] = "no data"
+                            newRow.Branch_Cov = "no data"
+                            input.to_csv(file_path, index=False)
+                            newRow.Private_Method_Covered = "no data"
+                            newRow.Exception_thrown = "no data"
+                        else:
+                            newRow.Private_Method_Covered = input.Covered_PrivateMethods[i]
+                            newRow.Exception_thrown = input.ExceptionsCovered[i]
+                    else:
+                        newRow.Private_Method_Covered = "no data"
+                        newRow.Nr_test_cases = "no data"
+                        newRow.Test_suite_length = "no data"
+                        newRow.Exception_thrown = "no data"
+                        newRow.Private_Methods = "no data"
+                    newRow.Class_nr = classNr
+                    newRow.Budget = budget
+                    newRow.Trial = trial
+                    newRow.Failing_tests = input.Bug_Detection[i]
+                    b = 0
+                    if input.Total_PrivateMethods[0] != "no data":
+                        if b < int(input.Total_PrivateMethods[0]):
+                            b = int(input.Total_PrivateMethods[0])
+                    if input.Total_PrivateMethods[1] != "no data":
+                        if b < int(input.Total_PrivateMethods[1]):
+                            b = int(input.Total_PrivateMethods[1])
+                    if input.Total_PrivateMethods[2] != "no data":
+                        if b < int(input.Total_PrivateMethods[2]):
+                            b = int(input.Total_PrivateMethods[2])
+                    newRow.Private_Methods = str(b)
+                    output = pd.concat([output, newRow])
+
+    str3 = output_file.replace("MODEL_","1-")
+    print(str3, "saved in ", root_dir.replace("/data", ""))
+    output.to_csv(root_dir.replace("/data", "")+str3, index=False)
+    return output
+
+def convert_to_numeric(df):
+    # Convert columns to numeric data types
+    numeric_cols = ['Failing_tests', 'Branch_Cov', 'Private_Method_Covered', 'Trial', 'Private_Methods',
+                    'Execution_Time', 'Exception_thrown', 'Nr_test_cases']
+    df[numeric_cols] = df[numeric_cols].apply(pd.to_numeric, errors='coerce')
+    return df
+
+if __name__ == "__main__":
+    project_root = "/Users/afonsofo/Desktop/defects4j/framework/test/Experiments/data/"
+    output_csv_format = "MODEL_everyTrialReport.csv"
+    rawOutput = process_folders(project_root, output_csv_format)
+    #rawOutput = pd.read_csv("/Users/afonsofo/Desktop/defects4j/framework/test/Experiments/data/everyTrialReport_2023731_12h44m.csv")
+    rawOutput.replace("no data", pd.NA, inplace=True)
+    rawOutput = convert_to_numeric(rawOutput)
+    #print(rawOutput.tail())
+    agg_functions = {
+        'Trial': 'max',
+        'Nr_test_cases': lambda x: round(x.mean(), 1),
+        'Test_suite_length': lambda x: round(x.mean(), 1),
+        'Failing_tests': lambda x: round(x.mean(), 1),
+        'Branch_Cov': lambda x: round(x.mean(), 5),
+        'Exception_thrown': lambda x: round(x.mean(), 1),
+        'Private_Methods': 'max',
+        'Private_Method_Covered': lambda x: round(x.mean(), 4),
+        'Execution_Time': lambda x: round(x.mean(), 1),
+    }
+
+    grouped_df = rawOutput.groupby(['Project', 'Bug', 'Budget', 'Class_nr', 'Criterion']).agg(agg_functions)
+    new_column_names = {
+        "Trial": "Trials",
+        "Private_Method_Covered": "Private_Methods_Covered"
+    }
+    grouped_df = grouped_df.rename(columns=new_column_names)
+    grouped_df.to_csv("/Users/afonsofo/Desktop/defects4j/framework/test/Experiments/2-allTrialsCompiled.csv", index=True)
+    agg_functions = {
+        'Trials': ['max', 'median'],
+        'Nr_test_cases': [lambda x: round(x.mean(), 1), lambda x: round(x.median(), 1)],
+        'Test_suite_length': [lambda x: round(x.mean(), 1), lambda x: round(x.median(), 1)],
+        'Failing_tests': [lambda x: round(x.mean(), 1), lambda x: round(x.median(), 1)],
+        'Branch_Cov': [lambda x: round(x.mean(), 5), lambda x: round(x.median(), 5)],
+        'Exception_thrown': [lambda x: round(x.mean(), 1), lambda x: round(x.median(), 1)],
+        'Private_Methods': [lambda x: round(x.mean(), 4), lambda x: round(x.median(), 4)],
+        'Private_Methods_Covered': [lambda x: round(x.mean(), 4), lambda x: round(x.median(), 4)],
+        'Execution_Time': [lambda x: round(x.mean(), 1), lambda x: round(x.median(), 1)],
+    }
+    higher_df = grouped_df.groupby(['Budget', 'Criterion']).agg(agg_functions)
+    column_to_exclude = 'Trials'
+    higher_df = higher_df.drop(columns=column_to_exclude)
+    higher_df.to_csv("/Users/afonsofo/Desktop/defects4j/framework/test/Experiments/3-experimentSummaryPerBudget.csv", index=True)
