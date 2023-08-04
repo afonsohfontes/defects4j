@@ -154,7 +154,7 @@ my %cmd_opts;
 getopts('g:p:v:o:n:b:c:s:t:C:O:ED', \%cmd_opts) or pod2usage(1);
 my $TOOL = $cmd_opts{g};
 my $CRITERION = $cmd_opts{C};
-my $EVO_OUTPUT = "ExecutionRawTimeFinal,ExecutionTimeCoverage,ExecutionTimeTimeline,BranchCoverageBitString,BranchBitstringTimeline,OnlyBranchCoverageBitString,OnlyBranchBitstringTimeline,PrivateMethodCoverageTimeline,PrivateMethodCoverageBitString,PrivateMethodBitstringTimeline,ExceptionCoverage,ExceptionCoverageBitString,ExceptionBitstringTimeline";
+my $EVO_OUTPUT = "ExecutionTimeCoverage,ExecutionTimeTimeline,BranchCoverageBitString,BranchBitstringTimeline,OnlyBranchCoverageBitString,OnlyBranchBitstringTimeline,PrivateMethodCoverageTimeline,PrivateMethodCoverageBitString,PrivateMethodBitstringTimeline,ExceptionCoverage,ExceptionCoverageBitString,ExceptionBitstringTimeline";
 
 
 
