@@ -1,6 +1,5 @@
 import os
 import pandas as pd
-import datetime
 import re
 
 def extract_test_info(file_path):
@@ -40,6 +39,37 @@ def extract_test_info(file_path):
 
     return tests_average, length_average, criterion
 
+def extract_execution_time(file_path):
+    with open(file_path, "r") as log_file:
+        lines = log_file.readlines()
+
+    # Find lines containing the relevant timestamps
+    start_line = None
+    end_line = None
+    for line in lines:
+        if "run_bug_detection.pl" in line:
+            if "Start executing" in line:
+                start_line = line
+            elif "End executing" in line:
+                end_line = line
+            if start_line and end_line:
+                break
+
+    start_timestamp_str = re.search(r'\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}', start_line).group()
+    end_timestamp_str = re.search(r'\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}', end_line).group()
+
+    start_timestamp = datetime.strptime(start_timestamp_str, "%Y-%m-%d %H:%M:%S")
+    end_timestamp = datetime.strptime(end_timestamp_str, "%Y-%m-%d %H:%M:%S")
+
+    # Check if the day changed in between and adjust end_timestamp if needed
+    if start_timestamp.day != end_timestamp.day:
+        end_timestamp += timedelta(days=1)
+
+    # Calculate the time difference in seconds
+    time_difference = (end_timestamp - start_timestamp).total_seconds()
+
+    return time_difference
+
 def process_folders(root_dir, output_file):
     output = pd.read_csv(output_file)
 
@@ -63,14 +93,14 @@ def process_folders(root_dir, output_file):
         for filename in filenames:
             if foldername != "logs" and ".csv" in filename and "statistics" not in filename and "Class" in filename:
                 # print("folder name:", foldername.replace(root_dir,'').split("/"))
-                # project = foldername.replace(root_dir,'').split("/")[0]
+                project = foldername.replace(root_dir,'').split("/")[0]
                 # bug = foldername.replace(root_dir,'').split("/")[1]
                 budget = foldername.replace(root_dir, '').split("/")[2].replace("budget_", "")
                 trial = foldername.replace(root_dir, '').split("/")[3].replace("trial_", "")
                 classNr = int(filename.replace("results-Class_", "").replace(".csv", "")) + 1
                 file_path = os.path.join(foldername, filename)
                 input = pd.read_csv(file_path)
-                for i in range(3):
+                for i in range(4):
                     newRow.Project = input.Project[i]
                     newRow.Bug = input.Bug[i]
                     newRow.Criterion = input.criterion[i]
@@ -90,6 +120,9 @@ def process_folders(root_dir, output_file):
                         else:
                             newRow.Private_Method_Covered = input.Covered_PrivateMethods[i]
                             newRow.Exception_thrown = input.ExceptionsCovered[i]
+                        log_path_et = str(foldername+"/generationData/"+str(input.criterion[i])+"/bug_detection_log/"+project+"/run_bug_detection.pl.log")
+                        log_path_et = log_path_et.replace(":", "_")
+                        newRow.Execution_Time = extract_execution_time(log_path_et)
                     else:
                         newRow.Private_Method_Covered = "no data"
                         newRow.Nr_test_cases = "no data"
@@ -112,6 +145,11 @@ def process_folders(root_dir, output_file):
                             b = int(input.Total_PrivateMethods[2])
                     newRow.Private_Methods = str(b)
                     output = pd.concat([output, newRow])
+    for foldername, subfolders, filenames in os.walk(root_dir):
+        for filename in filenames:
+            if "_old" not in foldername and "run_bug_detection.pl.log" in filename:
+                file_path = os.path.join(foldername, filename)
+                input = pd.read_csv(file_path)
 
     str3 = output_file.replace("MODEL_","1-")
     print(str3, "saved in ", root_dir.replace("/data", ""))

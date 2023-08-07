@@ -87,10 +87,9 @@ rm -rf "$work_dir/*"
 
 
 #criteria=("BRANCH:EXECUTIONTIME" "BRANCH" "BRANCH:EXCEPTION" "BRANCH:PRIVATEMETHOD" "EXCEPTION"  "PRIVATEMETHOD")
-criteria=("BRANCH" "BRANCH:EXCEPTION" "BRANCH:PRIVATEMETHOD" "BRANCH:EXECUTIONTIME") # "BRANCH:EXECUTIONTIME")
-budgets=(180 300)
-# 180 300 600)
-trials=10
+criteria=("BRANCH:EXECUTIONTIME") # "BRANCH" "BRANCH:EXCEPTION" "BRANCH:PRIVATEMETHOD" "BRANCH:EXECUTIONTIME") # "BRANCH:EXECUTIONTIME")
+budgets=(30) # 180 300)
+trials=1 #10
 maxTrials=1
 
 DIR="$BASE_DIR/framework/test/Experiments/data/$PID"
@@ -219,7 +218,7 @@ for (( trial=1; trial<=$trials; trial++ )) do
               echo ""
               echo "Inserting the bugs and running the test suite and determine bug detection"
 
-              run_bug_detection.pl -a "$abstractPath" -p $PID -d "$suite_dir" -o "$name/logs" -i "$i" -c "$criterion"
+              run_bug_detection.pl -a "$abstractPath" -p $PID -d "$suite_dir" -o "$testsD" -i "$i" -c "$criterion"
 
 
               #echo ""
