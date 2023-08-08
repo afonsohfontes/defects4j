@@ -12,3 +12,8 @@ work/
 /framework/test/Experiments/data/Compress/
 /framework/test/Experiments/data/Gson/
 /framework/test/Experiments/data/logs/
+/framework/Experiments/Gson/
+/framework/Experiments/Gson_old/
+/framework/Experiments/JacksonCore/
+/framework/Experiments/logs/
+/framework/Experiments/Math/
