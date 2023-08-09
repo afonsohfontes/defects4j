@@ -89,7 +89,7 @@ rm -rf "$work_dir/*"
 #criteria=("BRANCH:EXECUTIONTIME" "BRANCH" "BRANCH:EXCEPTION" "BRANCH:PRIVATEMETHOD" "EXCEPTION"  "PRIVATEMETHOD")
 criteria=("BRANCH" "BRANCH:EXCEPTION" "BRANCH:PRIVATEMETHOD" "BRANCH:EXECUTIONTIME") # "BRANCH:EXECUTIONTIME")
 budgets=(180 300)
-trials=3
+trials=10
 maxTrials=1
 
 DIR="$BASE_DIR/framework/test/Experiments/data/$PID"
@@ -193,9 +193,9 @@ for (( trial=1; trial<=$trials; trial++ )) do
               gen_tests.pl -g "$tool" -p "$PID" -v "$vid" -n 1 -o "$testsD" -b "$budget" -c "$target_classes" -C "$criterion" 2>&1 | tee -a "$testsD/1-EvoTranscription.log"
 
               mv evosuite-report/statistics.csv "$testsD"
-              #echo "--- PARSING RESULTS ---"
-              #resultsEvo="$testsD/statistics.csv"
-              #python3 CSVParser.py -f "$resultsEvo" -o "$abstractPath" -c "$criterion" -i "$i" 2>&1 | tee -a "$testsD/2-ParserTranscription.log"
+              echo "--- PARSING RESULTS ---"
+              resultsEvo="$testsD/statistics.csv"
+              python3 CSVParser.py -f "$resultsEvo" -o "$abstractPath" -c "$criterion" -i "$i" 2>&1 | tee -a "$testsD/2-ParserTranscription.log"
               #if [ $? -eq 0 ]; then
               #    echo "Generation succeeded"
               #else
