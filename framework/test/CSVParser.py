@@ -397,9 +397,9 @@ def myfunc(argv):
                 OnlyBranchCoverageTimeline[1] = np.append(OnlyBranchCoverageTimeline[1], Onlybranch_cov)
 
 
-                plt.plot(BranchCoverageTimeline[0], BranchCoverageTimeline[1], color="black", label="Branch",
+                #plt.plot(BranchCoverageTimeline[0], BranchCoverageTimeline[1], color="black", label="Branch",
                          linestyle="-")
-                plt.plot(OnlyBranchCoverageTimeline[0], OnlyBranchCoverageTimeline[1], color="green", label="OnlyBranch",
+                # plt.plot(OnlyBranchCoverageTimeline[0], OnlyBranchCoverageTimeline[1], color="green", label="OnlyBranch",
                          linestyle="--")
                 #plt.plot(PrivateMethodCoverageTimeline[0], PrivateMethodCoverageTimeline[1], color="cyan",
                 #         label="Private Method", linestyle="--")
@@ -407,13 +407,13 @@ def myfunc(argv):
                 #         linestyle=":")
                 #plt.plot(ExecutionTimeFitnessTimeline[0], ExecutionTimeFitnessTimeline[1], color="magenta", label="Execution Time",
                 #         linestyle=":")
-                plt.legend()
-                b = "-{}-CoverageTimelines(w-OB).png".format(arg_c)
-                a = str3.replace(".csv", b)
-                a = a.replace("results-", "images/")
-                plt.savefig(a)
-                #plt.show()
-                plt.clf()
+                #plt.legend()
+                #b = "-{}-CoverageTimelines(w-OB).png".format(arg_c)
+                #a = str3.replace(".csv", b)
+                #a = a.replace("results-", "images/")
+                #plt.savefig(a)
+                ## plt.show()
+                #plt.clf()
 
                 plt.plot(BranchCoverageTimeline[0], BranchCoverageTimeline[1], color="black", label="Branch",
                          linestyle="-")
