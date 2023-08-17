@@ -1,6 +1,7 @@
 import os
 import pandas as pd
 import re
+from datetime import datetime, timedelta
 
 def extract_test_info(file_path):
     # Define the regex pattern to find the desired text
@@ -40,6 +41,10 @@ def extract_test_info(file_path):
     return tests_average, length_average, criterion
 
 def extract_execution_time(file_path):
+
+    if not os.path.exists(file_path):
+        return "no data"
+
     with open(file_path, "r") as log_file:
         lines = log_file.readlines()
 
