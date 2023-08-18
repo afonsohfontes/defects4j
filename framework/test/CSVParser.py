@@ -54,20 +54,30 @@ def myfunc(argv):
 
         for class_i in range(int(arg_i)):
             row = 99
+           # if arg_c=="BRANCH":
+           #     row=0
+           # elif arg_c=="PRIVATEMETHOD":
+           #     row=1
+           # elif arg_c=="EXCEPTION":
+           #     row=2
+           # elif arg_c=="BRANCH:PRIVATEMETHOD":
+           #     row=3
+           # elif arg_c=="BRANCH:EXCEPTION":
+           #     row=4
+           # elif arg_c=="BRANCH:EXECUTIONTIME":
+           #     row=5
+           # elif arg_c=="EXECUTIONTIME":
+           #     row=6
+
             if arg_c=="BRANCH":
                 row=0
-            elif arg_c=="PRIVATEMETHOD":
-                row=1
-            elif arg_c=="EXCEPTION":
-                row=2
             elif arg_c=="BRANCH:PRIVATEMETHOD":
-                row=3
+                row=1 #3
             elif arg_c=="BRANCH:EXCEPTION":
-                row=4
+                row=2 #4
             elif arg_c=="BRANCH:EXECUTIONTIME":
-                row=5
-            elif arg_c=="EXECUTIONTIME":
-                row=6
+                row=3 #5
+
             if row<7 and int(arg_b) > 0:
                 str1 = arg_o
                 str2 = "{}.csv".format(class_i)
@@ -242,12 +252,12 @@ def myfunc(argv):
                 row=2
             elif arg_c=="BRANCH:EXECUTIONTIME":
                 row=3
-            elif arg_c=="EXECUTIONTIME":
-                row=4
-            elif arg_c=="PRIVATEMETHOD":
-                row=5
-            elif arg_c=="EXCEPTION":
-                row=6
+            #elif arg_c=="EXECUTIONTIME":
+            #    row=4
+            #elif arg_c=="PRIVATEMETHOD":
+            #    row=5
+            #elif arg_c=="EXCEPTION":
+            #    row=6
             if row<7:
 
                 try:
@@ -398,9 +408,9 @@ def myfunc(argv):
 
 
                 #plt.plot(BranchCoverageTimeline[0], BranchCoverageTimeline[1], color="black", label="Branch",
-                         linestyle="-")
+                         #linestyle="-")
                 # plt.plot(OnlyBranchCoverageTimeline[0], OnlyBranchCoverageTimeline[1], color="green", label="OnlyBranch",
-                         linestyle="--")
+                         #linestyle="--")
                 #plt.plot(PrivateMethodCoverageTimeline[0], PrivateMethodCoverageTimeline[1], color="cyan",
                 #         label="Private Method", linestyle="--")
                 #plt.plot(ExceptionCoverageTimeline[0], ExceptionCoverageTimeline[1], color="red", label="Exception",

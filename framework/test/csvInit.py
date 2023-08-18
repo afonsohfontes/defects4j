@@ -74,13 +74,13 @@ def myfunc(argv):
         row=2
     elif arg_c=="BRANCH:EXECUTIONTIME":
         row=3
-    elif arg_c=="EXECUTIONTIME":
-        row=4
-    elif arg_c=="PRIVATEMETHOD":
-        row=5
-    elif arg_c=="EXCEPTION":
-        row=6
-    if row<7:
+    #elif arg_c=="EXECUTIONTIME":
+    #    row=4
+    #elif arg_c=="PRIVATEMETHOD":
+    #    row=5
+    #elif arg_c=="EXCEPTION":
+    #    row=6
+    if row < 7:
         if arg_r=="Bug_Detection":
             df.Bug_Detection[row] = arg_value
         if arg_r=="Total_Banches":

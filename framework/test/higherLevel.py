@@ -4,13 +4,14 @@ import re
 from datetime import datetime, timedelta
 
 def extract_test_info(file_path):
+    if not os.path.exists(file_path):
+        return "no data", "no data"
     # Define the regex pattern to find the desired text
     pattern = r"Generated (\d+) tests with total length (\d+)"
     pattern2 = r'-criterion=([^ \n]+)'
     # Initialize variables to store the results
     tests_generated_list = []
     total_length_list = []
-    criterion = ""
     # Read the log file
     with open(file_path, 'r') as file:
         for line in file:
@@ -20,15 +21,6 @@ def extract_test_info(file_path):
                 tests_generated_list.append(int(match[0]))
                 total_length_list.append(int(match[1]))
             matches = re.findall(pattern2, line)
-            for match in matches:
-                if match == "BRANCH:EXCEPTION":
-                    criterion = "BRANCH:EXCEPTION"
-                if match == "BRANCH":
-                    criterion = "BRANCH"
-                if match == "BRANCH:EXECUTIONTIME":
-                    criterion = "BRANCH:EXECUTIONTIME"
-                if match == "BRANCH:PRIVATEMETHOD":
-                    criterion = "BRANCH:PRIVATEMETHOD"
 
 
     tests_average = "no data"
@@ -38,7 +30,7 @@ def extract_test_info(file_path):
     if len(total_length_list) > 0 and tests_average > 0:
         length_average = sum(total_length_list) / len(total_length_list)
 
-    return tests_average, length_average, criterion
+    return tests_average, length_average
 
 def extract_execution_time(file_path):
 
@@ -48,15 +40,22 @@ def extract_execution_time(file_path):
     with open(file_path, "r") as log_file:
         lines = log_file.readlines()
 
-    # Find lines containing the relevant timestamps
-    start_line = None
-    end_line = None
+    # Find lines containing the relevant timestamps and failing tests count
+    start_line = ""
+    end_line = ""
+    failing_tests_count = 0  # Initialize the variable to track failing tests
+
     for line in lines:
         if "run_bug_detection.pl" in line:
             if "Start executing" in line:
                 start_line = line
             elif "End executing" in line:
                 end_line = line
+            elif "- Found" in line and "failing tests" in line and "on buggy version" in line:
+                match = re.search(r'(\d+) failing tests', line)
+                if match:
+                    failing_tests_count = int(match.group(1))
+
             if start_line and end_line:
                 break
 
@@ -78,22 +77,6 @@ def extract_execution_time(file_path):
 def process_folders(root_dir, output_file):
     output = pd.read_csv(output_file)
 
-    newRow = pd.DataFrame({
-        "Project": ["no data"],
-        "Bug": ["no data"],
-        "Class_nr": ["no data"],
-        "Budget": ["no data"],
-        "Trial": ["no data"],
-        "Criterion": ["no data"],
-        "Failing_tests": ["no data"],
-        "Branch_Cov": ["no data"],
-        "Nr_test_cases": ["no data"],
-        "Test_suite_length": ["no data"],
-        "Private_Methods": ["no data"],
-        "Private_Method_Covered": ["no data"],
-        "Exception_thrown": ["no data"],
-        "Execution_Time": ["no data"],
-    })
     for foldername, subfolders, filenames in os.walk(root_dir):
         for filename in filenames:
             if foldername != "logs" and ".csv" in filename and "statistics" not in filename and "Class" in filename:
@@ -106,14 +89,31 @@ def process_folders(root_dir, output_file):
                 file_path = os.path.join(foldername, filename)
                 input = pd.read_csv(file_path)
                 for i in range(4):
+                    newRow = pd.DataFrame({
+                        "Project": ["no data"],
+                        "Bug": ["no data"],
+                        "Class_nr": ["no data"],
+                        "Budget": ["no data"],
+                        "Generation_success": [0],
+                        "Trial": ["no data"],
+                        "Criterion": ["no data"],
+                        "Failing_tests": ["no data"],
+                        "Branch_Cov": ["no data"],
+                        "Nr_test_cases": ["no data"],
+                        "Test_suite_length": ["no data"],
+                        "Private_Methods": ["no data"],
+                        "Private_Method_Covered": ["no data"],
+                        "Exception_thrown": ["no data"],
+                        "Execution_Time": ["no data"],
+                    })
                     newRow.Project = input.Project[i]
                     newRow.Bug = input.Bug[i]
                     newRow.Criterion = input.criterion[i]
                     newRow.Branch_Cov = input.BranchCoverage[i]
-                    if input.BranchCoverage[i] != "no data":
+                    if str(input.BranchCoverage[i]) != "no data":
                         log_path = str(foldername+"/generationData/"+str(input.criterion[i])+"/1-EvoTranscription.log")
                         log_path = log_path.replace(":", "_")
-                        testsTemp, lengthTemp, _ = extract_test_info(log_path)
+                        testsTemp, lengthTemp = extract_test_info(log_path)
                         newRow.Nr_test_cases = testsTemp
                         newRow.Test_suite_length = lengthTemp
                         if testsTemp == "no data":
@@ -128,6 +128,12 @@ def process_folders(root_dir, output_file):
                         log_path_et = str(foldername+"/generationData/"+str(input.criterion[i])+"/bug_detection_log/"+project+"/run_bug_detection.pl.log")
                         log_path_et = log_path_et.replace(":", "_")
                         newRow.Execution_Time = extract_execution_time(log_path_et)
+                        if "no data" not in str(newRow.Execution_Time):
+                            if float(newRow.Execution_Time) > 0:
+                                newRow.Generation_success = str(1)
+                                # print(log_path_et + '  --has--:  ' + str(input.BranchCoverage[i]))
+                            else:
+                                newRow.Generation_success = str(0)
                     else:
                         newRow.Private_Method_Covered = "no data"
                         newRow.Nr_test_cases = "no data"
@@ -164,7 +170,7 @@ def process_folders(root_dir, output_file):
 def convert_to_numeric(df):
     # Convert columns to numeric data types
     numeric_cols = ['Failing_tests', 'Branch_Cov', 'Private_Method_Covered', 'Trial', 'Private_Methods',
-                    'Execution_Time', 'Exception_thrown', 'Nr_test_cases']
+                    'Execution_Time', 'Exception_thrown', 'Nr_test_cases', 'Generation_success']
     df[numeric_cols] = df[numeric_cols].apply(pd.to_numeric, errors='coerce')
     return df
 
@@ -186,6 +192,7 @@ if __name__ == "__main__":
         'Private_Methods': 'max',
         'Private_Method_Covered': lambda x: round(x.mean(), 4),
         'Execution_Time': lambda x: round(x.mean(), 1),
+        'Generation_success': lambda x: round(x.mean(), 4),
     }
 
     grouped_df = rawOutput.groupby(['Project', 'Bug', 'Budget', 'Class_nr', 'Criterion']).agg(agg_functions)
@@ -197,14 +204,23 @@ if __name__ == "__main__":
     grouped_df.to_csv("/Users/afonsofo/Desktop/defects4j/framework/test/Experiments/2-allTrialsCompiled.csv", index=True)
     agg_functions = {
         'Trials': ['max', 'median'],
-        'Nr_test_cases': [lambda x: round(x.mean(), 1), lambda x: round(x.median(), 1)],
-        'Test_suite_length': [lambda x: round(x.mean(), 1), lambda x: round(x.median(), 1)],
-        'Failing_tests': [lambda x: round(x.mean(), 1), lambda x: round(x.median(), 1)],
-        'Branch_Cov': [lambda x: round(x.mean(), 5), lambda x: round(x.median(), 5)],
-        'Exception_thrown': [lambda x: round(x.mean(), 1), lambda x: round(x.median(), 1)],
-        'Private_Methods': [lambda x: round(x.mean(), 4), lambda x: round(x.median(), 4)],
-        'Private_Methods_Covered': [lambda x: round(x.mean(), 4), lambda x: round(x.median(), 4)],
-        'Execution_Time': [lambda x: round(x.mean(), 1), lambda x: round(x.median(), 1)],
+       # 'Nr_test_cases': [lambda x: round(x.mean(), 1), lambda x: round(x.median(), 1)],
+       # 'Test_suite_length': [lambda x: round(x.mean(), 1), lambda x: round(x.median(), 1)],
+       # 'Failing_tests': [lambda x: round(x.mean(), 1), lambda x: round(x.median(), 1)],
+       # 'Branch_Cov': [lambda x: round(x.mean(), 5), lambda x: round(x.median(), 5)],
+       # 'Exception_thrown': [lambda x: round(x.mean(), 1), lambda x: round(x.median(), 1)],
+       # 'Private_Methods': [lambda x: round(x.mean(), 4), lambda x: round(x.median(), 4)],
+       # 'Private_Methods_Covered': [lambda x: round(x.mean(), 4), lambda x: round(x.median(), 4)],
+       # 'Execution_Time': [lambda x: round(x.mean(), 1), lambda x: round(x.median(), 1)],
+        'Nr_test_cases': lambda x: round(x.mean(), 1),
+        'Test_suite_length': lambda x: round(x.mean(), 1),
+        'Failing_tests': lambda x: round(x.mean(), 1),
+        'Branch_Cov': lambda x: round(x.mean(), 5),
+        'Exception_thrown': lambda x: round(x.mean(), 1),
+        'Private_Methods': lambda x: round(x.mean(), 4),
+        'Private_Methods_Covered': lambda x: round(x.mean(), 4),
+        'Execution_Time': lambda x: round(x.mean(), 1),
+        'Generation_success': lambda x: round(x.mean(), 4),
     }
     higher_df = grouped_df.groupby(['Budget', 'Criterion']).agg(agg_functions)
     column_to_exclude = 'Trials'

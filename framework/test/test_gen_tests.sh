@@ -174,6 +174,7 @@ for (( trial=1; trial<=$trials; trial++ )) do
           resultsData="$dest".csv
           python3 csvInit.py -f $resultsData -b $bid -p $PID
         done
+
         abstractPath="$BASE_DIR/framework/test/Experiments/data/$PID/$bid/budget_$budget/trial_$trial/results-Class_"
         #"-f <path to file> -c <column name> -v <value> -r <row (criterion)> -p <project name> -b <bug name>"
         #python3 csvInit.py -f $resultsData -c "Bug_Detection" -v 1 -r "BRANCH"
