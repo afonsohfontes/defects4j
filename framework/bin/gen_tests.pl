@@ -159,7 +159,7 @@ my $CRITERION = $cmd_opts{C};
 #my $EVO_OUTPUT = "BranchCoverageBitString,BranchBitstringTimeline,OnlyBranchCoverageBitString,OnlyBranchBitstringTimeline,PrivateMethodCoverageTimeline,PrivateMethodCoverageBitString,PrivateMethodBitstringTimeline,ExceptionCoverage,ExceptionCoverageBitString,ExceptionBitstringTimeline";
 my $EVO_OUTPUT = "BranchCoverageBitString"
 if ($CRITERION ne "BRANCH") {
-    $EVO_OUTPUT = "ExceptionCoverage"
+    my $EVO_OUTPUT = "ExceptionCoverage"
 }
 
 #if ((index($CRITERION, "PRIVATEMETHOD") != -1) or (index($CRITERION, "privatemethod") != -1) or (index($CRITERION, "PrivateMethod") != -1)) {
