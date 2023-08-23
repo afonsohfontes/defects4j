@@ -156,7 +156,8 @@ my $TOOL = $cmd_opts{g};
 my $CRITERION = $cmd_opts{C};
 #my $EVO_OUTPUT = "ExecutionTimeCoverage,BranchCoverageBitString,BranchBitstringTimeline,OnlyBranchCoverageBitString,OnlyBranchBitstringTimeline,PrivateMethodCoverageTimeline,PrivateMethodCoverageBitString,PrivateMethodBitstringTimeline,ExceptionCoverage,ExceptionCoverageBitString,ExceptionBitstringTimeline";
 #my $EVO_OUTPUT = "BranchCoverageBitString,BranchBitstringTimeline,PrivateMethodCoverageTimeline,PrivateMethodCoverageBitString,PrivateMethodBitstringTimeline,ExceptionCoverage,ExceptionCoverageBitString,ExceptionBitstringTimeline";
-my $EVO_OUTPUT = "BranchCoverageBitString,BranchBitstringTimeline,OnlyBranchCoverageBitString,OnlyBranchBitstringTimeline,PrivateMethodCoverageTimeline,PrivateMethodCoverageBitString,PrivateMethodBitstringTimeline,ExceptionCoverage,ExceptionCoverageBitString,ExceptionBitstringTimeline";
+#my $EVO_OUTPUT = "BranchCoverageBitString,BranchBitstringTimeline,OnlyBranchCoverageBitString,OnlyBranchBitstringTimeline,PrivateMethodCoverageTimeline,PrivateMethodCoverageBitString,PrivateMethodBitstringTimeline,ExceptionCoverage,ExceptionCoverageBitString,ExceptionBitstringTimeline";
+my $EVO_OUTPUT = "BranchCoverageBitString,ExceptionCoverage,ExceptionCoverageBitString";
 
 
 #if ((index($CRITERION, "PRIVATEMETHOD") != -1) or (index($CRITERION, "privatemethod") != -1) or (index($CRITERION, "PrivateMethod") != -1)) {
