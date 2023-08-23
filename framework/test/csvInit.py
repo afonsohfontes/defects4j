@@ -66,13 +66,13 @@ def myfunc(argv):
         df.Bug[6] = arg_b
 
     row = 99
-    if arg_c=="BRANCH":
+    if arg_c=="BRANCH" or arg_c=="ONLYBRANCH":
         row=0
-    elif arg_c=="BRANCH:PRIVATEMETHOD":
+    elif arg_c=="BRANCH:PRIVATEMETHOD" or arg_c=="ONLYBRANCH:PRIVATEMETHOD":
         row=1
-    elif arg_c=="BRANCH:EXCEPTION":
+    elif arg_c=="BRANCH:EXCEPTION" or arg_c=="ONLYBRANCH:EXCEPTION":
         row=2
-    elif arg_c=="BRANCH:EXECUTIONTIME":
+    elif arg_c=="BRANCH:EXECUTIONTIME" or arg_c=="ONLYBRANCH:EXECUTIONTIME":
         row=3
     #elif arg_c=="EXECUTIONTIME":
     #    row=4
