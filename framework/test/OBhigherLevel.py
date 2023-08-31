@@ -113,13 +113,14 @@ def process_folders(root_dir, output_file):
                     if str(input.BranchCoverage[i]) != "no data":
                         log_path = str(foldername+"/generationData/"+str(input.criterion[i])+"/1-EvoTranscription.log")
                         log_path = log_path.replace(":", "_")
+                        log_path = log_path.replace("BRANCH", "ONLYBRANCH")
                         testsTemp, lengthTemp = extract_test_info(log_path)
                         newRow.Nr_test_cases = testsTemp
                         newRow.Test_suite_length = lengthTemp
                         if testsTemp == "no data":
-                            input.BranchCoverage[i] = "no data"
+                            #input.BranchCoverage[i] = "no data"
                             newRow.Branch_Cov = "no data"
-                            input.to_csv(file_path, index=False)
+                            #input.to_csv(file_path, index=False)
                             newRow.Private_Method_Covered = "no data"
                             newRow.Exception_thrown = "no data"
                         else:
@@ -207,14 +208,14 @@ if __name__ == "__main__":
     grouped_df.to_csv("/Users/afonsofo/Desktop/defects4j/framework/test/Experiments/2-allTrialsCompiled.csv", index=True)
     agg_functions = {
         'Trials': ['max', 'median'],
-       # 'Nr_test_cases': [lambda x: round(x.mean(), 1), lambda x: round(x.median(), 1)],
-       # 'Test_suite_length': [lambda x: round(x.mean(), 1), lambda x: round(x.median(), 1)],
-       # 'Failing_tests': [lambda x: round(x.mean(), 1), lambda x: round(x.median(), 1)],
-       # 'Branch_Cov': [lambda x: round(x.mean(), 5), lambda x: round(x.median(), 5)],
-       # 'Exception_thrown': [lambda x: round(x.mean(), 1), lambda x: round(x.median(), 1)],
-       # 'Private_Methods': [lambda x: round(x.mean(), 4), lambda x: round(x.median(), 4)],
-       # 'Private_Methods_Covered': [lambda x: round(x.mean(), 4), lambda x: round(x.median(), 4)],
-       # 'Execution_Time': [lambda x: round(x.mean(), 1), lambda x: round(x.median(), 1)],
+        # 'Nr_test_cases': [lambda x: round(x.mean(), 1), lambda x: round(x.median(), 1)],
+        # 'Test_suite_length': [lambda x: round(x.mean(), 1), lambda x: round(x.median(), 1)],
+        # 'Failing_tests': [lambda x: round(x.mean(), 1), lambda x: round(x.median(), 1)],
+        # 'Branch_Cov': [lambda x: round(x.mean(), 5), lambda x: round(x.median(), 5)],
+        # 'Exception_thrown': [lambda x: round(x.mean(), 1), lambda x: round(x.median(), 1)],
+        # 'Private_Methods': [lambda x: round(x.mean(), 4), lambda x: round(x.median(), 4)],
+        # 'Private_Methods_Covered': [lambda x: round(x.mean(), 4), lambda x: round(x.median(), 4)],
+        # 'Execution_Time': [lambda x: round(x.mean(), 1), lambda x: round(x.median(), 1)],
         'Nr_test_cases': lambda x: round(x.mean(), 1),
         'Test_suite_length': lambda x: round(x.mean(), 1),
         'Failing_tests': lambda x: round(x.mean(), 1),

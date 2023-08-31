@@ -113,13 +113,14 @@ def process_folders(root_dir, output_file):
                     if str(input.BranchCoverage[i]) != "no data":
                         log_path = str(foldername+"/generationData/"+str(input.criterion[i])+"/1-EvoTranscription.log")
                         log_path = log_path.replace(":", "_")
+                        #log_path = log_path.replace("BRANCH", "ONLYBRANCH")
                         testsTemp, lengthTemp = extract_test_info(log_path)
                         newRow.Nr_test_cases = testsTemp
                         newRow.Test_suite_length = lengthTemp
                         if testsTemp == "no data":
-                            input.BranchCoverage[i] = "no data"
+                            #input.BranchCoverage[i] = "no data"
                             newRow.Branch_Cov = "no data"
-                            input.to_csv(file_path, index=False)
+                            #input.to_csv(file_path, index=False)
                             newRow.Private_Method_Covered = "no data"
                             newRow.Exception_thrown = "no data"
                         else:
