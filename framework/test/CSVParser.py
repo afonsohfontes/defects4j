@@ -406,7 +406,6 @@ def myfunc(argv):
                 OnlyBranchCoverageTimeline[0] = np.append(OnlyBranchCoverageTimeline[0], OnlyBranchCoverageTimeline_i)
                 OnlyBranchCoverageTimeline[1] = np.append(OnlyBranchCoverageTimeline[1], Onlybranch_cov)
 
-
                 #plt.plot(BranchCoverageTimeline[0], BranchCoverageTimeline[1], color="black", label="Branch",
                          #linestyle="-")
                 # plt.plot(OnlyBranchCoverageTimeline[0], OnlyBranchCoverageTimeline[1], color="green", label="OnlyBranch",
