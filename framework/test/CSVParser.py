@@ -122,7 +122,7 @@ def myfunc(argv):
             #ExecutionTimeFitnessTimeline_x = [0]
             #ExecutionTimeFitnessTimeline_i = 0
             ExecutionTimeCoverage = "no data"
-
+            OnlyBranchCoverageBitString = "no data"
             for (columnName, columnData) in df.items():
                 if columnName == "BranchCoverageBitString":
                     BranchCoverageBitString = str(columnData[class_i])
