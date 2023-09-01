@@ -54,29 +54,16 @@ def myfunc(argv):
 
         for class_i in range(int(arg_i)):
             row = 99
-           # if arg_c=="BRANCH":
-           #     row=0
-           # elif arg_c=="PRIVATEMETHOD":
-           #     row=1
-           # elif arg_c=="EXCEPTION":
-           #     row=2
-           # elif arg_c=="BRANCH:PRIVATEMETHOD":
-           #     row=3
-           # elif arg_c=="BRANCH:EXCEPTION":
-           #     row=4
-           # elif arg_c=="BRANCH:EXECUTIONTIME":
-           #     row=5
-           # elif arg_c=="EXECUTIONTIME":
-           #     row=6
-
-            if arg_c=="ONLYBRANCH":
+            if arg_c=="BRANCH":
                 row=0
-            elif arg_c=="ONLYBRANCH:PRIVATEMETHOD":
-                row=1 #3
-            elif arg_c=="ONLYBRANCH:EXCEPTION":
-                row=2 #4
-            elif arg_c=="ONLYBRANCH:EXECUTIONTIME":
-                row=3 #5
+            elif arg_c=="BRANCH:PRIVATEMETHOD":
+                row=1
+            elif arg_c=="BRANCH:EXCEPTION":
+                row=2
+            elif arg_c=="BRANCH:EXECUTIONTIME":
+                row=3
+            elif arg_c=="BRANCH:OUTPUT":
+                row=4
 
             if row<7 and int(arg_b) > 0:
                 str1 = arg_o
@@ -96,74 +83,25 @@ def myfunc(argv):
             BranchBitstringTimeline_x = [0]
             BranchBitstringTimeline_i = 0
 
-            OnlyBranchBitstringTimeline = [0]
-            OnlyBranchBitstringTimeline_x = [0]
-            OnlyBranchBitstringTimeline_i = 0
-
-            PrivateMethodBitstringTimeline = [0]
-            PrivateMethodBitstringTimeline_x = [0]
-            PrivateMethodBitstringTimeline_i = 0
-
-            PrivateMethodCoverageTimeline = [0]
-            PrivateMethodCoverageTimeline_x = [0]
-            PrivateMethodCoverageTimeline_i = 0
-
-            ExceptionBitstringTimeline = [0]
-            ExceptionBitstringTimeline_x = [0]
-            ExceptionBitstringTimeline_i = 0
-
             BranchCoverageBitString = "no data"
             PrivateMethodCoverage = "no data"
             PrivateMethodCoverageBitString = "no data"
             ExceptionCoverage = "no data"
             ExceptionCoverageBitString = "no data"
-
-            #ExecutionTimeFitnessTimeline = [0]
-            #ExecutionTimeFitnessTimeline_x = [0]
-            #ExecutionTimeFitnessTimeline_i = 0
-            ExecutionTimeCoverage = "no data"
-            OnlyBranchCoverageBitString = "no data"
+            OutputCoverageBitString = "no data"
             for (columnName, columnData) in df.items():
                 if columnName == "BranchCoverageBitString":
                     BranchCoverageBitString = str(columnData[class_i])
-                if columnName == "OnlyBranchCoverageBitString":
-                    OnlyBranchCoverageBitString = str(columnData[class_i])
-                if columnName == "ExecutionTimeCoverage":
-                    ExecutionTimeCoverage = float(columnData[class_i])
+                if columnName == "OutputCoverageBitString":
+                    OutputCoverageBitString = str(columnData[class_i])
                 if columnName == "PrivateMethodCoverageBitString":
                     PrivateMethodCoverageBitString = str(columnData[class_i])
-                if columnName == "PrivateMethodCoverage":
-                    PrivateMethodCoverage = float(columnData[class_i])
-                if columnName == "ExceptionCoverage":
-                    ExceptionCoverage = float(columnData[class_i])
                 if columnName == "ExceptionCoverageBitString":
                     ExceptionCoverageBitString = str(columnData[class_i])
                 if "BranchBitstringTimeline" in columnName and not ("Only" in columnName):
                     BranchBitstringTimeline_i = BranchBitstringTimeline_i + 1
                     BranchBitstringTimeline = np.append(BranchBitstringTimeline, str(columnData[class_i]))
                     BranchBitstringTimeline_x = np.append(BranchBitstringTimeline_x, BranchBitstringTimeline_i)
-                if "OnlyBranchBitstringTimeline" in columnName:
-                    OnlyBranchBitstringTimeline_i = OnlyBranchBitstringTimeline_i + 1
-                    OnlyBranchBitstringTimeline = np.append(OnlyBranchBitstringTimeline, str(columnData[class_i]))
-                    OnlyBranchBitstringTimeline_x = np.append(OnlyBranchBitstringTimeline_x, OnlyBranchBitstringTimeline_i)
-                #if "ExecutionTimeTimeline" in columnName:
-                #    ExecutionTimeFitnessTimeline_i = ExecutionTimeFitnessTimeline_i + 1
-                #    ExecutionTimeFitnessTimeline = np.append(ExecutionTimeFitnessTimeline, float(columnData[class_i]))
-                #    ExecutionTimeFitnessTimeline_x = np.append(ExecutionTimeFitnessTimeline_x, ExecutionTimeFitnessTimeline_i)
-                if "ExceptionBitstringTimeline" in columnName:
-                    ExceptionBitstringTimeline_i = ExceptionBitstringTimeline_i + 1
-                    ExceptionBitstringTimeline = np.append(ExceptionBitstringTimeline, float(columnData[class_i]))
-                    ExceptionBitstringTimeline_x = np.append(ExceptionBitstringTimeline_x, ExceptionBitstringTimeline_i)
-                if "PrivateMethodBitstringTimeline" in columnName:
-                    PrivateMethodBitstringTimeline_i = PrivateMethodBitstringTimeline_i + 1
-                    PrivateMethodBitstringTimeline = np.append(PrivateMethodBitstringTimeline, str(columnData[class_i]))
-                    PrivateMethodBitstringTimeline_x = np.append(PrivateMethodBitstringTimeline_x,
-                                                                 PrivateMethodBitstringTimeline_i )
-                if "PrivateMethodCoverageTimeline" in columnName:
-                    PrivateMethodCoverageTimeline_i = PrivateMethodCoverageTimeline_i + 1
-                    PrivateMethodCoverageTimeline = np.append(PrivateMethodCoverageTimeline, float(columnData[class_i]))
-                    PrivateMethodCoverageTimeline_x = np.append(PrivateMethodCoverageTimeline_x,
-                                                                PrivateMethodCoverageTimeline_i)
 
             BranchCoverageTimeline = [0]
             BranchCoverageTimeline_x = [0]
@@ -181,22 +119,6 @@ def myfunc(argv):
                 BranchCoverageTimeline_x = np.append(BranchCoverageTimeline_x, BranchCoverageTimeline_i)
             BranchCoverageTimeline = [BranchCoverageTimeline_x, BranchCoverageTimeline]
 
-            OnlyBranchCoverageTimeline = [0]
-            OnlyBranchCoverageTimeline_x = [0]
-            OnlyBranchCoverageTimeline_i = 0
-            for j in range(0, OnlyBranchBitstringTimeline_i):
-                OnlyBranchCoverageTimeline_i = OnlyBranchCoverageTimeline_i + 1
-                try:
-                    totalOnlyBranches = len(str(OnlyBranchBitstringTimeline[j]))
-                    s = str(OnlyBranchBitstringTimeline[j])
-                    coveredOnlyBranches = sum(float(ii) for ii in s)
-                    OnlyBranchCoverageTimeline = np.append(OnlyBranchCoverageTimeline, float(coveredOnlyBranches)
-                                                           / float(totalOnlyBranches))
-                except:
-                    OnlyBranchCoverageTimeline = np.append(OnlyBranchCoverageTimeline, 0)
-                OnlyBranchCoverageTimeline_x = np.append(OnlyBranchCoverageTimeline_x, OnlyBranchCoverageTimeline_i)
-            OnlyBranchCoverageTimeline = [OnlyBranchCoverageTimeline_x, OnlyBranchCoverageTimeline]
-
             try:
                 if (int(PrivateMethodCoverageBitString)>0):
                     n = str((PrivateMethodCoverageBitString))
@@ -212,52 +134,46 @@ def myfunc(argv):
             except:
                 private_cov_methods = 0
                 private_total_methods = 0
+            pm_cov = 0
+            if private_total_methods>0:
+                pm_cov = float(private_cov_methods) / float(private_total_methods)
 
-            ''' ExceptionCoverageTimeline = [0]
-            ExceptionCoverageTimeline_x = [0]
-            ExceptionCoverageTimeline_i = 0
-            exceptionsFound = 0
-            if int(ExceptionCoverageBitString)>0:
-                exceptionsFound = len(str(ExceptionCoverageBitString))
-            if exceptionsFound == 0:
-                for j in range(0, ExceptionBitstringTimeline_i):
-                    ExceptionCoverageTimeline_i = ExceptionCoverageTimeline_i + 1
-                    ExceptionCoverageTimeline = np.append(ExceptionCoverageTimeline, 0)
-                    ExceptionCoverageTimeline_x = np.append(ExceptionBitstringTimeline_x, ExceptionBitstringTimeline_i)
-            else:
-                for j in range(0, ExceptionBitstringTimeline_i):
-                    ExceptionCoverageTimeline_i = ExceptionCoverageTimeline_i + 1
-                    s = str(ExceptionCoverageBitString)
-                    ExceptionsCovered = sum(float(ii) for ii in s)
-                    ExceptionCoverageTimeline = np.append(ExceptionCoverageTimeline, ExceptionsCovered/exceptionsFound)
-                    ExceptionCoverageTimeline_x = np.append(ExceptionBitstringTimeline_x, ExceptionBitstringTimeline_i)
+            try:
+                if (int(OutputCoverageBitString)>0):
+                    n = str((OutputCoverageBitString))
+                    output_cov_goals = 0
+                    output_total_goals = 0
+                    for i in n:
+                        output_total_goals+=1
+                        if i == "1":
+                            output_cov_goals+=1
+                else:
+                    output_cov_goals = 0
+                    output_total_goals = 0
+            except:
+                output_cov_goals = 0
+                output_total_goals = 0
+            output_cov = 0
+            if output_total_goals>0:
+                output_cov = float(output_cov_goals) / float(output_total_goals)
 
-            ExceptionCoverageTimeline = [ExceptionCoverageTimeline_x, ExceptionCoverageTimeline]
-            ExecutionTimeFitnessTimeline = [ExecutionTimeFitnessTimeline_x, ExecutionTimeFitnessTimeline]
-            '''
-            PrivateMethodCoverageTimeline = [PrivateMethodCoverageTimeline_x, PrivateMethodCoverageTimeline]
-            PrivateMethodBitstringTimeline = [PrivateMethodBitstringTimeline_x, PrivateMethodBitstringTimeline]
             BranchBitstringTimeline = [BranchBitstringTimeline_x, BranchBitstringTimeline]
-            OnlyBranchBitstringTimeline = [OnlyBranchBitstringTimeline_x, OnlyBranchBitstringTimeline]
 
             str1 = arg_o
             str2 = "{}.csv".format(class_i)
             df2 = pd.read_csv(str1 + str2)
             row = 99
-            if arg_c=="ONLYBRANCH":
+
+            if arg_c=="BRANCH":
                 row=0
-            elif arg_c=="ONLYBRANCH:PRIVATEMETHOD":
+            elif arg_c=="BRANCH:PRIVATEMETHOD":
                 row=1
-            elif arg_c=="ONLYBRANCH:EXCEPTION":
+            elif arg_c=="BRANCH:EXCEPTION":
                 row=2
-            elif arg_c=="ONLYBRANCH:EXECUTIONTIME":
+            elif arg_c=="BRANCH:EXECUTIONTIME":
                 row=3
-            #elif arg_c=="EXECUTIONTIME":
-            #    row=4
-            #elif arg_c=="PRIVATEMETHOD":
-            #    row=5
-            #elif arg_c=="EXCEPTION":
-            #    row=6
+            elif arg_c=="BRANCH:OUTPUT":
+                row=4
             if row<7:
 
                 try:
@@ -274,45 +190,39 @@ def myfunc(argv):
                 branch_cov = 0
                 if branch_total_methods>0:
                     branch_cov = float(branch_cov_methods) / float(branch_total_methods)
-
                 try:
-                    n = str(OnlyBranchCoverageBitString)
-                    Onlybranch_cov_methods = 0
-                    Onlybranch_total_methods = 0
+                    n = str(ExceptionCoverageBitString)
+                    exp_t = 0
+                    exp_c = 0
                     for i in n:
-                        Onlybranch_total_methods+=1
+                        exp_t+=1
                         if i == "1":
-                            Onlybranch_cov_methods+=1
+                            exp_c+=1
                 except:
-                    Onlybranch_cov_methods = 0
-                    Onlybranch_total_methods = 0
-                Onlybranch_cov = 0
-                if Onlybranch_total_methods>0:
-                    Onlybranch_cov = float(Onlybranch_cov_methods) / float(Onlybranch_total_methods)
+                    exp_c = 0
+                    exp_t = 0
+                branch_cov = 0
+                if exp_t>0:
+                    exp_cov = float(exp_c) / float(exp_t)
 
-                df2.ExecutionTimeCoverage[row] = ExecutionTimeCoverage
                 df2.Total_PrivateMethods[row] = private_total_methods
                 df2.Covered_PrivateMethods[row] = private_cov_methods
+                df2.Total_OutputGoals[row] = output_total_goals
+                df2.Covered_OutputGoals[row] = output_cov_goals
                 df2.BranchCoverage[row] = branch_cov
                 df2.Total_Branches[row] = branch_total_methods
                 df2.Covered_Branches[row] = branch_cov_methods
-                df2.OnlyBranchCoverage[row] = Onlybranch_cov
-                df2.Total_OnlyBranches[row] = Onlybranch_total_methods
-                df2.Covered_OnlyBranches[row] = Onlybranch_cov_methods
                 df2.BranchCoverageBitString[row] = BranchCoverageBitString
-                df2.OnlyBranchCoverageBitString[row] = OnlyBranchCoverageBitString
-                df2.PrivateMethodCoverage[row] = PrivateMethodCoverage
+                df2.OutputCoverageBitString[row] = OutputCoverageBitString
+                df2.PrivateMethodCoverage[row] = pm_cov
+                df2.OutputCoverage[row] = output_cov
                 df2.PrivateMethodCoverageBitString[row] = PrivateMethodCoverageBitString
-                df2.ExceptionCoverage[row] = ExceptionCoverage
+                df2.ExceptionCoverage[row] = exp_cov
+                df2.ExceptionsFound[row] = exp_t
+                df2.ExceptionsCovered[row] = exp_c
                 df2.ExceptionCoverageBitString[row] = ExceptionCoverageBitString
-                df2.OnlyBranchCoverageTimeline[row] = OnlyBranchCoverageTimeline
                 df2.BranchCoverageTimeline[row] = BranchCoverageTimeline
-                #df2.ExceptionCoverageTimeline[row] = ExceptionCoverageTimeline
-                #df2.ExecutionTimeFitnessTimeline[row] = ExecutionTimeFitnessTimeline
-                df2.PrivateMethodCoverageTimeline[row] = PrivateMethodCoverageTimeline
-                df2.PrivateMethodBitstringTimeline[row] = PrivateMethodBitstringTimeline
                 df2.BranchBitstringTimeline[row] = BranchBitstringTimeline
-                df2.OnlyBranchBitstringTimeline[row] = OnlyBranchBitstringTimeline
 
                 str3 = str1 + str2
                 a = str3.replace(".csv", "-" + arg_c + ".txt")
@@ -328,13 +238,6 @@ def myfunc(argv):
                 f.write("Covered BRANCHES: {}".format(branch_cov_methods))
                 f.write('\n')
                 f.write('\n')
-                f.write("ONLYBRANCH Coverage: {}".format(Onlybranch_cov))
-                f.write('\n')
-                f.write("Total ONLYBRANCHES: {}".format(Onlybranch_total_methods))
-                f.write('\n')
-                f.write("Covered ONLYBRANCHES: {}".format(Onlybranch_cov_methods))
-                f.write('\n')
-                f.write('\n')
                 f.write("PRIVATE METHOD Coverage: {}".format(PrivateMethodCoverage))
                 f.write('\n')
                 f.write("Total PRIVATE METHODS: {}".format(private_total_methods))
@@ -342,32 +245,22 @@ def myfunc(argv):
                 f.write("Covered PRIVATE METHODS: {}".format(private_cov_methods))
                 f.write('\n')
                 f.write('\n')
-                ExceptionsFound = 0
-                ExceptionsCovered = 0
-                if math.isnan(float(ExceptionCoverageBitString)):
-                    f.write("EXCEPTION Coverage: N/A")
-                    f.write('\n')
-                    f.write("EXCEPTION found: none")
-                    f.write('\n')
-                    f.write("EXCEPTION covered: N/A")
-                    f.write('\n')
-                else:
-                    s = str(ExceptionCoverageBitString)
-                    ExceptionsCovered = sum(float(ii) for ii in s)
-                    ExceptionsFound = len(str(ExceptionCoverageBitString))
-                    if ExceptionsFound>0:
-                        f.write("EXCEPTION Coverage: {}".format(ExceptionsCovered/ExceptionsFound))
-                    else:
-                        f.write("EXCEPTION Coverage: N/A")
-                    f.write('\n')
-                    f.write("EXCEPTION found: {}".format(ExceptionsFound))
-                    f.write('\n')
-                    f.write("EXCEPTION covered: {}".format(ExceptionsCovered))
-                df2.ExceptionsFound[row] = ExceptionsFound
-                df2.ExceptionsCovered[row] = ExceptionsCovered
+                f.write("EXCEPTION Coverage: {}".format(exp_cov))
+                f.write('\n')
+                f.write("EXCEPTION found: {}".forat{exp_t})
+                f.write('\n')
+                f.write("EXCEPTION covered: {}".format{exp_c})
                 f.write('\n')
                 f.write('\n')
-                f.write("Test EXECUTION TIME final coverage: {}".format(ExecutionTimeCoverage))
+                f.write("Test EXECUTION TIME: To be fetched from D4J execution")
+                f.write('\n')
+                f.write('\n')
+                f.write("OUTPUT Coverage: {}".format(output_cov))
+                f.write('\n')
+                f.write("OUTPUT goals (total): {}".forat{output_total_goals})
+                f.write('\n')
+                f.write("OUTPUT goals (covered): {}".format{output_cov_goals})
+                f.write('\n')
                 f.close()
 
                 str3 = str1 + str2
@@ -376,70 +269,19 @@ def myfunc(argv):
                 plt.title('Cov evolution using: {}'.format(arg_c))
                 plt.rcParams["figure.autolayout"] = True
 
-                #ExceptionCoverageTimeline_i = ExceptionCoverageTimeline_i + 1
-                #ExceptionCoverageTimeline[0] = np.append(ExceptionCoverageTimeline[0],  ExceptionCoverageTimeline_i)
-                #if ExceptionsFound > 0:
-                #    expC = ExceptionsCovered/ExceptionsFound
-                #else:
-                #    expC = 0
-                #ExceptionCoverageTimeline[1] = np.append(ExceptionCoverageTimeline[1],  expC)
-
-                #ExecutionTimeFitnessTimeline_i = ExecutionTimeFitnessTimeline_i + 1
-                #ExecutionTimeFitnessTimeline[0] = np.append(ExecutionTimeFitnessTimeline[0],  ExecutionTimeFitnessTimeline_i)
-
-                #ExecutionTimeFitnessTimeline[1] = np.append(ExecutionTimeFitnessTimeline[1],  ExecutionTimeCoverage)
-
-                PrivateMethodCoverageTimeline_i = PrivateMethodCoverageTimeline_i + 1
-                PrivateMethodCoverageTimeline[0] = np.append(PrivateMethodCoverageTimeline[0],
-                                                             PrivateMethodCoverageTimeline_i)
-                if private_total_methods > 0:
-                    pCov = private_cov_methods/private_total_methods
-                else:
-                    pCov = 0
-                PrivateMethodCoverageTimeline[1] = np.append(PrivateMethodCoverageTimeline[1],  pCov)
-
                 BranchCoverageTimeline_i = BranchCoverageTimeline_i + 1
                 BranchCoverageTimeline[0] = np.append(BranchCoverageTimeline[0], BranchCoverageTimeline_i)
                 BranchCoverageTimeline[1] = np.append(BranchCoverageTimeline[1], branch_cov)
 
-                OnlyBranchCoverageTimeline_i = OnlyBranchCoverageTimeline_i + 1
-                OnlyBranchCoverageTimeline[0] = np.append(OnlyBranchCoverageTimeline[0], OnlyBranchCoverageTimeline_i)
-                OnlyBranchCoverageTimeline[1] = np.append(OnlyBranchCoverageTimeline[1], Onlybranch_cov)
-
-                #plt.plot(BranchCoverageTimeline[0], BranchCoverageTimeline[1], color="black", label="Branch",
-                         #linestyle="-")
-                # plt.plot(OnlyBranchCoverageTimeline[0], OnlyBranchCoverageTimeline[1], color="green", label="OnlyBranch",
-                         #linestyle="--")
-                #plt.plot(PrivateMethodCoverageTimeline[0], PrivateMethodCoverageTimeline[1], color="cyan",
-                #         label="Private Method", linestyle="--")
-                #plt.plot(ExceptionCoverageTimeline[0], ExceptionCoverageTimeline[1], color="red", label="Exception",
-                #         linestyle=":")
-                #plt.plot(ExecutionTimeFitnessTimeline[0], ExecutionTimeFitnessTimeline[1], color="magenta", label="Execution Time",
-                #         linestyle=":")
-                #plt.legend()
-                #b = "-{}-CoverageTimelines(w-OB).png".format(arg_c)
-                #a = str3.replace(".csv", b)
-                #a = a.replace("results-", "images/")
-                #plt.savefig(a)
-                ## plt.show()
-                #plt.clf()
-
                 plt.plot(BranchCoverageTimeline[0], BranchCoverageTimeline[1], color="black", label="Branch",
                          linestyle="-")
-                #plt.plot(PrivateMethodCoverageTimeline[0], PrivateMethodCoverageTimeline[1], color="cyan",
-                #         label="Private Method", linestyle="--")
-                #plt.plot(ExceptionCoverageTimeline[0], ExceptionCoverageTimeline[1], color="red", label="Exception",
-                #         linestyle=":")
-                #plt.plot(ExecutionTimeFitnessTimeline[0], ExecutionTimeFitnessTimeline[1], color="magenta", label="Execution Time",
-                #         linestyle=":")
-                #plt.legend()
+
                 b = "-{}-BRANCHTimeline.png".format(arg_c)
                 a = str3.replace(".csv", b)
                 a = a.replace("results-", "images/")
                 plt.savefig(a)
                 #plt.show()
                 plt.clf()
-
 
                 # plt.style.use('_mpl-gallery')
                 # make data:
@@ -492,21 +334,6 @@ def myfunc(argv):
                 plt.savefig(a)
                 #plt.show()
                 plt.clf()
-
-
-# WHAT WE NEED
-# Coverage	Total_Goals	Covered_Goals	CoverageTimeline
-# BranchCoverage	Total_Branches	Covered_Branches	BranchCoverageBitString	BranchCoverageTimeline
-# BranchBitstringTimeline	PrivateMethodCoverage	PrivateMethodCoverageBitString
-# PrivateMethodBitstringTimeline	PrivateMethodCoverageTimeline	ExceptionCoverage
-# ExceptionCoverageBitString	ExceptionCoverageTimeline
-
-# WHAT WE HAVE
-# "Coverage,Total_Goals,Covered_Goals,CoverageTimeline,BranchCoverage,Total_Branches,
-# Covered_Branches,BranchCoverageBitString,BranchCoverageTimeline,BranchBitstringTimeline,
-# PrivateMethodCoverage,PrivateMethodCoverageBitString,PrivateMethodBitstringTimeline,
-# PrivateMethodCoverageTimeline,ExceptionCoverage,ExceptionCoverageBitString,ExceptionCoverageTimeline";
-
 
 if __name__ == "__main__":
     myfunc(sys.argv)

@@ -65,6 +65,9 @@ def myfunc(argv):
         df.Bug[5] = arg_b
         df.Bug[6] = arg_b
 
+
+    # OutputCoverage	Total_OutputGoals	Covered_OutputGoals	OutputCoverageBitString
+
     row = 99
     if arg_c=="BRANCH":
         row=0
@@ -74,12 +77,8 @@ def myfunc(argv):
         row=2
     elif arg_c=="BRANCH:EXECUTIONTIME":
         row=3
-    #elif arg_c=="EXECUTIONTIME":
-    #    row=4
-    #elif arg_c=="PRIVATEMETHOD":
-    #    row=5
-    #elif arg_c=="EXCEPTION":
-    #    row=6
+    elif arg_c=="BRANCH:OUTPUT":
+        row=4
     if row < 7:
         if arg_r=="Bug_Detection":
             df.Bug_Detection[row] = arg_value

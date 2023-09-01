@@ -87,7 +87,7 @@ rm -rf "$work_dir/*"
 
 
 #criteria=("BRANCH:EXECUTIONTIME" "BRANCH" "BRANCH:EXCEPTION" "BRANCH:PRIVATEMETHOD" "EXCEPTION"  "PRIVATEMETHOD")
-criteria=("ONLYBRANCH" "ONLYBRANCH:EXCEPTION" "ONLYBRANCH:PRIVATEMETHOD" "ONLYBRANCH:EXECUTIONTIME") # "BRANCH:EXECUTIONTIME")
+criteria=("BRANCH" "BRANCH:EXCEPTION" "BRANCH:PRIVATEMETHOD" "BRANCH:EXECUTIONTIME" "BRANCH:OUTPUT") # "BRANCH:EXECUTIONTIME")
 budgets=(180 300)
 trials=1
 maxTrials=1
@@ -149,23 +149,12 @@ for (( trial=1; trial<=$trials; trial++ )) do
         	mkdir $DIR/generationData/BRANCH_EXCEPTION
         	mkdir $DIR/generationData/BRANCH_EXECUTIONTIME
         	mkdir $DIR/generationData/BRANCH_PRIVATEMETHOD
-        	mkdir $DIR/generationData/ONLYBRANCH
-        	mkdir $DIR/generationData/ONLYBRANCH_EXCEPTION
-        	mkdir $DIR/generationData/ONLYBRANCH_EXECUTIONTIME
-        	mkdir $DIR/generationData/ONLYBRANCH_PRIVATEMETHOD
-        	mkdir $DIR/generationData/EXCEPTION
-        	mkdir $DIR/generationData/PRIVATEMETHOD
-        	mkdir $DIR/generationData/EXECUTIONTIME
+        	mkdir $DIR/generationData/BRANCH_OUTPUT
         	mkdir $DIR/generationData/BRANCH/tests
         	mkdir $DIR/generationData/BRANCH_EXCEPTION/tests
-        	mkdir $DIR/generationData/ONLYBRANCH/tests
-        	mkdir $DIR/generationData/ONLYBRANCH_EXCEPTION/tests
-        	mkdir $DIR/generationData/EXECUTIONTIME/tests
         	mkdir $DIR/generationData/BRANCH_PRIVATEMETHOD/tests
-        	mkdir $DIR/generationData/ONLYBRANCH_PRIVATEMETHOD/tests
-        	mkdir $DIR/generationData/EXCEPTION/tests
-        	mkdir $DIR/generationData/PRIVATEMETHOD/tests
-        	mkdir $DIR/generationData/EXECUTIONTIME/tests
+        	mkdir $DIR/generationData/BRANCH_EXECUTIONTIME/tests
+        	mkdir $DIR/generationData/BRANCH_OUTPUT/tests
         fi
 
         #mkdir $name$PID-bug_$bid-budget_$budget-trial_$trial
