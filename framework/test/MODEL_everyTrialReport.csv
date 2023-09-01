@@ -1,1 +1,1 @@
-Project,Bug,Class_nr,Budget,Trial,Generation_success,Criterion,Failing_tests,Branch_Cov,Nr_test_cases,Private_Methods,Private_Method_Covered,Exception_thrown,Execution_Time,Test_suite_length
+Project,Bug,Class_nr,Budget,Trial,Generation_success,Criterion,Failing_tests,Branch_Cov,OnlyBranch_Cov,Nr_test_cases,Private_Methods,Private_Method_Covered,Exception_thrown,Execution_Time,Test_suite_length

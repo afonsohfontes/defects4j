@@ -99,6 +99,7 @@ def process_folders(root_dir, output_file):
                         "Criterion": ["no data"],
                         "Failing_tests": ["no data"],
                         "Branch_Cov": ["no data"],
+                        "OnlyBranch_Cov": ["no data"],
                         "Nr_test_cases": ["no data"],
                         "Test_suite_length": ["no data"],
                         "Private_Methods": ["no data"],
@@ -110,6 +111,8 @@ def process_folders(root_dir, output_file):
                     newRow.Bug = input.Bug[i]
                     newRow.Criterion = input.criterion[i]
                     newRow.Branch_Cov = input.BranchCoverage[i]
+                    newRow.OnlyBranch_Cov = input.OnlyBranchCoverage[i]
+                    print(input.BranchCoverage[i])
                     if str(input.BranchCoverage[i]) != "no data":
                         log_path = str(foldername+"/generationData/"+str(input.criterion[i])+"/1-EvoTranscription.log")
                         log_path = log_path.replace(":", "_")
@@ -117,9 +120,10 @@ def process_folders(root_dir, output_file):
                         testsTemp, lengthTemp = extract_test_info(log_path)
                         newRow.Nr_test_cases = testsTemp
                         newRow.Test_suite_length = lengthTemp
+                        print(log_path)
                         if testsTemp == "no data":
                             #input.BranchCoverage[i] = "no data"
-                            newRow.Branch_Cov = "no data"
+                            #newRow.Branch_Cov = "no data"
                             #input.to_csv(file_path, index=False)
                             newRow.Private_Method_Covered = "no data"
                             newRow.Exception_thrown = "no data"
@@ -128,6 +132,8 @@ def process_folders(root_dir, output_file):
                             newRow.Exception_thrown = input.ExceptionsCovered[i]
                         log_path_et = str(foldername+"/generationData/"+str(input.criterion[i])+"/bug_detection_log/"+project+"/run_bug_detection.pl.log")
                         log_path_et = log_path_et.replace(":", "_")
+                        log_path_et = log_path_et.replace("BRANCH", "ONLYBRANCH")
+                        print(log_path_et)
                         newRow.Execution_Time = extract_execution_time(log_path_et)
                         if "no data" not in str(newRow.Execution_Time):
                             if float(newRow.Execution_Time) > 0:
@@ -171,7 +177,7 @@ def process_folders(root_dir, output_file):
 
 def convert_to_numeric(df):
     # Convert columns to numeric data types
-    numeric_cols = ['Failing_tests', 'Branch_Cov', 'Private_Method_Covered', 'Trial', 'Private_Methods',
+    numeric_cols = ['Failing_tests', 'Branch_Cov', 'OnlyBranch_Cov', 'Private_Method_Covered', 'Trial', 'Private_Methods',
                     'Execution_Time', 'Exception_thrown', 'Nr_test_cases', 'Generation_success']
     df[numeric_cols] = df[numeric_cols].apply(pd.to_numeric, errors='coerce')
     return df
@@ -190,6 +196,7 @@ if __name__ == "__main__":
         'Test_suite_length': lambda x: round(x.mean(), 1),
         'Failing_tests': lambda x: round(x.mean(), 1),
         'Branch_Cov': lambda x: round(x.mean(), 5),
+        'OnlyBranch_Cov': lambda x: round(x.mean(), 5),
         'Exception_thrown': lambda x: round(x.mean(), 1),
         'Private_Methods': 'max',
         'Private_Method_Covered': lambda x: round(x.mean(), 4),
@@ -220,6 +227,7 @@ if __name__ == "__main__":
         'Test_suite_length': lambda x: round(x.mean(), 1),
         'Failing_tests': lambda x: round(x.mean(), 1),
         'Branch_Cov': lambda x: round(x.mean(), 5),
+        'Only`Branch_Cov': lambda x: round(x.mean(), 5),
         'Exception_thrown': lambda x: round(x.mean(), 1),
         'Private_Methods': lambda x: round(x.mean(), 4),
         'Private_Methods_Covered': lambda x: round(x.mean(), 4),
