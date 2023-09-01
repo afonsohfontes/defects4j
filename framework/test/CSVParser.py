@@ -201,7 +201,7 @@ def myfunc(argv):
                 except:
                     exp_c = 0
                     exp_t = 0
-                branch_cov = 0
+                exp_cov = 0
                 if exp_t>0:
                     exp_cov = float(exp_c) / float(exp_t)
 
@@ -212,15 +212,27 @@ def myfunc(argv):
                 df2.BranchCoverage[row] = branch_cov
                 df2.Total_Branches[row] = branch_total_methods
                 df2.Covered_Branches[row] = branch_cov_methods
-                df2.BranchCoverageBitString[row] = BranchCoverageBitString
-                df2.OutputCoverageBitString[row] = OutputCoverageBitString
+                if branch_total_methods>0:
+                    df2.BranchCoverageBitString[row] = BranchCoverageBitString
+                else:
+                    df2.BranchCoverageBitString[row] = "no data"
+                if output_total_goals>0:
+                    df2.OutputCoverageBitString[row] = OutputCoverageBitString
+                else:
+                    df2.OutputCoverageBitString[row] = "no data"
                 df2.PrivateMethodCoverage[row] = pm_cov
                 df2.OutputCoverage[row] = output_cov
-                df2.PrivateMethodCoverageBitString[row] = PrivateMethodCoverageBitString
+                if private_total_methods>0:
+                    df2.PrivateMethodCoverageBitString[row] = PrivateMethodCoverageBitString
+                else:
+                    df2.PrivateMethodCoverageBitString[row] = "no data"
                 df2.ExceptionCoverage[row] = exp_cov
                 df2.ExceptionsFound[row] = exp_t
                 df2.ExceptionsCovered[row] = exp_c
-                df2.ExceptionCoverageBitString[row] = ExceptionCoverageBitString
+                if exp_t>0:
+                    df2.ExceptionCoverageBitString[row] = ExceptionCoverageBitString
+                else:
+                    df2.ExceptionCoverageBitString[row] = "no data"
                 df2.BranchCoverageTimeline[row] = BranchCoverageTimeline
                 df2.BranchBitstringTimeline[row] = BranchBitstringTimeline
 
@@ -238,7 +250,7 @@ def myfunc(argv):
                 f.write("Covered BRANCHES: {}".format(branch_cov_methods))
                 f.write('\n')
                 f.write('\n')
-                f.write("PRIVATE METHOD Coverage: {}".format(PrivateMethodCoverage))
+                f.write("PRIVATE METHOD Coverage: {}".format(pm_cov))
                 f.write('\n')
                 f.write("Total PRIVATE METHODS: {}".format(private_total_methods))
                 f.write('\n')
@@ -247,9 +259,9 @@ def myfunc(argv):
                 f.write('\n')
                 f.write("EXCEPTION Coverage: {}".format(exp_cov))
                 f.write('\n')
-                f.write("EXCEPTION found: {}".forat{exp_t})
+                f.write("EXCEPTION found: {}".format(exp_t))
                 f.write('\n')
-                f.write("EXCEPTION covered: {}".format{exp_c})
+                f.write("EXCEPTION covered: {}".format(exp_c))
                 f.write('\n')
                 f.write('\n')
                 f.write("Test EXECUTION TIME: To be fetched from D4J execution")
@@ -257,9 +269,9 @@ def myfunc(argv):
                 f.write('\n')
                 f.write("OUTPUT Coverage: {}".format(output_cov))
                 f.write('\n')
-                f.write("OUTPUT goals (total): {}".forat{output_total_goals})
+                f.write("OUTPUT goals (total): {}".format(output_total_goals))
                 f.write('\n')
-                f.write("OUTPUT goals (covered): {}".format{output_cov_goals})
+                f.write("OUTPUT goals (covered): {}".format(output_cov_goals))
                 f.write('\n')
                 f.close()
 
