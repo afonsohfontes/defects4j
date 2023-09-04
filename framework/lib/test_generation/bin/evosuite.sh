@@ -62,6 +62,7 @@ for class in $(cat $D4J_FILE_TARGET_CLASSES); do
     -criterion=$D4J_CRITERION \
     -Doutput_variables=$D4J_OUTPUT_DATA \
     -Dtimeline_interval=$D4J_INTERVAL \
+    -Danalysis_criteria=OUTPUT,BRANCH,EXCEPTION,PRIVATEMETHOD,EXECUTIONTIME\
      $add_config"
 
     # Run the test-generation command
