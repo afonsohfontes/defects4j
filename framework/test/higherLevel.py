@@ -88,7 +88,7 @@ def process_folders(root_dir, output_file):
                 classNr = int(filename.replace("results-Class_", "").replace(".csv", "")) + 1
                 file_path = os.path.join(foldername, filename)
                 input = pd.read_csv(file_path)
-                for i in range(4):
+                for i in range(5):
                     newRow = pd.DataFrame({
                         "Project": ["no data"],
                         "Bug": ["no data"],
@@ -105,11 +105,19 @@ def process_folders(root_dir, output_file):
                         "Private_Method_Covered": ["no data"],
                         "Exception_thrown": ["no data"],
                         "Execution_Time": ["no data"],
+                        "Output_cov": ["no data"],
+                        "total_outputs": ["no data"],
+                        "covered_outputs": ["no data"],
                     })
+
                     newRow.Project = input.Project[i]
                     newRow.Bug = input.Bug[i]
                     newRow.Criterion = input.criterion[i]
                     newRow.Branch_Cov = input.BranchCoverage[i]
+                    newRow.Output_cov = input.OutputCoverage[i]
+                    newRow.total_outputs = input.Total_OutputGoals[i]
+                    newRow.covered_outputs = input.Covered_OutputGoals[i]
+
                     if str(input.BranchCoverage[i]) != "no data":
                         log_path = str(foldername+"/generationData/"+str(input.criterion[i])+"/1-EvoTranscription.log")
                         log_path = log_path.replace(":", "_")
@@ -171,8 +179,9 @@ def process_folders(root_dir, output_file):
 
 def convert_to_numeric(df):
     # Convert columns to numeric data types
-    numeric_cols = ['Failing_tests', 'Branch_Cov', 'Private_Method_Covered', 'Trial', 'Private_Methods',
-                    'Execution_Time', 'Exception_thrown', 'Nr_test_cases', 'Generation_success']
+    numeric_cols = ['Failing_tests', 'Branch_Cov', 'covered_outputs', 'Output_cov', 'total_outputs',
+                    'Private_Method_Covered', 'Trial', 'Private_Methods','Execution_Time', 'Exception_thrown',
+                    'Nr_test_cases', 'Generation_success']
     df[numeric_cols] = df[numeric_cols].apply(pd.to_numeric, errors='coerce')
     return df
 
@@ -180,21 +189,23 @@ if __name__ == "__main__":
     project_root = "/Users/afonsofo/Desktop/defects4j/framework/test/Experiments/data/"
     output_csv_format = "MODEL_everyTrialReport.csv"
     rawOutput = process_folders(project_root, output_csv_format)
-    #rawOutput = pd.read_csv("/Users/afonsofo/Desktop/defects4j/framework/test/Experiments/data/everyTrialReport_2023731_12h44m.csv")
     rawOutput.replace("no data", pd.NA, inplace=True)
     rawOutput = convert_to_numeric(rawOutput)
     #print(rawOutput.tail())
     agg_functions = {
         'Trial': 'max',
-        'Nr_test_cases': lambda x: round(x.mean(), 1),
-        'Test_suite_length': lambda x: round(x.mean(), 1),
-        'Failing_tests': lambda x: round(x.mean(), 1),
+        'Nr_test_cases': lambda x: round(x.mean(), 2),
+        'Test_suite_length': lambda x: round(x.mean(), 2),
+        'Failing_tests': lambda x: round(x.mean(), 2),
         'Branch_Cov': lambda x: round(x.mean(), 5),
-        'Exception_thrown': lambda x: round(x.mean(), 1),
+        'Exception_thrown': lambda x: round(x.mean(), 2),
         'Private_Methods': 'max',
         'Private_Method_Covered': lambda x: round(x.mean(), 4),
-        'Execution_Time': lambda x: round(x.mean(), 1),
+        'Execution_Time': lambda x: round(x.mean(), 2),
         'Generation_success': lambda x: round(x.mean(), 4),
+        'Output_cov': lambda x: round(x.mean(), 4),
+        'total_outputs': lambda x: round(x.mean(), 2),
+        'covered_outputs': lambda x: round(x.mean(), 2),
     }
 
     grouped_df = rawOutput.groupby(['Project', 'Bug', 'Budget', 'Class_nr', 'Criterion']).agg(agg_functions)
@@ -203,7 +214,6 @@ if __name__ == "__main__":
         "Private_Method_Covered": "Private_Methods_Covered"
     }
     grouped_df = grouped_df.rename(columns=new_column_names)
-    #grouped_df.Generation_success.replace("0", pd.NA, inplace=True)
     grouped_df.loc[grouped_df['Generation_success'] == 0, 'Generation_success'] = pd.NA
     grouped_df.to_csv("/Users/afonsofo/Desktop/defects4j/framework/test/Experiments/2-allTrialsCompiled.csv", index=True)
     agg_functions = {
@@ -216,14 +226,17 @@ if __name__ == "__main__":
        # 'Private_Methods': [lambda x: round(x.mean(), 4), lambda x: round(x.median(), 4)],
        # 'Private_Methods_Covered': [lambda x: round(x.mean(), 4), lambda x: round(x.median(), 4)],
        # 'Execution_Time': [lambda x: round(x.mean(), 1), lambda x: round(x.median(), 1)],
-        'Nr_test_cases': lambda x: round(x.mean(), 1),
-        'Test_suite_length': lambda x: round(x.mean(), 1),
-        'Failing_tests': lambda x: round(x.mean(), 1),
+        'Nr_test_cases': lambda x: round(x.mean(), 2),
+        'Test_suite_length': lambda x: round(x.mean(), 2),
+        'Failing_tests': lambda x: round(x.mean(), 2),
         'Branch_Cov': lambda x: round(x.mean(), 5),
-        'Exception_thrown': lambda x: round(x.mean(), 1),
+        'Exception_thrown': lambda x: round(x.mean(), 2),
         'Private_Methods': lambda x: round(x.mean(), 4),
         'Private_Methods_Covered': lambda x: round(x.mean(), 4),
-        'Execution_Time': lambda x: round(x.mean(), 1),
+        'Execution_Time': lambda x: round(x.mean(), 2),
+        'Output_cov': lambda x: round(x.mean(), 4),
+        'total_outputs': lambda x: round(x.mean(), 2),
+        'covered_outputs': lambda x: round(x.mean(), 2),
         'Generation_success': lambda x: round(x.mean(), 4),
     }
     higher_df = grouped_df.groupby(['Budget', 'Criterion']).agg(agg_functions)
