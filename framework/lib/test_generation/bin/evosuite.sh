@@ -34,6 +34,8 @@ echo $(get_project_cp)
 echo "---"
 echo $project_cp
 echo "project cp above?? --"
+echo $D4J_HOME
+echo "--"
 # Read all additional configuration parameters
 add_config=$(parse_config $D4J_DIR_TESTGEN_BIN/evosuite.config)
 
