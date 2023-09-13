@@ -30,7 +30,10 @@ source $D4J_DIR_TESTGEN_BIN/_tool.source
 
 # The classpath to compile and run the project
 project_cp=$(get_project_cp)
-
+echo $(get_project_cp)
+echo "---"
+echo $project_cp
+echo "project cp above?? --"
 # Read all additional configuration parameters
 add_config=$(parse_config $D4J_DIR_TESTGEN_BIN/evosuite.config)
 

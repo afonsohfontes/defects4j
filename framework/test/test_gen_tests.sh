@@ -186,6 +186,8 @@ for (( trial=1; trial<=$trials; trial++ )) do
               testsD="$BASE_DIR/framework/test/Experiments/data/$PID/$bid/budget_$budget/trial_$trial/generationData/${criterion/:/_}/"
               OUTd="$BASE_DIR/framework/test/Experiments/data/$PID/$bid/budget_$budget/trial_$trial/generationData/${criterion/:/_}/$PID/evosuite/1/"
               suite_dir=$OUTd
+              echo $BASE_DIR
+              echo $testsD
               gen_tests.pl -g "$tool" -p "$PID" -v "$vid" -n 1 -o "$testsD" -b "$budget" -c "$target_classes" -C "$criterion" 2>&1 | tee -a "$testsD/1-EvoTranscription.log"
 
               mv evosuite-report/statistics.csv "$testsD"
