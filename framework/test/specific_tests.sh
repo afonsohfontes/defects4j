@@ -163,10 +163,10 @@ for ((trial = 1; trial <= $trials; trial++)); do
       vid=${bid}f
       for criterion in ${criteria[@]}; do
 
-
-
         failed_trials=0
-
+        testsD="$BASE_DIR/framework/test/Experiments/data/$PID/$bid/budget_$budget/trial_$trial/generationData/${criterion/:/_}/"
+        OUTd="$BASE_DIR/framework/test/Experiments/data/$PID/$bid/budget_$budget/trial_$trial/generationData/${criterion/:/_}/$PID/evosuite/1/"
+        suite_dir=$OUTd
         while [ ! -f "$testsD/statistics.csv" ]; do
           if [ $failed_trials -ge 5 ]; then
             echo "Reached maximum number of failed trials. Exiting loop."
@@ -176,11 +176,7 @@ for ((trial = 1; trial <= $trials; trial++)); do
           echo ""
           echo "------ Run evosuite test generator for $PID-$vid with a TOTAL budget of $budget secs - trial $trial of $trials - using $criterion -------"
           echo ""
-          testsD="$BASE_DIR/framework/test/Experiments/data/$PID/$bid/budget_$budget/trial_$trial/generationData/${criterion/:/_}/"
-          OUTd="$BASE_DIR/framework/test/Experiments/data/$PID/$bid/budget_$budget/trial_$trial/generationData/${criterion/:/_}/$PID/evosuite/1/"
-          suite_dir=$OUTd
-          echo $BASE_DIR
-          echo $testsD
+
           gen_tests.pl -g "$tool" -p "$PID" -v "$vid" -n 1 -o "$testsD" -b "$budget" -c "$target_classes" -C "$criterion" 2>&1 | tee -a "$testsD/1-EvoTranscription.log"
 
           # Move the statistics file if it was generated
