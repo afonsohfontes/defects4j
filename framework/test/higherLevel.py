@@ -231,7 +231,8 @@ if __name__ == "__main__":
     trial_data = grouped_df.groupby(['Project', 'Bug', 'Class_nr', 'Criterion', 'Budget'])['Generation_success'].mean().reset_index()
     trial_data['Successful_Trials'] = trial_data['Generation_success'] * 10
     trial_data['More_Trials_Needed'] = 10 - trial_data['Successful_Trials']
-
+    # Convert 'More_Trials_Needed' to integer
+    trial_data['More_Trials_Needed'] = trial_data['More_Trials_Needed'].astype(int)
     # Filter out the entries where no more trials are needed
     trial_data_needed = trial_data[trial_data['More_Trials_Needed'] > 0]
 
