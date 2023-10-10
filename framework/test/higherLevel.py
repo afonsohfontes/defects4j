@@ -227,17 +227,18 @@ if __name__ == "__main__":
             )
             grouped_df = grouped_df.drop(grouped_df[condition].index)
 
-    # Debug: Print remaining number of unique bugs
-    remaining_unique_bugs = grouped_df.index.get_level_values('Bug').nunique()
-    print(f"Remaining number of unique bugs: {remaining_unique_bugs}")
-    # Debug: Calculate and print how many more successful trials are needed for each unique combination
+    # Existing code where you calculate 'More_Trials_Needed'
     trial_data = grouped_df.groupby(['Project', 'Bug', 'Class_nr', 'Criterion', 'Budget'])['Generation_success'].mean().reset_index()
-    trial_data['Successful_Trials'] = trial_data['Generation_success'] * 10  # Calculating the number of successful trials
-    trial_data['More_Trials_Needed'] = 10 - trial_data['Successful_Trials']  # Calculating the number of more successful trials needed
-    # Remove entries where no more trials are needed
-    trial_data = trial_data[trial_data['More_Trials_Needed'] > 0]
-    print("Number of more successful trials needed for each unique combination to reach a total of 10:")
-    print(trial_data[['Project', 'Bug', 'Class_nr', 'Criterion', 'Budget', 'More_Trials_Needed']])
+    trial_data['Successful_Trials'] = trial_data['Generation_success'] * 10
+    trial_data['More_Trials_Needed'] = 10 - trial_data['Successful_Trials']
+
+    # Filter out the entries where no more trials are needed
+    trial_data_needed = trial_data[trial_data['More_Trials_Needed'] > 0]
+
+    # Write the filtered DataFrame to configurations_to_run.txt
+    if not trial_data_needed.empty:
+        trial_data_needed.to_csv('configurations_to_run.txt', columns=['Project', 'Bug', 'Criterion', 'Budget', 'More_Trials_Needed'], index=False)
+
 
     new_column_names = {
         "Trial": "Trials",

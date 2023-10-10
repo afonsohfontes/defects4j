@@ -141,7 +141,6 @@ for ((trial = 1; trial <= $trials; trial++)); do
       create_dir "$DIR/generationData"
 
       # Loop through the list of criteria to create specific folders
-      criteria=("BRANCH" "BRANCH:EXCEPTION" "BRANCH:EXECUTIONTIME" "BRANCH:OUTPUT")
       for criterion in ${criteria[@]}; do
         criterion_folder=${criterion/:/_} # Replace ':' with '_'
         create_dir "$DIR/generationData/$criterion_folder"
