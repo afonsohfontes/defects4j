@@ -163,6 +163,9 @@ for ((trial = 1; trial <= $trials; trial++)); do
       tool="evosuite"
       vid=${bid}f
       for criterion in ${criteria[@]}; do
+
+
+
         failed_trials=0
 
         while [ ! -f "$testsD/statistics.csv" ]; do
@@ -192,7 +195,9 @@ for ((trial = 1; trial <= $trials; trial++)); do
         if [ ! -f "$testsD/statistics.csv" ]; then
           echo "The file 'statistics.csv' does not exist. ---- Trial failed!"
         else
-          echo "--- PARSING RESULTS ---"
+          echo ""
+          echo "--- PARSING RESULTS for $PID-$vid with a TOTAL budget of $budget secs - trial $trial of $trials - using $criterion  ---"
+          echo ""
           resultsEvo="$testsD/statistics.csv"
           python3 CSVParser.py -f "$resultsEvo" -o "$abstractPath" -c "$criterion" -i "$i" 2>&1 | tee -a "$testsD/2-ParserTranscription.log"
 
