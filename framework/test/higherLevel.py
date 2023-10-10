@@ -191,6 +191,7 @@ if __name__ == "__main__":
     rawOutput = process_folders(project_root, output_csv_format)
     rawOutput.replace("no data", pd.NA, inplace=True)
     rawOutput = convert_to_numeric(rawOutput)
+    rawOutput = rawOutput[rawOutput['Criterion'] != "BRANCH:PRIVATEMETHOD"]
     #print(rawOutput.tail())
     agg_functions = {
         'Trial': 'max',
@@ -209,6 +210,35 @@ if __name__ == "__main__":
     }
 
     grouped_df = rawOutput.groupby(['Project', 'Bug', 'Budget', 'Class_nr', 'Criterion']).agg(agg_functions)
+
+    # Step 1: Identify unique combinations where 'Generation_success' is below 50% or is blank
+    to_remove = grouped_df.reset_index()
+    to_remove = to_remove[(to_remove['Generation_success'] < 0.5) | pd.isna(to_remove['Generation_success'])]
+    to_remove = to_remove[['Project', 'Bug', 'Class_nr']].drop_duplicates()
+
+
+    # Step 2: Remove all rows with these combinations
+    if not to_remove.empty:
+        for index, row in to_remove.iterrows():
+            condition = (
+                    (grouped_df.index.get_level_values('Project') == row['Project']) &
+                    (grouped_df.index.get_level_values('Bug') == row['Bug']) &
+                    (grouped_df.index.get_level_values('Class_nr') == row['Class_nr'])
+            )
+            grouped_df = grouped_df.drop(grouped_df[condition].index)
+
+    # Debug: Print remaining number of unique bugs
+    remaining_unique_bugs = grouped_df.index.get_level_values('Bug').nunique()
+    print(f"Remaining number of unique bugs: {remaining_unique_bugs}")
+    # Debug: Calculate and print how many more successful trials are needed for each unique combination
+    trial_data = grouped_df.groupby(['Project', 'Bug', 'Class_nr', 'Criterion', 'Budget'])['Generation_success'].mean().reset_index()
+    trial_data['Successful_Trials'] = trial_data['Generation_success'] * 10  # Calculating the number of successful trials
+    trial_data['More_Trials_Needed'] = 10 - trial_data['Successful_Trials']  # Calculating the number of more successful trials needed
+    # Remove entries where no more trials are needed
+    trial_data = trial_data[trial_data['More_Trials_Needed'] > 0]
+    print("Number of more successful trials needed for each unique combination to reach a total of 10:")
+    print(trial_data[['Project', 'Bug', 'Class_nr', 'Criterion', 'Budget', 'More_Trials_Needed']])
+
     new_column_names = {
         "Trial": "Trials",
         "Private_Method_Covered": "Private_Methods_Covered"
