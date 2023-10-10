@@ -215,14 +215,6 @@ for ((trial = 1; trial <= $trials; trial++)); do
 
         run_bug_detection.pl -a "$abstractPath" -p $PID -d "$suite_dir" -o "$testsD" -i "$i" -c "$criterion"
 
-        #echo ""
-        #echo "After running the tests, its time to analyse them and determine mutation score"
-        #test_mutation $PID "$suite_dir"
-
-        #echo ""
-        #echo "Run test suite again and determine code coverage"
-        #test_coverage $PID "$suite_dir" 0
-
         #echo "Removing the folders created"
         rm -rf $work_dir/$tool
       done

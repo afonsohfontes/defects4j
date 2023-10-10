@@ -93,9 +93,9 @@ mkdir -p $work_dir
 # Clean working directory
 rm -rf "$work_dir/*"
 
-criteria=CRITERIONS
-budgets=BUDGETS
-trials=NUM_TRIALS
+criteria=$CRITERIONS
+budgets=$BUDGETS
+trials=$NUM_TRIALS
 
 DIR="$BASE_DIR/framework/test/Experiments/data/$PID"
 
@@ -103,8 +103,8 @@ DIR="$BASE_DIR/framework/test/Experiments/data/$PID"
 timestamp=$(date +"%Y%m%d%H%M%S")
 
 if [ -d "$DIR" ]; then
-    # Rename the existing directory with a timestamp
-    mv "$DIR" "${DIR}_$timestamp"
+  # Rename the existing directory with a timestamp
+  mv "$DIR" "${DIR}_$timestamp"
 fi
 
 # Create a new directory for the current experiment
@@ -189,21 +189,23 @@ for ((trial = 1; trial <= $trials; trial++)); do
             ((failed_trials++))
           fi
         done
-        echo "--- PARSING RESULTS ---"
-        resultsEvo="$testsD/statistics.csv"
-        python3 CSVParser.py -f "$resultsEvo" -o "$abstractPath" -c "$criterion" -i "$i" 2>&1 | tee -a "$testsD/2-ParserTranscription.log"
+        if [ ! -f "$testsD/statistics.csv" ]; then
+          echo "The file 'statistics.csv' does not exist. ---- Trial failed!"
+        else
+          echo "--- PARSING RESULTS ---"
+          resultsEvo="$testsD/statistics.csv"
+          python3 CSVParser.py -f "$resultsEvo" -o "$abstractPath" -c "$criterion" -i "$i" 2>&1 | tee -a "$testsD/2-ParserTranscription.log"
 
-        echo ""
-        echo "If any tests are broken, they need to be removed until all tests PASS."
-        echo "This removal is done running them against the fully functional version of the SUT"
-        # "/home/afonso/IdeaProjects/defects4j/framework/test/Experiments/data/Math/14/budget_180/trial_1/generationData/BRANCH/tests/suite_num
-        fix_test_suite.pl -p $PID -d "$suite_dir" || die "fix test suite"
+          echo ""
+          echo "If any tests are broken, they need to be removed until all tests PASS."
+          echo "This removal is done running them against the fully functional version of the SUT"
+          # "/home/afonso/IdeaProjects/defects4j/framework/test/Experiments/data/Math/14/budget_180/trial_1/generationData/BRANCH/tests/suite_num
+          fix_test_suite.pl -p $PID -d "$suite_dir" || die "fix test suite"
 
-        echo ""
-        echo "Inserting the bugs and running the test suite and determine bug detection"
-
-        run_bug_detection.pl -a "$abstractPath" -p $PID -d "$suite_dir" -o "$testsD" -i "$i" -c "$criterion"
-
+          echo ""
+          echo "Inserting the bugs and running the test suite and determine bug detection"
+          run_bug_detection.pl -a "$abstractPath" -p $PID -d "$suite_dir" -o "$testsD" -i "$i" -c "$criterion"
+        fi
         rm -rf $work_dir/$tool
       done
     done
