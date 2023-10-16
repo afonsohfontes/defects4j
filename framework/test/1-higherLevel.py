@@ -239,13 +239,29 @@ if __name__ == "__main__":
     # Write the filtered DataFrame to configurations_to_run.txt
     if not trial_data_needed.empty:
         trial_data_needed.to_csv('configurations_to_run.txt', columns=['Project', 'Bug', 'Criterion', 'Budget', 'More_Trials_Needed'], index=False)
+    unique_proj_bug_final = grouped_df.reset_index().groupby(['Project', 'Bug']).size().reset_index().rename(columns={0:'count'})
+    num_unique_proj_bug_final = unique_proj_bug_final.shape[0]
+    print(f"Total number of unique Project/Bug combinations in the final dataset: {num_unique_proj_bug_final}")
+
+    # Group by 'Project' and then list all 'Bug' numbers for each project
+    grouped_by_project = unique_proj_bug_final.groupby('Project')['Bug'].apply(list).reset_index()
+
+    # Print the result in a readable format
+    print("List of Projects and Their Covered Bugs:")
+    for index, row in grouped_by_project.iterrows():
+        print(f"{row['Project']}: {row['Bug']}")
 
 
     new_column_names = {
         "Trial": "Trials",
         "Private_Method_Covered": "Private_Methods_Covered"
     }
+
+
     grouped_df = grouped_df.rename(columns=new_column_names)
+
+
+
     grouped_df.loc[grouped_df['Generation_success'] == 0, 'Generation_success'] = pd.NA
     grouped_df.to_csv("/Users/afonsofo/Desktop/defects4j/framework/test/Experiments/2-allTrialsCompiled.csv", index=True)
     agg_functions = {
