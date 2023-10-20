@@ -2,7 +2,8 @@ import os
 import pandas as pd
 import re
 from datetime import datetime, timedelta
-
+import matplotlib.pyplot as plt
+import seaborn as sns
 def extract_test_info(file_path):
     if not os.path.exists(file_path):
         return "no data", "no data"
@@ -280,8 +281,8 @@ def data_complementar(complementaryFolder, everyTrialReport):
                 appended_data.append(newRow)
     # Combine the newly created rows with the existing DataFrame
     appended_data = pd.concat(appended_data, ignore_index=True)
-    #appended_data.to_csv("/Users/afonsofo/Desktop/defects4j/framework/test/Experiments/1-everyTrialReport_appended_data.csv", index=False)
     everyTrialReport = pd.concat([everyTrialReport, appended_data], ignore_index=True)
+    appended_data.to_csv("/Users/afonsofo/Desktop/defects4j/framework/test/Experiments/1-complement_data.csv", index=False)
     return everyTrialReport
 
 if __name__ == "__main__":
@@ -295,12 +296,31 @@ if __name__ == "__main__":
     complementaryFolder = "/Users/afonsofo/Desktop/defects4j/framework/test/Experiments/data_complementares/"
     everyTrialReport = data_complementar(complementaryFolder, everyTrialReport)
     # Save the updated DataFrame
-    everyTrialReport.to_csv("/Users/afonsofo/Desktop/defects4j/framework/test/Experiments/1-everyTrialReport_complemented.csv", index=False)
     rawOutput = everyTrialReport
     rawOutput.replace("no data", pd.NA, inplace=True)
     rawOutput = convert_to_numeric(rawOutput)
-
     rawOutput = rawOutput[rawOutput['Criterion'] != "BRANCH:PRIVATEMETHOD"]
+
+    grouped_branch_cov = rawOutput.groupby(['Project', 'Bug', 'Criterion'])['Branch_Cov'].mean().reset_index()
+    filtered_groups = grouped_branch_cov[grouped_branch_cov['Branch_Cov'] >= 0.05]
+    filtered_rawOutput = pd.DataFrame(columns=rawOutput.columns)
+    for _, row in filtered_groups.iterrows():
+        filtered_data = rawOutput[
+            (rawOutput['Project'] == row['Project']) &
+            (rawOutput['Bug'] == row['Bug']) &
+            (rawOutput['Criterion'] == row['Criterion'])
+            ]
+        filtered_rawOutput = pd.concat([filtered_rawOutput, filtered_data])
+    filtered_rawOutput_save = filtered_rawOutput
+    # Replace 'no data' with zeros
+    filtered_rawOutput_save.replace("no data", 0, inplace=True)
+    # Replace NaN with zeros
+    filtered_rawOutput_save.fillna(0, inplace=True)
+    # Filter out rows where 'Generation_success' is zero
+    filtered_rawOutput_save = filtered_rawOutput_save[filtered_rawOutput_save['Generation_success'] != 0]
+    filtered_rawOutput_save.to_csv("/Users/afonsofo/Desktop/defects4j/framework/test/Experiments/1-everyTrialReport_complemented.csv", index=False)
+
+
     agg_functions = {
         'Trial': 'max',
         'Nr_test_cases': lambda x: round(x.mean(), 2),
@@ -316,12 +336,11 @@ if __name__ == "__main__":
         'total_outputs': lambda x: round(x.mean(), 2),
         'covered_outputs': lambda x: round(x.mean(), 2),
     }
-    grouped_df = rawOutput.groupby(['Project', 'Bug', 'Budget', 'Class_nr', 'Criterion']).agg(agg_functions)
+    grouped_df = filtered_rawOutput.groupby(['Project', 'Bug', 'Budget', 'Class_nr', 'Criterion']).agg(agg_functions)
 
     # Step 1: Identify unique combinations where 'Generation_success' is below 50% or is blank
     to_remove = grouped_df.reset_index()
     to_remove = to_remove[(to_remove['Generation_success'] < 0.5) | pd.isna(to_remove['Generation_success'])]
-    print(to_remove)
     to_remove = to_remove[['Project', 'Bug', 'Class_nr']].drop_duplicates()
 
 
@@ -335,6 +354,7 @@ if __name__ == "__main__":
             )
             grouped_df = grouped_df.drop(grouped_df[condition].index)
 
+    filtered_df = grouped_df
     # Existing code where you calculate 'More_Trials_Needed'
     trial_data = grouped_df.groupby(['Project', 'Bug', 'Class_nr', 'Criterion', 'Budget'])['Generation_success'].mean().reset_index()
     trial_data['Successful_Trials'] = trial_data['Generation_success'] * 10
@@ -400,3 +420,13 @@ if __name__ == "__main__":
     column_to_exclude = 'Trials'
     higher_df = higher_df.drop(columns=column_to_exclude)
     higher_df.to_csv("/Users/afonsofo/Desktop/defects4j/framework/test/Experiments/3-experimentSummaryPerBudget_complemented.csv", index=True)
+
+    average_branch_cov = grouped_df.groupby(['Project', 'Bug'])['Branch_Cov'].mean().reset_index()
+
+    # Generate a distribution plot for average Branch Coverage
+    plt.figure(figsize=(12, 6))
+    sns.histplot(average_branch_cov['Branch_Cov'], kde=True, bins=30)
+    plt.title('Average Branch Coverage Distribution Grouped by Project and Bug')
+    plt.xlabel('Average Branch Coverage')
+    plt.ylabel('Frequency')
+    plt.show()
