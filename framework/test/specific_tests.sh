@@ -97,18 +97,26 @@ criteria=$CRITERIONS
 budgets=$BUDGETS
 trials=$NUM_TRIALS
 
-DIR="$BASE_DIR/framework/test/Experiments/data/$PID"
+
+      # Function to create directory if it doesn't exist
+      create_dir() {
+        if [ ! -d "$1" ]; then
+          mkdir -p "$1"
+        fi
+      }
+
+DIR="$BASE_DIR/framework/test/Experiments/data/$PID/"
 
 # Create a timestamp
-timestamp=$(date +"%Y%m%d%H%M%S")
+#timestamp=$(date +"%Y%m%d%H%M%S")
 
-if [ -d "$DIR" ]; then
+#if [ -d "$DIR" ]; then
   # Rename the existing directory with a timestamp
-  mv "$DIR" "${DIR}_$timestamp"
-fi
+#  mv "$DIR" "${DIR}_$timestamp"
+#fi
 
 # Create a new directory for the current experiment
-mkdir -p "$DIR"
+create_dir -p "$DIR"
 
 for ((trial = 1; trial <= $trials; trial++)); do
   for budget in ${budgets[@]}; do
@@ -120,13 +128,6 @@ for ((trial = 1; trial <= $trials; trial++)); do
       fi
 
       name="$BASE_DIR/framework/test/Experiments/data/"
-
-      # Function to create directory if it doesn't exist
-      create_dir() {
-        if [ ! -d "$1" ]; then
-          mkdir -p "$1"
-        fi
-      }
 
       # Base directories
       create_dir "$name/$PID/$bid"
