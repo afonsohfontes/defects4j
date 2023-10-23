@@ -224,6 +224,7 @@ def data_complementar(complementaryFolder, everyTrialReport):
                         break
                 bug = foldername.replace(complementaryFolder,'').split("/")[1]
                 budget = foldername.replace(complementaryFolder, '').split("/")[2].replace("budget_", "")
+                
                 trial = int(foldername.replace(complementaryFolder, '').split("/")[3].replace("trial_", ""))+10
                 classNr = int(filename.replace("results-Class_", "").replace(".csv", "")) + 1
                 file_path = os.path.join(foldername, filename)
@@ -282,18 +283,14 @@ def data_complementar(complementaryFolder, everyTrialReport):
     # Combine the newly created rows with the existing DataFrame
     appended_data = pd.concat(appended_data, ignore_index=True)
     everyTrialReport = pd.concat([everyTrialReport, appended_data], ignore_index=True)
-    appended_data.to_csv("/Users/afonsofo/Desktop/defects4j/framework/test/Experiments/1-complement_data.csv", index=False)
+    appended_data.to_csv("/Users/afonsofo/Desktop/defects4j/framework/test/Experiments/1-complement_data_wave_2.csv", index=False)
     return everyTrialReport
 
 if __name__ == "__main__":
 
     everyTrialReport = pd.read_csv("/Users/afonsofo/Desktop/defects4j/framework/test/Experiments/1-everyTrialReport.csv")
-    allTrialsCompiled = pd.read_csv("/Users/afonsofo/Desktop/defects4j/framework/test/Experiments/2-allTrialsCompiled.csv")
-    experimentSummaryPerBudget = pd.read_csv("/Users/afonsofo/Desktop/defects4j/framework/test/Experiments/3-experimentSummaryPerBudget.csv")
 
-    # everyTrialReport = (everyTrialReport['Generation_success'] < 1) | pd.isna(everyTrialReport['Generation_success'])
-
-    complementaryFolder = "/Users/afonsofo/Desktop/defects4j/framework/test/Experiments/data_complementares/"
+    complementaryFolder = "/Users/afonsofo/Desktop/defects4j/framework/test/Experiments/data_comp_wave2/"
     everyTrialReport = data_complementar(complementaryFolder, everyTrialReport)
     # Save the updated DataFrame
     rawOutput = everyTrialReport
@@ -318,7 +315,7 @@ if __name__ == "__main__":
     filtered_rawOutput_save.fillna(0, inplace=True)
     # Filter out rows where 'Generation_success' is zero
     filtered_rawOutput_save = filtered_rawOutput_save[filtered_rawOutput_save['Generation_success'] != 0]
-    filtered_rawOutput_save.to_csv("/Users/afonsofo/Desktop/defects4j/framework/test/Experiments/1-everyTrialReport_complemented.csv", index=False)
+    #filtered_rawOutput_save.to_csv("/Users/afonsofo/Desktop/defects4j/framework/test/Experiments/1-everyTrialReport_complemented_wave2.csv", index=False)
 
 
     agg_functions = {
