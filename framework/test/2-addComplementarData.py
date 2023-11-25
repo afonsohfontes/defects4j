@@ -186,6 +186,20 @@ def convert_to_numeric(df):
     return df
 
 
+def is_id_in_filter(project_id, bug_id, class_nr):
+    # Load the list of existing project, bug, and class_nr combinations from the CSV file
+    existing_projects_bugs = pd.read_csv('/Users/afonsofo/Desktop/defects4j/framework/test/Experiments/bugs_list.csv')
+
+    # Ensure that the bug_id and class_nr are integers, as they are likely to be stored as integers in the CSV
+    bug_id = int(bug_id)
+    class_nr = int(class_nr)
+
+    # Check if the combination exists in the list
+    return not existing_projects_bugs[(existing_projects_bugs['Project'] == project_id) &
+                                      (existing_projects_bugs['Bug'] == bug_id) &
+                                      (existing_projects_bugs['Class_nr'] == class_nr)].empty
+
+
 
 def data_complementar(complementaryFolder, everyTrialReport):
     project_identifiers = [
@@ -216,107 +230,252 @@ def data_complementar(complementaryFolder, everyTrialReport):
                 output_cov = "no data"
                 total_outputs = "no data"
                 covered_outputs = "no data"
+                BranchCoverageBitString = "no data"
+                Total_Branches = "no data"
+                Covered_Branches = "no data"
+                BranchCoverageTimeline = "no data"
+                BranchBitStringTimeline = "no data"
 
                 # Loop through project_identifiers to find the project in foldername
                 for identifier in project_identifiers:
                     if identifier in foldername:
                         project = identifier
                         break
+
+                #print(foldername)
                 bug = foldername.replace(complementaryFolder,'').split("/")[1]
+                #bug = foldername.replace(complementaryFolder,'').split("/")[2]
                 budget = foldername.replace(complementaryFolder, '').split("/")[2].replace("budget_", "")
-                
-                trial = int(foldername.replace(complementaryFolder, '').split("/")[3].replace("trial_", ""))+10
-                classNr = int(filename.replace("results-Class_", "").replace(".csv", "")) + 1
-                file_path = os.path.join(foldername, filename)
-                results = pd.read_csv(file_path)
-                row = 0
-                for i in range(5):
-                    if str(results.BranchCoverage[i]) != "no data":
-                        branchCoverage = results.BranchCoverage[i]
-                        criterion = str(results.criterion[i])
-                        row = i
-                        break
-                if criterion != "no data":
-                    log_path_et = str(foldername+"/generationData/"+criterion+"/bug_detection_log/"+project+"/run_bug_detection.pl.log")
-                    log_path_et = log_path_et.replace(":", "_")
-                    execution_Time = extract_execution_time(log_path_et)
-                if "no data" not in str(execution_Time):
-                    if float(execution_Time) > 0:
-                        generation_success = str(1)
+                trial = int((foldername.replace(complementaryFolder, '').split("/")[3].replace("trial_", "")))+10
+                #budget = foldername.replace(complementaryFolder, '').split("/")[3].replace("budget_", "")
+                #trial = int((foldername.replace(complementaryFolder, '').split("/")[4].replace("trial_", "")))+10
+                classNr = int((filename.replace("results-Class_", "").replace(".csv", ""))) + 1
+                if is_id_in_filter(str(project), str(bug), str(classNr)):
+                    print(project)
+                    print(bug)
+                    print("--")
+                    file_path = os.path.join(foldername, filename)
+                    results = pd.read_csv(file_path)
+                    row = 0
+
+                    for i in range(5):
+                        if str(results.BranchCoverage[i]) != "no data":
+                            branchCoverage = results.BranchCoverage[i]
+                            criterion = str(results.criterion[i])
+                            row = i
+                            break
+                    if criterion != "no data":
+                        log_path_et = str(foldername+"/generationData/"+criterion+"/bug_detection_log/"+project+"/run_bug_detection.pl.log")
+                        log_path_et = log_path_et.replace(":", "_")
+                        execution_Time = extract_execution_time(log_path_et)
+                    if "no data" not in str(execution_Time):
+                        if float(execution_Time) > 0:
+                            generation_success = str(1)
+                        else:
+                            generation_success = str(0)
                     else:
                         generation_success = str(0)
-                else:
-                    generation_success = str(0)
-                if float(generation_success) > 0:
-                    failing_tests = results.Bug_Detection[row]
-                if criterion != "no data":
-                    log_path = str(foldername+"/generationData/"+criterion+"/1-EvoTranscription.log")
-                    log_path = log_path.replace(":", "_")
-                    nr_test_cases, test_suite_length = extract_test_info(log_path)
-                private_Methods = (results.Total_PrivateMethods[row])
-                private_Method_Covered = results.Covered_PrivateMethods[row]
-                exception_thrown = results.ExceptionsCovered[row]
-                output_cov = results.OutputCoverage[row]
-                total_outputs = results.Total_OutputGoals[row]
-                covered_outputs = results.Covered_OutputGoals[row]
-                newRow = pd.DataFrame({
-                    "Project": [project],
-                    "Bug": [int(bug)],
-                    "Class_nr": [classNr],
-                    "Budget": [budget],
-                    "Trial": [trial],
-                    "Generation_success": [generation_success],
-                    "Criterion": [criterion],
-                    "Failing_tests": [failing_tests],
-                    "Branch_Cov": [branchCoverage],
-                    "Nr_test_cases": [nr_test_cases],
-                    "Private_Methods": [private_Methods],
-                    "Private_Method_Covered": [private_Method_Covered],
-                    "Exception_thrown": [exception_thrown],
-                    "Execution_Time": [execution_Time],
-                    "Test_suite_length": [test_suite_length],
-                    "Output_cov": [output_cov],
-                    "total_outputs": [total_outputs],
-                    "covered_outputs": [covered_outputs],
-                })
-                appended_data.append(newRow)
+                    if float(generation_success) > 0:
+                        failing_tests = results.Bug_Detection[row]
+                    if criterion != "no data":
+                        log_path = str(foldername+"/generationData/"+criterion+"/1-EvoTranscription.log")
+                        log_path = log_path.replace(":", "_")
+                        nr_test_cases, test_suite_length = extract_test_info(log_path)
+                    private_Methods = (results.Total_PrivateMethods[row])
+                    private_Method_Covered = results.Covered_PrivateMethods[row]
+                    Total_Branches = results.Total_Branches[row]
+                    Covered_Branches = results.Covered_Branches[row]
+                    exception_thrown = results.ExceptionsCovered[row]
+                    output_cov = results.OutputCoverage[row]
+                    total_outputs = results.Total_OutputGoals[row]
+                    covered_outputs = results.Covered_OutputGoals[row]
+                    BranchCoverageBitString = results.BranchCoverageBitString[row]
+                    BranchCoverageTimeline = results.BranchCoverageTimeline[row]
+                    BranchBitstringTimeline = results.BranchBitstringTimeline[row]
+
+
+                    newRow = pd.DataFrame({
+                        "Project": [project],
+                        "Bug": [int(bug)],
+                        "Class_nr": [classNr],
+                        "Budget": [budget],
+                        "Trial": [trial],
+                        "Generation_success": [generation_success],
+                        "Criterion": [criterion],
+                        "Failing_tests": [failing_tests],
+                        "Branch_Cov": [branchCoverage],
+                        "Total_Branches": [Total_Branches],
+                        "Covered_Branches": [Covered_Branches],
+                        "Nr_test_cases": [nr_test_cases],
+                        "Private_Methods": [private_Methods],
+                        "Private_Method_Covered": [private_Method_Covered],
+                        "Exception_thrown": [exception_thrown],
+                        "Execution_Time": [execution_Time],
+                        "Test_suite_length": [test_suite_length],
+                        "Output_cov": [output_cov],
+                        "total_outputs": [total_outputs],
+                        "covered_outputs": [covered_outputs],
+                        "BranchCoverageBitString": [BranchCoverageBitString],
+                        "BranchCoverageTimeline": [BranchCoverageTimeline],
+                        "BranchBitstringTimeline": [BranchBitstringTimeline],
+                    })
+                    appended_data.append(newRow)
     # Combine the newly created rows with the existing DataFrame
-    appended_data = pd.concat(appended_data, ignore_index=True)
-    everyTrialReport = pd.concat([everyTrialReport, appended_data], ignore_index=True)
-    appended_data.to_csv("/Users/afonsofo/Desktop/defects4j/framework/test/Experiments/1-complement_data_wave_2.csv", index=False)
-    return everyTrialReport
+    if appended_data:
+        appended_data = pd.concat(appended_data, ignore_index=True)
+        everyTrialReport = pd.concat([everyTrialReport, appended_data], ignore_index=True)
+        appended_data.to_csv("/Users/afonsofo/Desktop/defects4j/framework/test/Experiments/1-complement_data_wave_2.csv", index=False)
+        return everyTrialReport
+    else:
+        return
+
+def data_complementar1(complementaryFolder, everyTrialReport):
+    project_identifiers = [
+        'Chart', 'Cli', 'Closure', 'Codec', 'Collections', 'Compress', 'Csv',
+        'Gson', 'JacksonCore', 'JacksonDatabind', 'JacksonXml', 'Jsoup',
+        'JxPath', 'Lang', 'Math', 'Mockito', 'Time'
+    ]
+    appended_data = []
+    for foldername, subfolders, filenames in os.walk(complementaryFolder):
+        for filename in filenames:
+            if foldername != "logs" and ".csv" in filename and "statistics" not in filename and "Class" in filename:
+
+                project = "no data"
+                bug = "no data"
+                classNr = "no data"
+                budget = "no data"
+                trial = "no data"
+                generation_success = "no data"
+                criterion = "no data"
+                failing_tests = "no data"
+                branchCoverage = "no data"
+                nr_test_cases = "no data"
+                private_Methods = "no data"
+                private_Method_Covered = "no data"
+                exception_thrown = "no data"
+                execution_Time = "no data"
+                test_suite_length = "no data"
+                output_cov = "no data"
+                total_outputs = "no data"
+                covered_outputs = "no data"
+                BranchCoverageBitString = "no data"
+                Total_Branches = "no data"
+                Covered_Branches = "no data"
+                BranchCoverageTimeline = "no data"
+                BranchBitStringTimeline = "no data"
+
+                # Loop through project_identifiers to find the project in foldername
+                for identifier in project_identifiers:
+                    if identifier in foldername:
+                        project = identifier
+                        break
+
+                #bug = foldername.replace(complementaryFolder,'').split("/")[1]
+                bug = foldername.replace(complementaryFolder,'').split("/")[2]
+                #budget = foldername.replace(complementaryFolder, '').split("/")[2].replace("budget_", "")
+                #trial = int((foldername.replace(complementaryFolder, '').split("/")[3].replace("trial_", "")))+10
+                budget = foldername.replace(complementaryFolder, '').split("/")[3].replace("budget_", "")
+                trial = int((foldername.replace(complementaryFolder, '').split("/")[4].replace("trial_", "")))+10
+                classNr = int((filename.replace("results-Class_", "").replace(".csv", ""))) + 1
+
+                if is_id_in_filter(str(project), str(bug), str(classNr)):
+                    print(project)
+                    print(bug)
+                    print("--")
+                    file_path = os.path.join(foldername, filename)
+                    results = pd.read_csv(file_path)
+                    row = 0
+                    for i in range(5):
+                        if str(results.BranchCoverage[i]) != "no data":
+                            branchCoverage = results.BranchCoverage[i]
+                            criterion = str(results.criterion[i])
+                            row = i
+                            break
+                    if criterion != "no data":
+                        log_path_et = str(foldername+"/generationData/"+criterion+"/bug_detection_log/"+project+"/run_bug_detection.pl.log")
+                        log_path_et = log_path_et.replace(":", "_")
+                        execution_Time = extract_execution_time(log_path_et)
+                    if "no data" not in str(execution_Time):
+                        if float(execution_Time) > 0:
+                            generation_success = str(1)
+                        else:
+                            generation_success = str(0)
+                    else:
+                        generation_success = str(0)
+                    if float(generation_success) > 0:
+                        failing_tests = results.Bug_Detection[row]
+                    if criterion != "no data":
+                        log_path = str(foldername+"/generationData/"+criterion+"/1-EvoTranscription.log")
+                        log_path = log_path.replace(":", "_")
+                        nr_test_cases, test_suite_length = extract_test_info(log_path)
+                    private_Methods = (results.Total_PrivateMethods[row])
+                    private_Method_Covered = results.Covered_PrivateMethods[row]
+                    Total_Branches = results.Total_Branches[row]
+                    Covered_Branches = results.Covered_Branches[row]
+                    exception_thrown = results.ExceptionsCovered[row]
+                    output_cov = results.OutputCoverage[row]
+                    total_outputs = results.Total_OutputGoals[row]
+                    covered_outputs = results.Covered_OutputGoals[row]
+                    BranchCoverageBitString = results.BranchCoverageBitString[row]
+                    BranchCoverageTimeline = results.BranchCoverageTimeline[row]
+                    BranchBitstringTimeline = results.BranchBitstringTimeline[row]
+
+
+                    newRow = pd.DataFrame({
+                        "Project": [project],
+                        "Bug": [int(bug)],
+                        "Class_nr": [classNr],
+                        "Budget": [budget],
+                        "Trial": [trial],
+                        "Generation_success": [generation_success],
+                        "Criterion": [criterion],
+                        "Failing_tests": [failing_tests],
+                        "Branch_Cov": [branchCoverage],
+                        "Total_Branches": [Total_Branches],
+                        "Covered_Branches": [Covered_Branches],
+                        "Nr_test_cases": [nr_test_cases],
+                        "Private_Methods": [private_Methods],
+                        "Private_Method_Covered": [private_Method_Covered],
+                        "Exception_thrown": [exception_thrown],
+                        "Execution_Time": [execution_Time],
+                        "Test_suite_length": [test_suite_length],
+                        "Output_cov": [output_cov],
+                        "total_outputs": [total_outputs],
+                        "covered_outputs": [covered_outputs],
+                        "BranchCoverageBitString": [BranchCoverageBitString],
+                        "BranchCoverageTimeline": [BranchCoverageTimeline],
+                        "BranchBitstringTimeline": [BranchBitstringTimeline],
+                    })
+                    appended_data.append(newRow)
+    # Combine the newly created rows with the existing DataFrame
+    if appended_data:
+        appended_data = pd.concat(appended_data, ignore_index=True)
+        everyTrialReport = pd.concat([everyTrialReport, appended_data], ignore_index=True)
+        appended_data.to_csv("/Users/afonsofo/Desktop/defects4j/framework/test/Experiments/1-complement_data_wave_1.csv", index=False)
+        return everyTrialReport
+    else:
+        return
 
 if __name__ == "__main__":
 
     everyTrialReport = pd.read_csv("/Users/afonsofo/Desktop/defects4j/framework/test/Experiments/1-everyTrialReport.csv")
 
+
     complementaryFolder = "/Users/afonsofo/Desktop/defects4j/framework/test/Experiments/data_comp_wave2/"
     everyTrialReport = data_complementar(complementaryFolder, everyTrialReport)
-    # Save the updated DataFrame
-    rawOutput = everyTrialReport
-    rawOutput.replace("no data", pd.NA, inplace=True)
-    rawOutput = convert_to_numeric(rawOutput)
-    rawOutput = rawOutput[rawOutput['Criterion'] != "BRANCH:PRIVATEMETHOD"]
 
-    grouped_branch_cov = rawOutput.groupby(['Project', 'Bug', 'Criterion'])['Branch_Cov'].mean().reset_index()
-    filtered_groups = grouped_branch_cov[grouped_branch_cov['Branch_Cov'] >= 0.05]
-    filtered_rawOutput = pd.DataFrame(columns=rawOutput.columns)
-    for _, row in filtered_groups.iterrows():
-        filtered_data = rawOutput[
-            (rawOutput['Project'] == row['Project']) &
-            (rawOutput['Bug'] == row['Bug']) &
-            (rawOutput['Criterion'] == row['Criterion'])
-            ]
-        filtered_rawOutput = pd.concat([filtered_rawOutput, filtered_data])
-    filtered_rawOutput_save = filtered_rawOutput
-    # Replace 'no data' with zeros
-    filtered_rawOutput_save.replace("no data", 0, inplace=True)
-    # Replace NaN with zeros
-    filtered_rawOutput_save.fillna(0, inplace=True)
-    # Filter out rows where 'Generation_success' is zero
-    filtered_rawOutput_save = filtered_rawOutput_save[filtered_rawOutput_save['Generation_success'] != 0]
-    #filtered_rawOutput_save.to_csv("/Users/afonsofo/Desktop/defects4j/framework/test/Experiments/1-everyTrialReport_complemented_wave2.csv", index=False)
+    complementaryFolder = "/Users/afonsofo/Desktop/defects4j/framework/test/Experiments/data_complementares"
+    everyTrialReport = data_complementar1(complementaryFolder, everyTrialReport)
 
+
+
+
+
+
+
+
+
+'''
 
     agg_functions = {
         'Trial': 'max',
@@ -427,3 +586,5 @@ if __name__ == "__main__":
     plt.xlabel('Average Branch Coverage')
     plt.ylabel('Frequency')
     plt.show()
+
+'''
